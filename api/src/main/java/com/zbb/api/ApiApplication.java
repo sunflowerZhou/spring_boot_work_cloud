@@ -7,6 +7,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import tk.mybatis.spring.annotation.MapperScan;
 
+/**
+ * @author sunflower
+ */
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.zbb.*"})
 @MapperScan("com.zbb.dao.mapper")
