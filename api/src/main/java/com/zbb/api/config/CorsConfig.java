@@ -10,7 +10,7 @@ import org.springframework.web.filter.CorsFilter;
  * @author sunflower
  * @className CorsConfig
  * @description 跨域配置
- * @date 2019/7/16 11:46
+ * @date 2020/6/25
  */
 
 @Configuration

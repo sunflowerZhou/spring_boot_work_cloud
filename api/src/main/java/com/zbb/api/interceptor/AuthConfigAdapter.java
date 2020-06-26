@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author sunflower
  * @className AuthConfigAdapter
  * @description 生效权限拦截器
- * @date 2019/9/25 15:48
+ * @date 2020/6/25
  */
 
 @Configuration

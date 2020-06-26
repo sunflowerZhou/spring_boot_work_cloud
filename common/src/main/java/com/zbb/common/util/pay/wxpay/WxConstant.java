@@ -4,8 +4,8 @@ package com.zbb.common.util.pay.wxpay;
  * 功能描述:
  * 微信常量
  *
- * @author HHC
- * @date 2019/10/31
+ * @author sunflower
+ * @date 2020/6/25
  * ————————————————————————
  */
 public class WxConstant {

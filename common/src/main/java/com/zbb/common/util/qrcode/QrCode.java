@@ -16,8 +16,8 @@ import java.io.IOException;
  * 功能描述:
  * 二维码生成工具类
  *
- * @author HHC
- * @date 2019/10/11
+ * @author sunflower
+ * @date 2020/6/25
  * ————————————————————————
  */
 public class QrCode extends QrCodeUtil {

@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * @author sunflower
  * @className RedisConfig
  * @description TODO
- * @date 2019/9/25 10:08
+ * @date 2020/6/25
  */
 
 @Configuration

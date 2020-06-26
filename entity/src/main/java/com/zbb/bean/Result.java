@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author sunflower
  * @description 前端返回结果集合
- * @date 2019-9-25 13:54:22
+ * @date 2020/6/25
  */
 public class Result {
     /**

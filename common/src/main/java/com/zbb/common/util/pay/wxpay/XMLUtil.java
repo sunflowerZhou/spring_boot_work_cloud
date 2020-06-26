@@ -22,7 +22,7 @@ import java.util.Map;
  * XML解析
  * 创建时间	2019-11-5 18:08:24
  *
- * @author hhc
+ * @author sunflower
  */
 public class XMLUtil {
     /**

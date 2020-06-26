@@ -13,10 +13,10 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 /**
- * @author Jerry heyutong
+ * @author sunflower
  * @className
  * @description TODO
- * @date
+ * @date 2020/6/25
  */
 public class SSLClient extends DefaultHttpClient {
     public SSLClient() throws Exception {

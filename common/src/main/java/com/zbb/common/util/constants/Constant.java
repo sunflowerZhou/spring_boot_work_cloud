@@ -3,8 +3,8 @@ package com.zbb.common.util.constants;
 /**
  * 功能描述:
  *
- * @author HHC
- * @date 2019/9/26
+ * @author sunflower
+ * @date 2020/6/25
  * ————————————————————————
  */
 public class Constant {

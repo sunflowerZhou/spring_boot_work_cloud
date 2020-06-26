@@ -7,8 +7,8 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 /**
  * 微信相关配置参数
  *
- * @author hhc
- * @date 2019-11-4 18:04:00
+ * @author sunflower
+ * @date 2020/6/25
  */
 public class WxConfigUtil {
     private static Configuration configs;

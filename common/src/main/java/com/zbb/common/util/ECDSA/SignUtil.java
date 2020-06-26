@@ -25,10 +25,10 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * @author Jerry heyutong
+ * @author sunflower
  * @className SignUtil
  * @description RSA256用于上链接口签名
- * @date 2019/10/18
+ * @date 2020/6/25
  */
 public class SignUtil {
 

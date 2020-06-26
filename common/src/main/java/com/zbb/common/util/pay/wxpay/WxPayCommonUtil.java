@@ -11,8 +11,8 @@ import java.util.*;
 /**
  * 功能描述:
  *
- * @author HHC
- * @date 2019/10/31
+ * @author sunflower
+ * @date 2020/6/25
  * ————————————————————————
  * 微信支付工具包
  */
