@@ -60,8 +60,8 @@ public class Swagger2 {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("BaaS接口API文档 SwaggerDoc")
-                .description("BaaS接口API文档 Api文档")
+                .title("圈友树接口API文档 SwaggerDoc")
+                .description("圈友树接口API文档 Api文档")
                 .termsOfServiceUrl("https://www.baidu.com")
                 .version("2.0")
                 .build();

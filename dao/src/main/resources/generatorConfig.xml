@@ -15,9 +15,9 @@
 
         <!-- 数据库链接URL、用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://139.9.175.56:5556/vbh_supplychain_finance?useSSL=false"
+                        connectionURL="jdbc:mysql://localhost:3306/spring_boot_work_cloud?useSSL=false"
                         userId="root"
-                        password="yEU9itmj">
+                        password="xjh123456">
         </jdbcConnection>
 
         <!--      
@@ -71,7 +71,7 @@
         <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
         <!--<property name="useActualColumnNames" value="false"/>-->
         <!--</table>-->
-        <table tableName="zipcode" domainObjectName="ZipCode"
+        <table tableName="user_service" domainObjectName="TUser"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <property name="useActualColumnNames" value="false"/>

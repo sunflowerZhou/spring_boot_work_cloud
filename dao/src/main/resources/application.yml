@@ -25,9 +25,9 @@ spring:
     poolPreparedStatements: true
     maxPoolPreparedStatementPerConnectionSize: 20
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.1.2:3306/spring_boot_work_cloud?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=utf-8&useAffectedRows=true
+    url: jdbc:mysql://localhost:3306/spring_boot_work_cloud?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=utf-8&useAffectedRows=true
     username: root
-    password: 123456
+    password: xjh123456
 #  #redis集群
 #  redis:
 #    host: 192.168.0.12
