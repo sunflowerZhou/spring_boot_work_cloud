@@ -2,6 +2,13 @@ package com.zbb.common.util.qrcode;
 
 import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
+import com.google.common.collect.Maps;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.zbb.common.util.file.FileUtil;
 import sun.misc.BASE64Decoder;
 
 import javax.imageio.ImageIO;
@@ -11,6 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * 功能描述:
@@ -21,8 +29,29 @@ import java.io.IOException;
  * ————————————————————————
  */
 public class QrCode extends QrCodeUtil {
-    private static BASE64Decoder decoder = new sun.misc.BASE64Decoder();
-    //private static String content = "https://www.zbbledger.com/";
+    private static final BASE64Decoder DECODER = new sun.misc.BASE64Decoder();
+
+    private static final ErrorCorrectionLevel E_RATE = ErrorCorrectionLevel.L;
+
+    private static final String CHARSET = "utf-8";
+
+    /**
+     * img 目录下二维码包
+     */
+    private static final String CODE_URL = "/img/qr_code/";
+
+    /**
+     * /static
+     */
+    private static final String URL_STATIC = "/static";
+    /**
+     * 二维码宽
+     */
+    private static final int CODE_WIDTH = 200;
+    /**
+     * 二维码高
+     */
+    private static final int CODE_HEIGHT = 200;
 
     /**
      * 生成样式一
@@ -56,15 +85,19 @@ public class QrCode extends QrCodeUtil {
      */
     public static byte[] getBufferedImage(String content, String type) {
         BufferedImage bufferedImage;
-        if ("1".equals(type)) {
+        String s = "1";
+        if (s.equals(type)) {
             //样式一
             bufferedImage = generateQrCodeV1(content);
-        } else if ("2".equals(type)) {
-            //样式二
-            bufferedImage = generateQrCodeV2(content);
         } else {
-            //样式三
-            bufferedImage = generateQrCodeV3(content);
+            String s1 = "2";
+            if (s1.equals(type)) {
+                //样式二
+                bufferedImage = generateQrCodeV2(content);
+            } else {
+                //样式三
+                bufferedImage = generateQrCodeV3(content);
+            }
         }
         ByteArrayOutputStream bao = new ByteArrayOutputStream();
         // 写图片
@@ -105,13 +138,68 @@ public class QrCode extends QrCodeUtil {
     }
 
     /**
+     * 创建二维码
+     *
+     * @param content      文字内容
+     * @param qrCodeWidth  二维码宽
+     * @param qrCodeHeight 二维码高
+     * @return BufferedImage
+     * @throws Exception Exception
+     */
+    public static BufferedImage createImage(String content,
+                                            int qrCodeWidth, int qrCodeHeight) throws Exception {
+        Map<EncodeHintType, Object> hints = Maps.newConcurrentMap();
+        hints.put(EncodeHintType.ERROR_CORRECTION, E_RATE);
+        hints.put(EncodeHintType.CHARACTER_SET, CHARSET);
+        hints.put(EncodeHintType.MARGIN, 1);
+        BitMatrix bitMatrix = new MultiFormatWriter().encode(content,
+                BarcodeFormat.QR_CODE, qrCodeWidth, qrCodeHeight, hints);
+        int width = bitMatrix.getWidth();
+        int height = bitMatrix.getHeight();
+        BufferedImage image = new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_RGB);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                image.setRGB(x, y, bitMatrix.get(x, y) ? 0xFF000000
+                        : 0xFFFFFFFF);
+            }
+        }
+        return image;
+    }
+
+    /**
+     * 获取二维码地址
+     *
+     * @param content 二维码内容
+     * @param codeName ip + 端口
+     * @param imgName 图片名称
+     * @return 二维码访问路径
+     * @throws Exception Exception
+     */
+    public static String generateImg(String content,String codeName, String imgName) throws Exception {
+        // 项目路径
+        String jarPath = FileUtil.getJarPath() + URL_STATIC + CODE_URL;
+        File file = new File(jarPath + imgName + ".png");
+        if (!file.exists()) {
+            boolean mkdir = file.mkdirs();
+            System.out.println("文件夹创建 ：" + mkdir);
+        }
+        BufferedImage image = createImage(content, CODE_WIDTH, CODE_HEIGHT);
+        ImageIO.write(image, "png", file);
+        image.flush();
+        System.out.println(FileUtil.getJarPath());
+        System.out.println("产生的二维码图片:" + file.getPath());
+        return codeName + CODE_URL + imgName + ".png";
+    }
+
+    /**
      * 解码并且生成二维码
      *
      * @param base64String s
      */
     private static void base64StringToImage(String base64String) {
         try {
-            byte[] bytes1 = decoder.decodeBuffer(base64String);
+            byte[] bytes1 = DECODER.decodeBuffer(base64String);
 
             ByteArrayInputStream bais = new ByteArrayInputStream(bytes1);
             BufferedImage bi1 = ImageIO.read(bais);
@@ -125,10 +213,12 @@ public class QrCode extends QrCodeUtil {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
        /* String content = "https://www.zbbledger.com/";
         String s = getBufferedImage(content, "3");
         System.out.println(s);
         base64StringToImage(s);*/
+
+        generateImg("","https://www.baidu.com", "111111");
     }
 }

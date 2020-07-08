@@ -1,6 +1,10 @@
 # https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html spring\u914D\u7F6E\u7684\u6587\u6863
 server:
-  port: 9523
+  port: 8080
+
+swagger:
+  host: localhost
+  enable: true
 
 spring:
   servlet:
@@ -54,3 +58,5 @@ pagehelper:
   params: count=countSql
 csr:
   password: 1
+
+address: http://htt.nat100.top

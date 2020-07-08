@@ -31,7 +31,7 @@
         <groupId>com.zbb.workCloud</groupId>
         <artifactId>spring_boot_work_cloud</artifactId>
         <version>1.0.0</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath/>
     </parent>
 
 
