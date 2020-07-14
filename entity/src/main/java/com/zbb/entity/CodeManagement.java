@@ -39,6 +39,9 @@ public class CodeManagement implements Serializable {
     @ApiModelProperty(name = "群名称")
     private String groupName;
 
+    @ApiModelProperty(name = "群名称序号")
+    private Integer groupNo;
+
     @ApiModelProperty(name = "群主名称")
     private String groupMain;
 
@@ -71,6 +74,9 @@ public class CodeManagement implements Serializable {
 
     @ApiModelProperty(name = "二维码状态{0:启用}{1:禁用}{2:已失效}")
     private Integer codeState;
+
+    @ApiModelProperty(name = "规则名称")
+    private String ruleName;
 
     private static final long serialVersionUID = 1L;
 }

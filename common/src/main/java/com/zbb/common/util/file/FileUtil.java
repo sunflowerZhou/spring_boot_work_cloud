@@ -1,6 +1,7 @@
 package com.zbb.common.util.file;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
@@ -25,6 +26,60 @@ import java.util.zip.ZipOutputStream;
 @Slf4j
 public class FileUtil {
     private static final BASE64Decoder DECODER = new BASE64Decoder();
+
+    public static String getMineType(String fileName) {
+        String minType = StringUtils.EMPTY;
+        if (fileName.endsWith(".tif")) {
+            minType = "image/tiff";
+        } else if (fileName.endsWith(".fax")) {
+            minType = "image/fax";
+        } else if (fileName.endsWith(".gif")) {
+            minType = "image/gif";
+        } else if (fileName.endsWith(".ico")) {
+            minType = "image/x-icon";
+        } else if (fileName.endsWith(".jfif")) {
+            minType = "image/jpeg";
+        } else if (fileName.endsWith(".jpe")) {
+            minType = "image/jpeg";
+        } else if (fileName.endsWith(".jpeg")) {
+            minType = "image/jpeg";
+        } else if (fileName.endsWith(".jpg")) {
+            minType = "image/jpeg";
+        } else if (fileName.endsWith(".net")) {
+            minType = "image/pnetvue";
+        } else if (fileName.endsWith(".png")) {
+            minType = "image/png";
+        } else if (fileName.endsWith(".rp")) {
+            minType = "image/vnd.rn-realpix";
+        } else if (fileName.endsWith(".tif")) {
+            minType = "image/tiff";
+        } else if (fileName.endsWith(".tiff")) {
+            minType = "image/tiff";
+        } else if (fileName.endsWith(".wbmp")) {
+            minType = "image/vnd.wap.wbmp";
+        } else if (fileName.endsWith(".pdf")) {
+            minType = "application/pdf";
+        } else if (fileName.endsWith(".doc") || fileName.endsWith(".docx")) {
+            minType = "application/msword";
+        } else if (fileName.endsWith(".doc") || fileName.endsWith(".docx")) {
+            minType = "application/msword";
+        } else if (fileName.endsWith(".mp4")) {
+            minType = "audio/mp4";
+        } else if (fileName.endsWith(".mp3")) {
+            minType = "audio/mp3";
+        } else if (fileName.endsWith(".wav")) {
+            minType = "audio/wav";
+        } else if (fileName.endsWith(".wma")) {
+            minType = "audio/x-ms-wma";
+        } else if (fileName.endsWith(".rmvb")) {
+            minType = "application/vnd.rn-realmedia-vbr";
+        } else if (fileName.endsWith(".txt") || fileName.endsWith(".log") || fileName.endsWith(".out")) {
+            minType = "text/plain";
+        } else if (fileName.endsWith(".go") || fileName.endsWith(".java")) {
+            minType = "text/plain";
+        }
+        return minType;
+    }
 
     /**
      * 文件上传返回base64编码后字符串
@@ -86,6 +141,10 @@ public class FileUtil {
         return jarPath;
     }
 
+    public static String getJarPath1() throws Exception {
+        String jarPath = getJarPath();
+        return jarPath.replace("/api/target/classes","");
+    }
 
     public static void compressToZip(String sourceFilePath, String zipFilePath, String zipFilename, List<String> needCompressedFileNameList, boolean isDeleteFile) {
         File sourceFile = new File(sourceFilePath);

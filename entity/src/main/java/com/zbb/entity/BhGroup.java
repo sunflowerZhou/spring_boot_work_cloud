@@ -24,7 +24,7 @@ public class BhGroup implements Serializable {
     private Long id;
 
     @ApiModelProperty("钉钉群id")
-    private Long groupId;
+    private String groupId;
 
     @ApiModelProperty("钉钉群名称")
     private String groupName;
@@ -39,7 +39,7 @@ public class BhGroup implements Serializable {
     private String groupMainName;
 
     @ApiModelProperty("群主id")
-    private Long groupMainId;
+    private String groupMainId;
 
     @ApiModelProperty("当前群人数")
     private Integer groupNum;

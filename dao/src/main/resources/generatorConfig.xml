@@ -71,7 +71,7 @@
         <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
         <!--<property name="useActualColumnNames" value="false"/>-->
         <!--</table>-->
-        <table tableName="bh_group_t" domainObjectName="BhGroup"
+        <table tableName="bh_invitation_user_t" domainObjectName="BhInvitationUser"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <property name="useActualColumnNames" value="false"/>

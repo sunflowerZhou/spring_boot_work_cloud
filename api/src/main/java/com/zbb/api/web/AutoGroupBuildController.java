@@ -1,10 +1,13 @@
 package com.zbb.api.web;
 
+import com.zbb.api.aop.AddPage;
 import com.zbb.bean.Result;
 import com.zbb.bo.CodeManagementBo;
 import com.zbb.entity.CodeManagement;
 import com.zbb.service.ding.AutoGroupBuildService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -21,7 +24,7 @@ import java.util.List;
 /**
  * @author sunflower
  */
-@Api(value = "自动建群")
+@Api("自动建群")
 @Controller
 @RequestMapping("/ding/group")
 public class AutoGroupBuildController {
@@ -35,20 +38,22 @@ public class AutoGroupBuildController {
     @RequestMapping(value = "edit",method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "编辑模版(返回二维码路径)", httpMethod = "POST")
-    public String edit(@RequestBody CodeManagementBo codeManagementBo) throws Exception {
+    public String edit(@RequestBody CodeManagementBo codeManagementBo) throws Exception{
+
         if (codeManagementBo.getId() == null){
             codeManagementBo.setCodeUrl(address);
         }
-        String edit = autoGroupBuildService.edit(codeManagementBo);
+        CodeManagementBo edit = autoGroupBuildService.edit(codeManagementBo);
         return Result.succResult(edit);
     }
+
 
     @RequestMapping(value = "scanCodeJump",method = RequestMethod.GET)
     @ApiOperation(value = "扫码跳转", httpMethod = "GET")
     public void scanCodeJump(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String id = request.getParameter("id");
-        String auto = autoGroupBuildService.joinGroupAuto(id);
-        response.getWriter().write("1000"+id);
+        String auto = autoGroupBuildService.joinGroupAuto(id,null);
+        response.getWriter().write("<a href='http://www.w3school.com.cn'>W3School</a>");
     }
 
     @RequestMapping(value = "joinGroupAuto",method = RequestMethod.POST)
@@ -62,9 +67,15 @@ public class AutoGroupBuildController {
     @RequestMapping(value = "getCodeManagementList",method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "根据用户ID获取活码配置", httpMethod = "POST")
-    public String getCodeManagementList(String userId){
-        List<CodeManagement> list = autoGroupBuildService.getCodeManagementList(userId);
-        return Result.succResult(list);
+    @AddPage
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "pageSize", dataType = "string", required = true, value = "每页显示数", defaultValue = "10"),
+            @ApiImplicitParam(paramType = "query", name = "page", dataType = "string", required = true, value = "当前页", defaultValue = "1"),
+            @ApiImplicitParam(paramType = "query", name = "codeName", dataType = "string", required = true, value = "活码名称", defaultValue = "1")
+    })
+    public String getCodeManagementList(String userId,String codeName){
+        List<CodeManagement> list = autoGroupBuildService.getCodeManagementList(userId,codeName);
+        return Result.succPageResult(list);
     }
 
     @RequestMapping(value = "deleteBatch",method = RequestMethod.POST)

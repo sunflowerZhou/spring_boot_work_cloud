@@ -38,7 +38,7 @@ public class QrCode extends QrCodeUtil {
     /**
      * img 目录下二维码包
      */
-    private static final String CODE_URL = "/img/qr_code/";
+    public static final String CODE_URL = "/img/qr_code/";
 
     /**
      * /static
@@ -178,7 +178,7 @@ public class QrCode extends QrCodeUtil {
      */
     public static String generateImg(String content,String codeName, String imgName) throws Exception {
         // 项目路径
-        String jarPath = FileUtil.getJarPath() + URL_STATIC + CODE_URL;
+        String jarPath = FileUtil.getJarPath1() + CODE_URL;
         File file = new File(jarPath + imgName + ".png");
         if (!file.exists()) {
             boolean mkdir = file.mkdirs();

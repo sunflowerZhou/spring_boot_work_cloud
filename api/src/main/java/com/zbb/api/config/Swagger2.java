@@ -1,6 +1,5 @@
 package com.zbb.api.config;
 
-import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -51,9 +50,9 @@ public class Swagger2 {
                 .apiInfo(apiInfo())
                 .select()
                 //这里采用包含注解的方式来确定要显示的接口
-                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+//                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 //这里采用包扫描的方式来确定要显示的接口
-                // .apis(RequestHandlerSelectors.basePackage("com.zbb.web.controller"))
+                 .apis(RequestHandlerSelectors.basePackage("com.zbb.api.web"))
                 .paths(PathSelectors.any())
                 .build();
     }

@@ -44,8 +44,8 @@ public class PageAspect {
     }
 
     private String pre(ProceedingJoinPoint point) {
-        String currentPage = request.getParameter("currentPage");
-        String showCount = request.getParameter("showCount");
+        String currentPage = request.getParameter("page");
+        String showCount = request.getParameter("pageSize");
         if (StringUtils.isEmpty(currentPage) || StringUtils.isEmpty(showCount)) {
             //json调用方式，分页对象请继承PageDataBo对象
             Object[] args = point.getArgs();

@@ -55,5 +55,8 @@ public class CodeManagementBo implements Serializable {
 
     private String codeUrl;
 
+    @ApiModelProperty(name = "规则名称")
+    private String ruleName;
+
     private static final long serialVersionUID = 1L;
 }

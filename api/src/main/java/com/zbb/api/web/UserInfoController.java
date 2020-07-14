@@ -1,6 +1,5 @@
 package com.zbb.api.web;
 
-import com.taobao.api.ApiException;
 import com.zbb.bean.Result;
 import com.zbb.service.ding.DingTalkServiceUtils;
 import com.zbb.vo.AccessTokenVo;
@@ -16,7 +15,7 @@ import javax.annotation.Resource;
 /**
  * @author sunflower
  */
-@Api(value = "用户")
+@Api("用户")
 @Controller
 @RequestMapping(name = "/ding/user")
 public class UserInfoController extends BaseController{
@@ -27,8 +26,15 @@ public class UserInfoController extends BaseController{
     @RequestMapping(value = "/passwordFreeLogin",method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "免密登录(获取用户信息)", httpMethod = "POST")
-    public String passwordFreeLogin(String requestAuthCode) throws ApiException {
+    public String passwordFreeLogin(String requestAuthCode) {
         AccessTokenVo userInfo = dingTalkServiceUtils.getUserInfo(requestAuthCode);
         return Result.succResult(userInfo);
+    }
+
+    @RequestMapping(value = "/inviteInfo")
+    @ResponseBody
+    @ApiOperation(value = "用户邀请人数")
+    public String inviteInfo(String accessToken){
+        return "";
     }
 }

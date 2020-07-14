@@ -8,11 +8,11 @@ import lombok.Data;
 @Data
 public class GroupInfoDto {
 
-    private Long groupId;
+    private String groupId;
 
     private String groupName;
 
     private String groupMainName;
 
-    private Long groupMainId;
+    private String groupMainId;
 }

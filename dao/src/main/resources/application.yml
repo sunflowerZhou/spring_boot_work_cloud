@@ -7,6 +7,12 @@ swagger:
   enable: true
 
 spring:
+  http:
+    encoding:
+      force: true
+      charset: utf-8
+      enabled: true
+
   servlet:
     multipart:
       max-request-size: 100MB #最大请求文件的大小
@@ -60,3 +66,10 @@ csr:
   password: 1
 
 address: http://htt.nat100.top
+
+
+uiteld: 2029003
+appld: 51136
+suiteKey: suitevffa4znrajet6tbe
+suiteSecret: dazd4gfqlgfAV92HA52MG2F5hsxIChwsvft2J41IZS8LWOy8vHuOaR1JHypy!
+token: 3fd9383a735547da935366d
