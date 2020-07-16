@@ -1,10 +1,10 @@
 package com.zbb.api.web;
 
-import com.zbb.api.aop.AddPage;
+import com.github.pagehelper.PageInfo;
 import com.zbb.bean.Result;
 import com.zbb.bo.CodeManagementBo;
-import com.zbb.entity.CodeManagement;
 import com.zbb.service.ding.AutoGroupBuildService;
+import com.zbb.vo.CodeManagementVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @author sunflower
@@ -39,12 +38,10 @@ public class AutoGroupBuildController {
     @ResponseBody
     @ApiOperation(value = "编辑模版(返回二维码路径)", httpMethod = "POST")
     public String edit(@RequestBody CodeManagementBo codeManagementBo) throws Exception{
-
         if (codeManagementBo.getId() == null){
             codeManagementBo.setCodeUrl(address);
         }
-        CodeManagementBo edit = autoGroupBuildService.edit(codeManagementBo);
-        return Result.succResult(edit);
+        return autoGroupBuildService.edit(codeManagementBo);
     }
 
 
@@ -53,7 +50,11 @@ public class AutoGroupBuildController {
     public void scanCodeJump(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String id = request.getParameter("id");
         String auto = autoGroupBuildService.joinGroupAuto(id,null);
-        response.getWriter().write("<a href='http://www.w3school.com.cn'>W3School</a>");
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=utf-8");
+        response.getWriter().write("<a href='https://www.baidu.com'>对不起！此二维码已经失效。</a>");
+        response.getWriter().write("<img src='http://htt.nat100.top/img/qr_code/a345a140320449e8b9206b62059a7d86.png'/>");
     }
 
     @RequestMapping(value = "joinGroupAuto",method = RequestMethod.POST)
@@ -67,22 +68,22 @@ public class AutoGroupBuildController {
     @RequestMapping(value = "getCodeManagementList",method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "根据用户ID获取活码配置", httpMethod = "POST")
-    @AddPage
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "pageSize", dataType = "string", required = true, value = "每页显示数", defaultValue = "10"),
             @ApiImplicitParam(paramType = "query", name = "page", dataType = "string", required = true, value = "当前页", defaultValue = "1"),
-            @ApiImplicitParam(paramType = "query", name = "codeName", dataType = "string", required = true, value = "活码名称", defaultValue = "1")
+            @ApiImplicitParam(paramType = "query", name = "codeName", dataType = "string", value = "活码名称", defaultValue = "1")
     })
-    public String getCodeManagementList(String userId,String codeName){
-        List<CodeManagement> list = autoGroupBuildService.getCodeManagementList(userId,codeName);
-        return Result.succPageResult(list);
+    public String getCodeManagementList(String userId,String codeName,String pageSize,String page){
+        PageInfo<CodeManagementVo> list = autoGroupBuildService.getCodeManagementList(userId, codeName, Integer.parseInt(page),Integer.parseInt(pageSize));
+        return Result.succResult(list);
     }
 
     @RequestMapping(value = "deleteBatch",method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "批量删除配置（无法删除已启用状态）", httpMethod = "POST")
-    public String deleteBatch(List<String> ids){
-        autoGroupBuildService.deleteBatch(ids);
+    public String deleteBatch(String ids){
+        String[] split = ids.split(",");
+        autoGroupBuildService.deleteBatch(split);
         return Result.succResult("OK");
     }
 

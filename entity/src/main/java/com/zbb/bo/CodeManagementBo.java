@@ -47,7 +47,7 @@ public class CodeManagementBo implements Serializable {
     @ApiModelProperty(name = "生效时间")
     private Date startTime;
 
-    @ApiModelProperty(name = "二维码状态{0:启用}{1:禁用}{2:已失效}")
+    @ApiModelProperty(name = "二维码状态{0:启用}{1:禁用}{2:已失效}{3:待启用}")
     private Integer codeState;
 
     @ApiModelProperty(name = "关联群")
@@ -57,6 +57,9 @@ public class CodeManagementBo implements Serializable {
 
     @ApiModelProperty(name = "规则名称")
     private String ruleName;
+
+    @ApiModelProperty(name = "结束时间")
+    private Date endTime;
 
     private static final long serialVersionUID = 1L;
 }

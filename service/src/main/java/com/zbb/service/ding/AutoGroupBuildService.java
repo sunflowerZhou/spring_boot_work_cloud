@@ -1,5 +1,8 @@
 package com.zbb.service.ding;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.zbb.bean.Result;
 import com.zbb.bo.CodeManagementBo;
 import com.zbb.common.util.ConvertUtils;
 import com.zbb.common.util.qrcode.QrCode;
@@ -10,7 +13,7 @@ import com.zbb.dto.GroupInfoDto;
 import com.zbb.entity.BhGroup;
 import com.zbb.entity.BhUserActivity;
 import com.zbb.entity.CodeManagement;
-import com.zbb.exception.BusinessException;
+import com.zbb.vo.CodeManagementVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.StringUtils;
@@ -71,37 +74,32 @@ public class AutoGroupBuildService {
     /**
      * 自动建群规则配置
      */
-    public CodeManagementBo edit(CodeManagementBo codeManagementBo) throws Exception {
-        String groupNo = checkGroupName(codeManagementBo.getGroupName());
-        int groupNoNum;
-        if (StringUtils.isBlank(groupNo)) {
-            groupNoNum = 1;
-        } else {
-            groupNoNum = Integer.parseInt(groupNo);
-        }
-        Example example = new Example(CodeManagement.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("ruleName", codeManagementBo.getRuleName());
-        List<CodeManagement> codeManagements = codeManagementMapper.selectByExample(example);
-        if (CollectionUtils.isNotEmpty(codeManagements)) {
-            throw new BusinessException("规则名称不能唯为空！");
-        }
-        example.clear();
-        example.createCriteria().andEqualTo("codeName", codeManagementBo.getCodeName());
-        if (CollectionUtils.isNotEmpty(codeManagementMapper.selectByExample(example))) {
-            throw new BusinessException("代码名称不能唯为空！");
-        }
+    public String edit(CodeManagementBo codeManagementBo) throws Exception {
         CodeManagement codeManagement = ConvertUtils.convertBean(codeManagementBo, CodeManagement.class);
+        int groupNoNum = 0;
+        if (codeManagementBo.getAutoGroupBuild() == 0){
+            String groupNo = checkGroupName(codeManagementBo.getGroupName());
+
+            if (StringUtils.isBlank(groupNo)) {
+                groupNoNum = 1;
+            } else {
+                groupNoNum = Integer.parseInt(groupNo);
+            }
+            if (CollectionUtils.isEmpty(codeManagementBo.getGroupInfoDto())) {
+                return Result.failResult("请选择关联的群聊");
+            }
+        }
         codeManagement.setCreateBy("");
         codeManagement.setCreateTime(new Date());
         codeManagement.setUpdateBy("");
         codeManagement.setUpdateTime(new Date());
-        if (CollectionUtils.isEmpty(codeManagementBo.getGroupInfoDto())) {
-            throw new BusinessException("请选择关联的群聊");
-        }
-        batchInsertGroup(codeManagementBo, codeManagement);
         String url;
         if (codeManagement.getId() == null) {
+            Example example = new Example(CodeManagement.class);
+            example.createCriteria().andEqualTo("codeName", codeManagementBo.getCodeName());
+            if (CollectionUtils.isNotEmpty(codeManagementMapper.selectByExample(example))) {
+                return Result.failResult("活码名称已存在！");
+            }
             String codeUrl = codeManagement.getCodeUrl();
             codeManagement.setGroupNo(groupNoNum);
             codeManagementMapper.insertSelective(codeManagement);
@@ -114,15 +112,31 @@ public class AutoGroupBuildService {
             codeManagementMapper.updateByPrimaryKeySelective(management);
             codeManagementBo.setCodeUrl(img);
         } else {
-            codeManagementMapper.updateByPrimaryKeySelective(codeManagement);
+            if (codeManagementBo.getCodeState() == null){
+                // 判断是不是在修改的接口时候有没有修改名称，如果没有
+                CodeManagement management = codeManagementMapper.selectByPrimaryKey(codeManagementBo.getId());
+                if (!management.getCodeName().equals(codeManagementBo.getCodeName())){
+                    Example example = new Example(CodeManagement.class);
+                    example.createCriteria().andEqualTo("codeName", codeManagementBo.getCodeName());
+                    if (CollectionUtils.isNotEmpty(codeManagementMapper.selectByExample(example))) {
+                        return Result.failResult("活码名称已存在！");
+                    }
+                }
+                codeManagementMapper.updateByPrimaryKeySelective(codeManagement);
+            }
+
         }
-        return codeManagementBo;
+        if (codeManagementBo.getCodeState() == null){
+            // 批量添加
+            batchInsertGroup(codeManagementBo, codeManagement);
+        }
+        return Result.succResult(codeManagementBo);
     }
 
     private void batchInsertGroup(CodeManagementBo codeManagementBo, CodeManagement codeManagement) {
         //如果有数据就先删除
         Example example = new Example(BhGroup.class);
-        example.createCriteria().andEqualTo("bhGroupId", codeManagementBo.getId());
+        example.createCriteria().andEqualTo("bhGroupId", codeManagement.getId());
         List<BhGroup> bhGroups = bhGroupMapper.selectByExample(example);
         if (CollectionUtils.isNotEmpty(bhGroups)) {
             bhGroupMapper.deleteByExample(example);
@@ -142,7 +156,9 @@ public class AutoGroupBuildService {
             bhGroup.setBhGroupId(codeManagement.getId());
             list.add(bhGroup);
         }
-        bhGroupMapper.insertList(list);
+        if (CollectionUtils.isNotEmpty(list)){
+            bhGroupMapper.insertList(list);
+        }
     }
 
     /**
@@ -151,16 +167,46 @@ public class AutoGroupBuildService {
      * @param userId userId
      * @return List<CodeManagement>
      */
-    public List<CodeManagement> getCodeManagementList(String userId,String codeName) {
+    public PageInfo<CodeManagementVo> getCodeManagementList(String userId, String codeName,Integer currentPage, Integer showCount) {
+
         Example example = new Example(CodeManagement.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("createBy", userId);
-        criteria.andLike("codeName","%" + codeName + "%");
+        if (StringUtils.isNotBlank(codeName)){
+            criteria.andLike("codeName","%" + codeName + "%");
+        }
+        PageHelper.startPage(currentPage, showCount);
         List<CodeManagement> list = codeManagementMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(list)) {
             list = Lists.newArrayList();
         }
-        return list;
+        List<CodeManagementVo> cvs = Lists.newArrayList();
+        for (CodeManagement codeManagement : list) {
+            Example example1 = new Example(BhGroup.class);
+            example1.createCriteria().andEqualTo("bhGroupId",codeManagement.getId());
+            List<BhGroup> bhGroups = bhGroupMapper.selectByExample(example1);
+            CodeManagementVo code = ConvertUtils.convertBean(codeManagement, CodeManagementVo.class);
+            code.setBhGroups(bhGroups);
+            cvs.add(code);
+        }
+        PageInfo<CodeManagementVo> userPageInfo = new PageInfo<>(cvs);
+
+        int total = getTotal(userId,codeName);
+        int pages = (int) Math.ceil(total * 1.00 / showCount);
+        userPageInfo.setTotal(total);
+        userPageInfo.setPageSize(showCount);
+        userPageInfo.setPageNum(currentPage);
+        userPageInfo.setPages(pages);
+        return userPageInfo;
+    }
+    private int getTotal(String userId, String codeName) {
+        Example example = new Example(CodeManagement.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("createBy", userId);
+        if (StringUtils.isNotBlank(codeName)){
+            criteria.andLike("codeName","%" + codeName + "%");
+        }
+        return codeManagementMapper.selectCountByExample(example);
     }
 
     /**
@@ -168,15 +214,18 @@ public class AutoGroupBuildService {
      *
      * @param ids id列表
      */
-    public void deleteBatch(List<String> ids) {
-        if (CollectionUtils.isNotEmpty(ids)) {
-            for (String id : ids) {
-                CodeManagement codeManagement = codeManagementMapper.selectByPrimaryKey(id);
-                if (codeManagement.getCodeState() != 1) {
-                    codeManagementMapper.deleteByPrimaryKey(codeManagement.getId());
-                }
+    public void deleteBatch(String[] ids) {
+        for (String id : ids) {
+            CodeManagement codeManagement = codeManagementMapper.selectByPrimaryKey(id);
+            codeManagementMapper.deleteByPrimaryKey(id);
+            // 删除图片文件
+            try {
+                QrCode.deleteImg(codeManagement.getCodeUrl());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
+
     }
 
     /**

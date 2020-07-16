@@ -143,7 +143,8 @@ public class FileUtil {
 
     public static String getJarPath1() throws Exception {
         String jarPath = getJarPath();
-        return jarPath.replace("/api/target/classes","");
+        String replace = jarPath.replace("/api/target/classes", "");
+        return replace.replace("/common/target/classes","");
     }
 
     public static void compressToZip(String sourceFilePath, String zipFilePath, String zipFilename, List<String> needCompressedFileNameList, boolean isDeleteFile) {

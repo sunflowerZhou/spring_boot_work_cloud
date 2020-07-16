@@ -30,7 +30,7 @@
     </settings>
     <!--<typeAliases>
         <typeAlias type="com.zbb.entity.sys.SysMenu" alias="SysMenu"/>
-        <typeAlias type="com.vbh.entity.sys.SysMenuList" alias="SysMenuList"/>
+        <typeAlias type="com.zbb.entity.sys.SysMenuList" alias="SysMenuList"/>
         &lt;!&ndash; 这里添加实体类 &ndash;&gt;
     </typeAliases>-->
     <!-- Mybatis 分页插件  有空再集成 -->

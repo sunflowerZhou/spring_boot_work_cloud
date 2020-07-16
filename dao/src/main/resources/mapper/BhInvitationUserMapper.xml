@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zbb.dao.mapper.BhInvitationUserMapper" >
+
+    <select id="inviteList" resultType="com.zbb.vo.ObjectInviteTimeDataVo" parameterType="java.lang.String">
+        SELECT
+            CONCAT(substring(join_at, 1, 4),'-',substring(join_at, 5, 2),'-',substring(join_at, 7, 2)) as `time`,
+            count( id ) AS num
+        FROM
+            bh_invitation_user_t
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+        </where>
+        GROUP BY
+            join_at
+        ORDER BY
+            join_at DESC
+    </select>
 </mapper>

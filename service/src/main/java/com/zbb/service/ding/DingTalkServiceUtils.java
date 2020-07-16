@@ -1,6 +1,5 @@
 package com.zbb.service.ding;
 
-import com.alibaba.fastjson.JSON;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.*;
@@ -149,10 +148,7 @@ public class DingTalkServiceUtils {
         request.setSuiteKey(suiteKey);
         request.setSuiteSecret(suiteSecret);
         request.setSuiteTicket(suiteTicket);
-
-        OapiServiceGetSuiteTokenResponse response = client.execute(request);
-        System.out.println(JSON.toJSONString(response));
-        return response;
+        return client.execute(request);
     }
 
     /**
@@ -204,28 +200,5 @@ public class DingTalkServiceUtils {
             e.printStackTrace();
             throw new BusinessException("拉新获取失败：" + e.getMessage());
         }
-    }
-
-    /**
-     * 获取当前token
-     *
-     * @return String
-     */
-    public String getToken(){
-        try {
-            DefaultDingTalkClient client = new DefaultDingTalkClient(IP + "/gettoken");
-            OapiGettokenRequest request = new OapiGettokenRequest();
-            // todo
-            request.setAppkey("appkey");
-            request.setAppsecret("appsecret");
-            request.setHttpMethod("GET");
-            OapiGettokenResponse response = client.execute(request);
-            if (response.getErrcode() == 0){
-                return response.getAccessToken();
-            }
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
-        throw new BusinessException("当前token获取失败：");
     }
 }

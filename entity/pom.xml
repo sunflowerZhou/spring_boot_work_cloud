@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.vbh</groupId>
+    <groupId>com.zbb</groupId>
     <artifactId>entity</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>entity</name>
@@ -55,7 +55,7 @@
             <version>1.2.3</version>
         </dependency>
         <dependency>
-            <groupId>com.vbh</groupId>
+            <groupId>com.zbb</groupId>
             <artifactId>common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
@@ -66,8 +66,6 @@
         <repository>
             <id>mvnrepository</id>
             <name>mvnrepository</name>
-            <!-- 使用公司本地maven仓库-->
-            <!--<url>http://192.168.0.11:8081/repository/maven_group_dev/</url>-->
             <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
             <layout>default</layout>
             <releases>

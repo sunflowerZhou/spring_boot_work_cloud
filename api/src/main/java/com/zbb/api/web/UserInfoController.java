@@ -1,8 +1,12 @@
 package com.zbb.api.web;
 
+import com.taobao.api.ApiException;
 import com.zbb.bean.Result;
+import com.zbb.service.ding.BhInvitationUserService;
 import com.zbb.service.ding.DingTalkServiceUtils;
 import com.zbb.vo.AccessTokenVo;
+import com.zbb.vo.EnterpriseAuthVo;
+import com.zbb.vo.InviteTableVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
@@ -18,10 +22,13 @@ import javax.annotation.Resource;
 @Api("用户")
 @Controller
 @RequestMapping(name = "/ding/user")
-public class UserInfoController extends BaseController{
+public class UserInfoController{
 
     @Resource
     private DingTalkServiceUtils dingTalkServiceUtils;
+
+    @Resource
+    private BhInvitationUserService bhInvitationUserService;
 
     @RequestMapping(value = "/passwordFreeLogin",method = RequestMethod.POST)
     @ResponseBody
@@ -31,10 +38,20 @@ public class UserInfoController extends BaseController{
         return Result.succResult(userInfo);
     }
 
-    @RequestMapping(value = "/inviteInfo")
+    @RequestMapping(value = "/inviteList",method = RequestMethod.POST)
     @ResponseBody
-    @ApiOperation(value = "用户邀请人数")
-    public String inviteInfo(String accessToken){
-        return "";
+    @ApiOperation(value = "用户邀请人数", httpMethod = "POST")
+    public String inviteInfo(String circleId){
+        InviteTableVo inviteTableVo = bhInvitationUserService.inviteList(circleId);
+        return Result.succResult(inviteTableVo);
     }
+
+    @RequestMapping(value = "/getToken",method = RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "获取token", httpMethod = "POST")
+    public String getToken() throws ApiException {
+        EnterpriseAuthVo corpToken = dingTalkServiceUtils.getCorpToken();
+        return Result.succResult(corpToken.getAccessToken());
+    }
+
 }

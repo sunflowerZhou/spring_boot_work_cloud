@@ -5,6 +5,10 @@ import com.google.common.collect.Lists;
 import com.zbb.dao.mapper.BhInvitationUserMapper;
 import com.zbb.entity.BhCodeValue;
 import com.zbb.entity.BhInvitationUser;
+import com.zbb.vo.EnterpriseAuthVo;
+import com.zbb.vo.InviteListVo;
+import com.zbb.vo.InviteTableVo;
+import com.zbb.vo.ObjectInviteTimeDataVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
@@ -44,13 +48,15 @@ public class BhInvitationUserService {
             timeMillis = Long.parseLong(bhCodeValue.getValue());
         }
         // 获取当前token
-        String token = dingTalkServiceUtils.getToken();
-        List<BhInvitationUser> list = Lists.newArrayList();
-        // 获取拉新
-        cycle(token, timeMillis, list, thisMethodTime);
-        // 持久化数据
-        if (CollectionUtils.isNotEmpty(list)){
-            bhInvitationUserMapper.insertList(list);
+        EnterpriseAuthVo corpToken = null;
+        try {
+            corpToken = dingTalkServiceUtils.getCorpToken();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if (corpToken != null){
+            // 获取拉新
+            cycle(corpToken.getAccessToken(), timeMillis, thisMethodTime);
         }
     }
 
@@ -59,30 +65,58 @@ public class BhInvitationUserService {
      *
      * @param token      token
      * @param timeMillis 时间戳
-     * @param list       拉新集合
      */
-    public void cycle(String token, long timeMillis, List<BhInvitationUser> list, long thisMethodTime) {
+    public void cycle(String token, long timeMillis, long thisMethodTime) {
         OapiProjectInviteDataQueryResponse invite = dingTalkServiceUtils.invite(token, timeMillis, null, 100L);
-        List<OapiProjectInviteDataQueryResponse.InviteDataModel> data = invite.getResult().getData();
-        if (Long.parseLong(invite.getResult().getNextCursor()) > thisMethodTime) {
-            return;
-        }
-        if (CollectionUtils.isNotEmpty(data)) {
-            // 说明当前的数据大于100 需要记录下标
-            for (OapiProjectInviteDataQueryResponse.InviteDataModel datum : data) {
-                BhInvitationUser bhInvitationUser = new BhInvitationUser();
-                bhInvitationUser.setExtension(datum.getExtension());
-                bhInvitationUser.setChannel(datum.getChannel());
-                bhInvitationUser.setStatus(datum.getStatus());
-                bhInvitationUser.setJoinAt(datum.getJoinAt());
-                bhInvitationUser.setCorpId(datum.getCorpId());
-                bhInvitationUser.setInviteUserid(datum.getInviteUserid());
-                bhInvitationUser.setGmtModified(datum.getGmtModified());
-                bhInvitationUser.setUserId(datum.getUserid());
-                list.add(bhInvitationUser);
+        if (invite.getErrcode() == 0){
+            List<OapiProjectInviteDataQueryResponse.InviteDataModel> data = invite.getResult().getData();
+            if (Long.parseLong(invite.getResult().getNextCursor()) > thisMethodTime) {
+                return;
+            }
+            List<BhInvitationUser> list = Lists.newArrayList();
+            if (CollectionUtils.isNotEmpty(data)) {
+                // 说明当前的数据大于100 需要记录下标
+                for (OapiProjectInviteDataQueryResponse.InviteDataModel datum : data) {
+                    BhInvitationUser bhInvitationUser = new BhInvitationUser();
+                    bhInvitationUser.setExtension(datum.getExtension());
+                    bhInvitationUser.setChannel(datum.getChannel());
+                    bhInvitationUser.setStatus(datum.getStatus());
+                    bhInvitationUser.setJoinAt(datum.getJoinAt());
+                    bhInvitationUser.setCorpId(datum.getCorpId());
+                    bhInvitationUser.setInviteUserid(datum.getInviteUserid());
+                    bhInvitationUser.setGmtModified(datum.getGmtModified());
+                    bhInvitationUser.setUserId(datum.getUserid());
+                    list.add(bhInvitationUser);
+                }
+                // 持久化数据
+                if (CollectionUtils.isNotEmpty(list)){
+                    bhInvitationUserMapper.insertList(list);
+                }
+                try {
+                    Thread.sleep(5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 // 递归调用
-                cycle(token, Long.parseLong(invite.getResult().getNextCursor()), list, thisMethodTime);
+                cycle(token, Long.parseLong(invite.getResult().getNextCursor()), thisMethodTime);
             }
         }
+        System.out.println(invite.getErrmsg());
+    }
+
+    public InviteTableVo inviteList(String circleId){
+        List<ObjectInviteTimeDataVo> timeDataVos = bhInvitationUserMapper.inviteList(circleId);
+        InviteTableVo inviteTableVo = new InviteTableVo();
+        if (CollectionUtils.isNotEmpty(timeDataVos)){
+            timeDataVos = Lists.newArrayList();
+            List<InviteListVo> inviteListVos = Lists.newArrayList();
+            InviteListVo inviteListVo = new InviteListVo();
+            inviteListVo.setTotal(timeDataVos.size());
+            inviteListVo.setObjs(timeDataVos);
+            inviteListVo.setTypeName("邀请总数");
+            inviteListVos.add(inviteListVo);
+            inviteTableVo.setData(inviteListVos);
+        }
+        return inviteTableVo;
     }
 }

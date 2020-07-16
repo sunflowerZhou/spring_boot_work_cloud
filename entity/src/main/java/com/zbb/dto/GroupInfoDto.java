@@ -15,4 +15,8 @@ public class GroupInfoDto {
     private String groupMainName;
 
     private String groupMainId;
+
+    private Integer groupNum;
+
+    private Integer groupMaxNum;
 }

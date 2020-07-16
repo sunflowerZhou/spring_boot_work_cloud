@@ -1,6 +1,5 @@
 package com.zbb.entity;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -15,7 +14,6 @@ import java.util.Date;
  * @author sunflower
  */
 @Data
-@ApiModel(value = "二维码模版配置")
 @Table(name = "bh_code_management_t")
 public class CodeManagement implements Serializable {
 
@@ -72,11 +70,14 @@ public class CodeManagement implements Serializable {
     @ApiModelProperty(name = "二维码地址")
     private String codeUrl;
 
-    @ApiModelProperty(name = "二维码状态{0:启用}{1:禁用}{2:已失效}")
+    @ApiModelProperty(name = "二维码状态{0:启用}{1:禁用}{2:已失效}{{3:带启用}}")
     private Integer codeState;
 
     @ApiModelProperty(name = "规则名称")
     private String ruleName;
+
+    @ApiModelProperty(name = "结束时间")
+    private String endTime;
 
     private static final long serialVersionUID = 1L;
 }

@@ -20,10 +20,10 @@ public class ScheduledService {
     @Resource
     private BhInvitationUserService bhInvitationUserService;
 
-    @Scheduled(cron = "0 0 0 * * ?")
-//    @Scheduled(cron = "0/10 * * * * ?")
+    @Scheduled(cron = "0 0/5 * * * ?")
+//    @Scheduled(cron = "0 0 */1 * * ?")
     public void scheduled(){
-//        bhInvitationUserServicetionUserService.insert();
+        bhInvitationUserService.inviteInfo();
     }
 
 }

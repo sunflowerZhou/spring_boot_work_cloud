@@ -30,4 +30,13 @@ public class Constant {
      */
     public static final String  CORP_ID = "dingd9039cb955ba36b835c2f4657eb6378f";
 
+    /**
+     * app_key
+     */
+    public static final String APP_KEY = "dingoav490zfw4iqjjsmy5";
+
+    /**
+     * 应用的密钥
+     */
+    public static final String APP_SECRET = "VLE-3uJzuVoHskPg4hjwo1GM-3Ainii3HFbw0Shiv3unm2qRC3LT7UC8gdCbzurb";
 }

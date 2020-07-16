@@ -192,6 +192,17 @@ public class QrCode extends QrCodeUtil {
         return codeName + CODE_URL + imgName + ".png";
     }
 
+    public static void deleteImg(String url)throws Exception{
+        String[] split = url.split(CODE_URL);
+        String s = split[split.length - 1];
+        File file = new File(FileUtil.getJarPath1() + CODE_URL +s);
+        boolean delete = file.delete();
+        if (delete){
+            System.out.println("图片删除 ：" + delete);
+        }
+    }
+
+
     /**
      * 解码并且生成二维码
      *
@@ -214,11 +225,6 @@ public class QrCode extends QrCodeUtil {
 
 
     public static void main(String[] args) throws Exception {
-       /* String content = "https://www.zbbledger.com/";
-        String s = getBufferedImage(content, "3");
-        System.out.println(s);
-        base64StringToImage(s);*/
-
-        generateImg("","https://www.baidu.com", "111111");
+        deleteImg("工牌.jpg");
     }
 }

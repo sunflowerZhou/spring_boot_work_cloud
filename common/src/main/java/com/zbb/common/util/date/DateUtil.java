@@ -1,5 +1,6 @@
 package com.zbb.common.util.date;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -264,6 +265,13 @@ public class DateUtil {
         return date;
     }
 
+    public static Date setMillisToTime(long millis){
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(millis);
+        return calendar.getTime();
+
+    }
 
     /**
      * 获取四位数年
