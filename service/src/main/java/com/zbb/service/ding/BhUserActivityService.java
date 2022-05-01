@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -42,6 +43,14 @@ public class BhUserActivityService {
             activities = Lists.newArrayList();
         }
         return activities;
+    }
+
+    public static void main(String[] args) {
+        // TODO: 2022/5/2  
+        System.out.println(0.1+0.2);
+        System.out.println(new BigDecimal("0.1").add(new BigDecimal("0.2")));
+        System.out.println(BigDecimal.valueOf(0.1).add(BigDecimal.valueOf(0.2)));
+
     }
 
     /**
