@@ -37,6 +37,8 @@ public class BhInvitationUserService {
      * 同步拉新用户
      */
     public void inviteInfo() {
+
+
         long thisMethodTime = System.currentTimeMillis();
         // 当前毫秒值
         BhCodeValue bhCodeValue = dingTalkServiceUtils.getBhCodeValue(DingTalkConfig.INVITE_INFO_KEY);

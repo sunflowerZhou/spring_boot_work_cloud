@@ -40,6 +40,8 @@ public class ImgQrCodeController {
             IOUtils.copy(is, out);
             out.flush();
             out.close();
+        }catch (EOFException e){
+            e.printStackTrace();
         }
         return null;
     }

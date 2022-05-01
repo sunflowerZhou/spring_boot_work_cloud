@@ -247,6 +247,12 @@ public class AutoGroupBuildService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("bhGroupId", id);
         List<BhGroup> bhGroups = bhGroupMapper.selectByExample(example);
+        String x = getString(userId, codeManagement, bhGroups);
+        if (x != null) return x;
+        return "服务器异常";
+    }
+
+    private String getString(Long userId, CodeManagement codeManagement, List<BhGroup> bhGroups) {
         if (CollectionUtils.isNotEmpty(bhGroups)) {
             for (BhGroup bhGroup : bhGroups) {
                 // 是否大于阈值   如果当前群聊的人数小于于总人数的百分之九十才能加入群聊
@@ -276,7 +282,7 @@ public class AutoGroupBuildService {
                 }
             }
         }
-        return "服务器异常";
+        return null;
     }
 
     /**
