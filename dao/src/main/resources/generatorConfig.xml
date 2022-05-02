@@ -20,17 +20,17 @@
                         password="ROOT">
         </jdbcConnection>
 
-        <!--      
-        默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer    
-            true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal      
+        <!--
+        默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer
+            true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal
         -->
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <!--     
-        生成model模型，对应的包路径，以及文件存放路径(targetProject)，targetProject可以指定具体的路径,如./src/main/java，    
-        也可以使用“MAVEN”来自动生成，这样生成的代码会在target/generatord-source目录下    
+        <!--
+        生成model模型，对应的包路径，以及文件存放路径(targetProject)，targetProject可以指定具体的路径,如./src/main/java，
+        也可以使用“MAVEN”来自动生成，这样生成的代码会在target/generatord-source目录下
         -->
         <!--<javaModelGenerator targetPackage="com.joey.mybaties.test.pojo" targetProject="MAVEN">-->
         <javaModelGenerator targetPackage="com.zbb.entity" targetProject="./src/main/java">
@@ -71,7 +71,7 @@
         <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
         <!--<property name="useActualColumnNames" value="false"/>-->
         <!--</table>-->
-        <table tableName="t_chat" domainObjectName="Chat"
+        <table tableName="user_friend" domainObjectName="UserFriend"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <property name="useActualColumnNames" value="false"/>
