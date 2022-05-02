@@ -15,9 +15,9 @@
 
         <!-- 数据库链接URL、用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/spring_boot_work_cloud?useSSL=false"
+                        connectionURL="jdbc:mysql://82.156.188.45:3306/spring_boot_work_cloud?serverTimezone=UTC"
                         userId="root"
-                        password="xjh123456">
+                        password="ROOT">
         </jdbcConnection>
 
         <!--      
@@ -71,7 +71,7 @@
         <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
         <!--<property name="useActualColumnNames" value="false"/>-->
         <!--</table>-->
-        <table tableName="bh_invitation_user_t" domainObjectName="BhInvitationUser"
+        <table tableName="t_chat" domainObjectName="Chat"
                enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <property name="useActualColumnNames" value="false"/>
