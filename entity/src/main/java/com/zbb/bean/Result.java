@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.pagehelper.PageInfo;
+import com.zbb.exception.BusinessException;
 
 import java.util.List;
 
@@ -119,7 +120,7 @@ public class Result {
      * @return String
      */
     public static String exceptionResult(Exception e) {
-        return result(FAILURE, FAILURE_MSG, VERIFY_FAIL_CODE, e.getMessage(), null);
+        return result(FAILURE, FAILURE_MSG, VERIFY_FAIL_CODE, ((BusinessException) e).getMsg(), null);
     }
 
     /**

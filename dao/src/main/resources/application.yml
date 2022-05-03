@@ -1,12 +1,14 @@
 # https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html spring\u914D\u7F6E\u7684\u6587\u6863
 server:
   port: 8081
-
+  servlet:
+    context-path: /work_cloud
 swagger:
   host: localhost
   enable: true
 
 spring:
+
   view:
     prefix: /WEB-INF/jsp/
     suffix: .jsp

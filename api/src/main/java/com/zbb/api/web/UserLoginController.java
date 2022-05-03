@@ -53,7 +53,7 @@ public class UserLoginController {
         return Result.failResult("登录失败");
     }
 
-    @RequestMapping(value = "/insert",method = RequestMethod.POST)
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
     @ResponseBody
     public String userInsert(@RequestBody UserInfo userInfo){
         try {
@@ -63,7 +63,7 @@ public class UserLoginController {
             }
 
         } catch (Exception e) {
-            log.error("异常信息{}",e.getMessage());
+            log.error("异常信息{}", e.getMessage());
             return Result.exceptionResult(e);
         }
         return Result.failResult("注册失败");

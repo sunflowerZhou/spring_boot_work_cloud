@@ -87,7 +87,7 @@
     <div class="menu">
         <div class="menu-head">
             <div class="menu-head-photo">
-                <img src="${pageContext.request.contextPath}/upload/photo/${sessionScope.login.photo}"
+                <img src="${pageContext.request.contextPath}/upload/photo/1411651584605.jpg"
                      class="menu-head-img"
                      onclick="showWindowOnRight('user-info-box')">
             </div>
@@ -277,20 +277,20 @@
                    
 
                 <div class="chat-output-content-left">       
-                    <img src="${pageContext.request.contextPath}/photo/系统.jpg" alt="头像"
+                    <img src="${pageContext.request.contextPath}/upload/photo/1411651584605.jpg" alt="头像"
                          class="chat-output-head-photo-left">     
                     <h4 class="chat-output-meta-left">系统账号</h4>
                     <div class="chat-output-bubble-left">
                         <pre class="chat-output-bubble-pre-left">系统消息：这是一个在线聊天系统，左侧是功能列表，点击头像可以查看您的个人信息，您可以搜索并向系统中的用户发出好友申请，可以创建自己的聊天群组，可以发布自己的朋友圈，在朋友圈下方写评论，更多功能，等你探索！
 
 
-开发者信息
-开发者：黄钰朝
-联系邮箱：<a href="mailto:kobe524348@gmail.com">kobe524348@gmail.com</a>
-项目启动时间：2019-05-01
-版本号：1.0
-发布时间：2019-05-15
-开源许可：<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0  Copyright 黄钰朝</a></pre>
+<%--开发者信息--%>
+<%--开发者：黄钰朝--%>
+<%--联系邮箱：<a href="mailto:kobe524348@gmail.com">kobe524348@gmail.com</a>--%>
+<%--项目启动时间：2019-05-01--%>
+<%--版本号：1.0--%>
+<%--发布时间：2019-05-15--%>
+<%--开源许可：<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0  Copyright 黄钰朝</a></pre>--%>
                     </div>
                 </div>
             </div>

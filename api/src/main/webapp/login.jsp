@@ -23,7 +23,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="host" value="localhost:8080/wechat"/>
+<c:set var="host" value="localhost:8081/wechat"/>
 <%--设置主机名--%>
 <html>
 <head>
@@ -32,8 +32,30 @@
     <link rel="shortcut icon" type=image/x-icon href=https://res.wx.qq.com/a/wx_fed/assets/res/NTI4MWU5.ico>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.4.1.js"></script>
-    <!--BEGIN——发送请求脚本-->
-    <!--END——发送请求脚本-->
+    <script>
+        function login() {
+            $.ajax({
+                url: '${pageContext.request.contextPath}'+ '/user/login',
+                type: 'POST',
+                data: JSON.stringify({"mail":$("#mail").val(),"loginPwd":$("#loginPwd").val()}),
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (data) {
+                    debugger
+                    if (data.data.code != null && data.data.code === 0) {
+                        alert("系统提示：" + data.data.msg);
+                        document.getElementById("submit").click();
+                    }else{
+                        alert("系统提示：" + data.data.msg + "正在跳转登录页面");
+                    }
+
+                },
+                Error: function (xhr, error, exception) {
+                    alert("登录失败");
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 <div class="background">
@@ -56,22 +78,22 @@
     </script>
     <div class="input-box">
         <div class="color-input-field">
-            <form  action="http://${host}/wechat/user?method=login.do" method="post">
+            <form  action="${pageContext.request.contextPath}/index.jsp" method="post">
                 <input id="index" type="submit" style="display: none">
             <h2 class="input-box-title">邮箱登陆</h2>
-            <input type="text" required="required" class="form-control" id="email"
-                   value="${param.email}" name="email" placeholder="请输入登陆邮箱" >
+            <input type="text" required="required" class="form-control" id="mail"
+                   value="${param.mail}" name="mail" placeholder="请输入登陆邮箱" >
             <br/>
             <input id="password" type="password" required="required" class="form-control" name="password"
                    placeholder="请输入密码">
             <div class="remember-me">
                 <input id="option" name="auto_login" type="checkbox" value="true">记住登陆
             </div>
-            <input type="submit" class="submit-button" value="登陆">
+            <input onclick="login()"  type="submit" class="submit-button" value="登陆">
             <br>
             <div class="switch-button">
                 <a href="${pageContext.request.contextPath}/register.jsp">立即注册</a>
-                <a href="http://${host}/wechat/user?method=login.do&email=visitor" onclick="visitor()">| 游客模式</a>
+                <a href="http://${host}/wechat/user?method=login.do&mail=visitor" onclick="visitor()">| 游客模式</a>
             </div>
             </form>
         </div>
