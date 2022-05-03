@@ -3,6 +3,9 @@ package com.zbb.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author zhoubobing
+ */
 public class Chat implements Serializable {
     private Long id;
 

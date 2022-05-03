@@ -1,12 +1,16 @@
 # https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html spring\u914D\u7F6E\u7684\u6587\u6863
 server:
-  port: 8080
+  port: 8081
 
 swagger:
   host: localhost
   enable: true
 
 spring:
+  view:
+    prefix: /WEB-INF/jsp/
+    suffix: .jsp
+
   http:
     encoding:
       force: true

@@ -186,7 +186,6 @@
             <artifactId>commons-configuration</artifactId>
             <version>1.10</version>
         </dependency>
-
     </dependencies>
 
     <repositories>
