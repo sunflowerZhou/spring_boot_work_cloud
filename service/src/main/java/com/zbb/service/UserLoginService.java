@@ -52,7 +52,7 @@ public class UserLoginService {
     public UserInfo loginUser(String mail,String pwd){
         Example userInfoPo = new Example(UserInfo.class);
         userInfoPo.createCriteria().andEqualTo("mail",mail);
-        userInfoPo.createCriteria().andEqualTo("login_pwd",pwd);
+        userInfoPo.createCriteria().andEqualTo("login_pwd",Md5Util.md5(pwd));
         return userInfoMapper.selectOneByExample(userInfoPo);
 
     }
