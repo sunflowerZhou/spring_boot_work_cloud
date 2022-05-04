@@ -23,14 +23,21 @@ public class UserLoginService {
     @Resource
     private UserInfoMapper userInfoMapper;
 
-    public Integer insertUser(UserInfo userInfo) {
-        String password = Md5Util.md5(userInfo.getLoginPwd());
+    /**
+     * 添加用户
+     * */
+    public Integer insertUser(String pwd,String mail) {
+        String password = Md5Util.md5(pwd);
+        UserInfo userInfo = new UserInfo();
         userInfo.setLoginPwd(password);
+        userInfo.setMail(mail);
         userInfo.setCreatTime(new Date());
         userInfo.setIsDeleted(1);
+        userInfo.setPermission(-1);
+        userInfo.setAvatar("src/main/webapp/static/img/logo.png");
         synchronized (UserInfo.class){
             Example userInfoPo = new Example(UserInfo.class);
-            userInfoPo.createCriteria().andEqualTo("mail", userInfo.getMail());
+            userInfoPo.createCriteria().andEqualTo("mail", mail);
             int i = userInfoMapper.selectCountByExample(userInfoPo);
             if (i > 0){
                 throw new BusinessException("当前账号已经注册过！");
@@ -39,8 +46,39 @@ public class UserLoginService {
         }
         // 生成二维码
     }
+    /**
+     * 用户登录
+     * */
+    public UserInfo loginUser(String mail,String pwd){
+        Example userInfoPo = new Example(UserInfo.class);
+        userInfoPo.createCriteria().andEqualTo("mail",mail);
+        userInfoPo.createCriteria().andEqualTo("login_pwd",pwd);
+        return userInfoMapper.selectOneByExample(userInfoPo);
 
+    }
+
+    /**
+     * 查询用户
+     * */
     public UserInfo queryUser(UserInfo userInfo){
         return userInfoMapper.selectOne(userInfo);
     }
+
+    /**
+     * 修改用户
+     * */
+
+    public String updateUser(UserInfo userInfo){
+        Example userInfoPo = new Example(UserInfo.class);
+        userInfoPo.createCriteria().andEqualTo("id",userInfo.getId());
+        userInfo.setUpdateTime(new Date());
+        synchronized (UserInfo.class){
+            int i = userInfoMapper.updateByExample(userInfo, userInfoPo);
+            if (i>0){
+                return "修改成功";
+            }
+        }
+        return "修改失败";
+    }
+
 }
