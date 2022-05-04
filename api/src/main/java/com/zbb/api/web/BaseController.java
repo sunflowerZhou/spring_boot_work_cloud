@@ -1,6 +1,7 @@
 package com.zbb.api.web;
 
 import com.google.common.collect.Maps;
+import com.zbb.api.interceptor.IngoreAuth;
 import com.zbb.exception.GlobalException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -40,6 +41,7 @@ public class BaseController {
      *
      * @return token
      */
+    @IngoreAuth
     public String getToken() {
         String token = null;
         Enumeration<String> enumeration = request.getHeaders("token");

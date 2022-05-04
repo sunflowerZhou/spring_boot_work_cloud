@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 
 /**
- * @auther： hmq
+ * @author hmq
  * @version： 1.0
  * @date 2022/5/2
  * @desc：
@@ -37,6 +37,7 @@ public class UserLoginService {
             }
             return userInfoMapper.insertSelective(userInfo);
         }
+        // 生成二维码
     }
 
     public UserInfo queryUser(UserInfo userInfo){

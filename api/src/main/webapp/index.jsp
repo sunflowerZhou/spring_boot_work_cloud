@@ -79,8 +79,8 @@
 </head>
 <body>
 <div class="page-body" style="background-color: #eee;">
-    <img id="background" src="${pageContext.request.contextPath}/upload/photo/${sessionScope.login.chatBackground}"
-         style="position: absolute;height: 100%;width: 100%">
+<%--    <img id="background" src="${pageContext.request.contextPath}/upload/photo/${sessionScope.login.chatBackground}"--%>
+<%--         style="position: absolute;height: 100%;width: 100%">--%>
 
 
     <!--BEGIN——菜单列表-->
@@ -314,7 +314,7 @@
                 <div class="info-outline">
                     <div class="info-head-photo">
                         <img id="user-preview"
-                             src="${pageContext.request.contextPath}/upload/photo/${sessionScope.login.photo}"
+                             src="${pageContext.request.contextPath}/upload/photo/1"
                              class="info-head-img"
                              onclick="document.getElementById('user-photo').click()">
                         <input type="file" name="file" id="user-photo"
@@ -324,33 +324,33 @@
 
                     </div>
                     <div class="info-head-info">
-                        <h3 class="info-head-nickname">${sessionScope.login.name}</h3>
+                        <h3 class="info-head-nickname">1</h3>
                     </div>
                 </div>
                 <div class="info-detail">
                     <div class="info-detail-block">
                         <div class="info-detail-item" contenteditable="false">昵称:</div>
-                        <div class="info-detail-value" id="name" contenteditable="true">${sessionScope.login.name}</div>
+                        <div class="info-detail-value" id="name" contenteditable="true">1</div>
                     </div>
                     <div class="info-detail-block">
                         <div class="info-detail-item">个性签名:</div>
                         <div class="info-detail-value" id="signature"
-                             contenteditable="true">${sessionScope.login.signature}</div>
+                             contenteditable="true">1</div>
                     </div>
                     <div class="info-detail-block">
                         <div class="info-detail-item">微信号:</div>
                         <div class="info-detail-value" id="wechat_id"
-                             contenteditable="true">${sessionScope.login.wechatId}</div>
+                             contenteditable="true">1</div>
                     </div>
                     <div class="info-detail-block">
                         <div class="info-detail-item">性别:</div>
                         <div class="info-detail-value" id="gender"
-                             contenteditable="true">${sessionScope.login.gender}</div>
+                             contenteditable="true">1</div>
                     </div>
                     <div class="info-detail-block">
                         <div class="info-detail-item">地区:</div>
                         <div class="info-detail-value" id="location"
-                             contenteditable="true">${sessionScope.login.location}</div>
+                             contenteditable="true">1</div>
                     </div>
                 </div>
             </div>
@@ -466,7 +466,7 @@
                     </button>
                 </div>
             </div>
-            <div id="${sessionScope.login.id}info" class="info-detail-box">
+            <div <%--id="${sessionScope.login.id}info"--%> class="info-detail-box">
                 <div id="news-detail-box-content" class="info-detail">
                 </div>
             </div>
@@ -500,38 +500,39 @@
 
 
     //创建群聊
-    function createChat() {
-        var name = prompt("请输入群聊名称", "广工夸夸群");
-        if (name == null) {
-            return;
-        }
-        if (name === '') {
-            alert("您没有设置群聊名称，将使用默认名称");
-        }
-        var number = prompt("请输入群号", "");
-        if (number == null) {
-            return;
-        }
-        if (number === '') {
-            alert("群号不可为空，必须由6-20位数字组成");
-            return;
-        }
+    <%--function createChat() {--%>
+    <%--    var name = prompt("请输入群聊名称", "广工夸夸群");--%>
+    <%--    if (name == null) {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    if (name === '') {--%>
+    <%--        alert("您没有设置群聊名称，将使用默认名称");--%>
+    <%--    }--%>
+    <%--    var number = prompt("请输入群号", "");--%>
+    <%--    if (number == null) {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    if (number === '') {--%>
+    <%--        alert("群号不可为空，必须由6-20位数字组成");--%>
+    <%--        return;--%>
+    <%--    }--%>
 
-        var url = "http://${host}/wechat/chat?method=add.do";
-        var request = JSON.stringify({
-            owner_id: "${sessionScope.login.id}",
-            name: name,
-            number: number
-        });
-        ajaxJsonRequest(url, request, function (result) {
-            if (result.status === "SUCCESS") {
-                addChat(number);
-            }
-        })
-    }
+    <%--    var url = "http://${host}/wechat/chat?method=add.do";--%>
+    <%--    var request = JSON.stringify({--%>
+    <%--        owner_id: "${sessionScope.login.id}",--%>
+    <%--        name: name,--%>
+    <%--        number: number--%>
+    <%--    });--%>
+    <%--    ajaxJsonRequest(url, request, function (result) {--%>
+    <%--        if (result.status === "SUCCESS") {--%>
+    <%--            addChat(number);--%>
+    <%--        }--%>
+    <%--    })--%>
+    <%--}--%>
 
     //修改好友信息
     function updateFriend(id) {
+        debugger
         var alias = prompt("请输入好友昵称", "蔡徐坤");
         if (alias == null) {
             return;
@@ -555,95 +556,95 @@
     }
 
     //加入群聊
-    function joinChat() {
-        var number = prompt("请输入群号", "");
-        if (number == null) {
-            return;
-        }
-        if (number === '') {
-            alert("群号不可为空");
-            return;
-        }
-        var apply = prompt("请输入加群申请(加群申请会作为你的第一条消息发送到群聊中)", "");
-        if (confirm("是否确定发送加群申请？")) {
-            var url = "http://${host}/wechat/chat";
-            var request = {
-                method: "join.do",
-                user_id: ${sessionScope.login.id},
-                number: number,
-                apply: apply
-            };
-            postRequest(url, request, function (result) {
-                if (result.status === "SUCCESS") {
-                    addChat(number);
-                }
-            });
-        } else {
-            return;
-        }
-    }
+    <%--function joinChat() {--%>
+    <%--    var number = prompt("请输入群号", "");--%>
+    <%--    if (number == null) {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    if (number === '') {--%>
+    <%--        alert("群号不可为空");--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    var apply = prompt("请输入加群申请(加群申请会作为你的第一条消息发送到群聊中)", "");--%>
+    <%--    if (confirm("是否确定发送加群申请？")) {--%>
+    <%--        var url = "http://${host}/wechat/chat";--%>
+    <%--        var request = {--%>
+    <%--            method: "join.do",--%>
+    <%--            user_id: ${sessionScope.login.id},--%>
+    <%--            number: number,--%>
+    <%--            apply: apply--%>
+    <%--        };--%>
+    <%--        postRequest(url, request, function (result) {--%>
+    <%--            if (result.status === "SUCCESS") {--%>
+    <%--                addChat(number);--%>
+    <%--            }--%>
+    <%--        });--%>
+    <%--    } else {--%>
+    <%--    }--%>
+    <%--}--%>
 
-    //加载一个聊天
-    function addChat(number) {
-        var url = "http://${host}/wechat/chat";
-        var request = {
-            method: "get.do",
-            user_id: ${sessionScope.login.id},
-            number: number
-        };
-        postRequest(url, request, function (result) {
-            var chat = result.data;
-            if (result.status === "SUCCESS") {
-                loadChatListOnMenu(chat);
-                loadChatBox(chat);
-                loadUnReadMessageInAChat(chat.id, 1);
-            }
-        });
-    }
+
+    <%--//加载一个聊天--%>
+    <%--function addChat(number) {--%>
+    <%--    var url = "http://${host}/wechat/chat";--%>
+    <%--    var request = {--%>
+    <%--        method: "get.do",--%>
+    <%--        user_id: ${sessionScope.login.id},--%>
+    <%--        number: number--%>
+    <%--    };--%>
+    <%--    postRequest(url, request, function (result) {--%>
+    <%--        var chat = result.data;--%>
+    <%--        if (result.status === "SUCCESS") {--%>
+    <%--            loadChatListOnMenu(chat);--%>
+    <%--            loadChatBox(chat);--%>
+    <%--            loadUnReadMessageInAChat(chat.id, 1);--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--}--%>
 
     //更新密码
-    function updatePassword() {
-        var old_password = prompt("请输入旧密码", "");
-        if (old_password == null) {
-            return;
-        }
-        var new_password = prompt("请输入新密码", "");
-        if (new_password == null) {
-            return;
-        }
-        if (new_password === '') {
-            alert("密码必须为6-20位英文字母，数字或下划线组成");
-            return;
-        }
-        var url = "http://${host}/wechat/user";
-        var request = {
-            method: "updatepassword.do",
-            user_id: ${sessionScope.login.id},
-            old_password: old_password,
-            new_password: new_password
-        };
-        postRequest(url, request, function (result) {
-        });
-    }
+    <%--function updatePassword() {--%>
+    <%--    var old_password = prompt("请输入旧密码", "");--%>
+    <%--    if (old_password == null) {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    var new_password = prompt("请输入新密码", "");--%>
+    <%--    if (new_password == null) {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    if (new_password === '') {--%>
+    <%--        alert("密码必须为6-20位英文字母，数字或下划线组成");--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    var url = "http://${host}/wechat/user";--%>
+    <%--    var request = {--%>
+    <%--        method: "updatepassword.do",--%>
+    <%--        user_id: ${sessionScope.login.id},--%>
+    <%--        old_password: old_password,--%>
+    <%--        new_password: new_password--%>
+    <%--    };--%>
+    <%--    postRequest(url, request, function (result) {--%>
+    <%--    });--%>
+    <%--}--%>
 
-    //注销登陆
-    function logout() {
-        if (confirm("是否确定要退出登陆？注销之后你需要重新登陆")) {
-            var url = 'http://${host}/wechat/user';
-            var request = {
-                method: "logout.do",
-                user_id: ${sessionScope.login.id},
-            };
-            alert("正在退出登陆，请稍后...");
-            postRequest(url, request, function (result) {
-                if (result.status === 'SUCCESS') {
-                    window.location.href = 'login.jsp';
-                }
-            });
-        } else {
-            return;
-        }
-    }
+    <%--//注销登陆--%>
+    <%--function logout() {--%>
+    <%--    if (confirm("是否确定要退出登陆？注销之后你需要重新登陆")) {--%>
+    <%--        var url = 'http://${host}/wechat/user';--%>
+    <%--        var request = {--%>
+    <%--            method: "logout.do",--%>
+    <%--            user_id: ${sessionScope.login.id},--%>
+    <%--        };--%>
+    <%--        alert("正在退出登陆，请稍后...");--%>
+    <%--        postRequest(url, request, function (result) {--%>
+    <%--            if (result.status === 'SUCCESS') {--%>
+    <%--                window.location.href = 'login.jsp';--%>
+    <%--            }--%>
+    <%--        });--%>
+    <%--    } else {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--}--%>
 
 
     //请求搜索用户结果
@@ -691,346 +692,348 @@
         })
     }
 
-    //清除聊天记录
-    function deleteChatMessage(chat_id) {
-        var url = "http://${host}/wechat/message";
-        var request = {
-            method: "clear.do",
-            chat_id: chat_id,
-            user_id: "${sessionScope.login.id}"
-        };
-        postRequest(url, request, function (result) {
-        })
-    }
+    <%--//清除聊天记录--%>
+    <%--function deleteChatMessage(chat_id) {--%>
+    <%--    var url = "http://${host}/wechat/message";--%>
+    <%--    var request = {--%>
+    <%--        method: "clear.do",--%>
+    <%--        chat_id: chat_id,--%>
+    <%--        user_id: "${sessionScope.login.id}"--%>
+    <%--    };--%>
+    <%--    postRequest(url, request, function (result) {--%>
+    <%--    })--%>
+    <%--}--%>
 
-    //显示聊天窗口
-    function showChatBox(chat_id) {
-        showWindowOnRight(chat_id);
+    <%--//显示聊天窗口--%>
+    <%--function showChatBox(chat_id) {--%>
+    <%--    showWindowOnRight(chat_id);--%>
 
-        var url = "http://${host}/wechat/message";
-        var request = {
-            method: "read.do",
-            user_id: ${sessionScope.login.id},
-            chat_id: chat_id
-        };
-        postRequest(url, request, function (result) {
+    <%--    var url = "http://${host}/wechat/message";--%>
+    <%--    var request = {--%>
+    <%--        method: "read.do",--%>
+    <%--        user_id: ${sessionScope.login.id},--%>
+    <%--        chat_id: chat_id--%>
+    <%--    };--%>
+    <%--    postRequest(url, request, function (result) {--%>
 
-        })
-    }
+    <%--    })--%>
+    <%--}--%>
 
-    //加载聊天列表，并且每个聊天加载隐藏的聊天窗口
-    function loadChatListAndBox() {
-        var url = "http://${host}/wechat/chat";
-        var request = {
-            method: "list.do",
-            id: "${sessionScope.login.id}"
-        };
-        postRequest(url, request, function (result) {
-            var chats = result.data;
-            console.log("查询到聊天窗口数量：" + chats.length);
-            for (var i = 0; i < chats.length; i++) {
-                loadChatListOnMenu(chats[i]);
-                loadChatBox(chats[i]);
-            }
-            loadUnReadMessage(1);
-        });
-    }
+    <%--//加载聊天列表，并且每个聊天加载隐藏的聊天窗口--%>
+    <%--function loadChatListAndBox() {--%>
+    <%--    debugger--%>
+    <%--    var url = "http://${host}/wechat/chat";--%>
+    <%--    var request = {--%>
+    <%--        method: "list.do",--%>
+    <%--        id: "${sessionScope.login.id}"--%>
+    <%--    };--%>
+    <%--    postRequest(url, request, function (result) {--%>
+    <%--        var chats = result.data;--%>
+    <%--        console.log("查询到聊天窗口数量：" + chats.length);--%>
+    <%--        for (var i = 0; i < chats.length; i++) {--%>
+    <%--            loadChatListOnMenu(chats[i]);--%>
+    <%--            loadChatBox(chats[i]);--%>
+    <%--        }--%>
+    <%--        loadUnReadMessage(1);--%>
+    <%--    });--%>
+    <%--}--%>
 
 
     //加载加载好友列表
-    function loadFriendList() {
-        var url = "http://${host}/wechat/friend";
-        var request = {
-            method: "list.do",
-            user_id: "${sessionScope.login.id}"
-        };
-        postRequest(url, request, function (result) {
-            document.getElementById("friend-list").innerHTML = ' <button class="user-list-block-href" onmouseover="this.style.backgroundColor=\'#3A3F45\'"\n' +
-                '                        onmouseout="this.style.backgroundColor=\'#2e3238\';"\n' +
-                '                        onclick="document.getElementById(\'search\').click()">\n' +
-                '                    <div class="user-list-block">\n' +
-                '                        <div class="user-box">\n' +
-                '                            <div class="user-info">\n' +
-                '                                <h3 class="my-name">添加好友</h3>\n' +
-                '                                <p class="my-message">搜索并添加系统中的用户为好友</p>\n' +
-                '                            </div>\n' +
-                '                        </div>\n' +
-                '                    </div>\n' +
-                '                </button>\n' +
-                '                <button class="user-list-block-href" onmouseover="this.style.backgroundColor=\'#3A3F45\'"\n' +
-                '                        onmouseout="this.style.backgroundColor=\'#2e3238\';"\n' +
-                '                        onclick="createChat()">\n' +
-                '                    <div class="user-list-block">\n' +
-                '                        <div class="user-box">\n' +
-                '                            <div class="user-info">\n' +
-                '                                <h3 class="my-name">创建群聊</h3>\n' +
-                '                                <p class="my-message">创建一个群聊，邀请好友加入</p>\n' +
-                '                            </div>\n' +
-                '                        </div>\n' +
-                '                    </div>\n' +
-                '                </button>\n' +
-                '                <button class="user-list-block-href" onmouseover="this.style.backgroundColor=\'#3A3F45\'"\n' +
-                '                        onmouseout="this.style.backgroundColor=\'#2e3238\';"\n' +
-                '                        onclick="joinChat()">\n' +
-                '                    <div class="user-list-block">\n' +
-                '                        <div class="user-box">\n' +
-                '                            <div class="user-info">\n' +
-                '                                <h3 class="my-name">加入群聊</h3>\n' +
-                '                                <p class="my-message">通过群号加入一个群聊</p>\n' +
-                '                            </div>\n' +
-                '                        </div>\n' +
-                '                    </div>\n' +
-                '                </button>';
-            var friends = result.data;
-            for (var i = 0; i < friends.length; i++) {
-                loadFriendOnMenu(friends[i]);
-            }
-        });
-    }
+    <%--function loadFriendList() {--%>
+    <%--    var url = "http://${host}/wechat/friend";--%>
+    <%--    var request = {--%>
+    <%--        method: "list.do",--%>
+    <%--        user_id: "${sessionScope.login.id}"--%>
+    <%--    };--%>
+    <%--    postRequest(url, request, function (result) {--%>
+    <%--        debugger--%>
+    <%--        document.getElementById("friend-list").innerHTML = ' <button class="user-list-block-href" onmouseover="this.style.backgroundColor=\'#3A3F45\'"\n' +--%>
+    <%--            '                        onmouseout="this.style.backgroundColor=\'#2e3238\';"\n' +--%>
+    <%--            '                        onclick="document.getElementById(\'search\').click()">\n' +--%>
+    <%--            '                    <div class="user-list-block">\n' +--%>
+    <%--            '                        <div class="user-box">\n' +--%>
+    <%--            '                            <div class="user-info">\n' +--%>
+    <%--            '                                <h3 class="my-name">添加好友</h3>\n' +--%>
+    <%--            '                                <p class="my-message">搜索并添加系统中的用户为好友</p>\n' +--%>
+    <%--            '                            </div>\n' +--%>
+    <%--            '                        </div>\n' +--%>
+    <%--            '                    </div>\n' +--%>
+    <%--            '                </button>\n' +--%>
+    <%--            '                <button class="user-list-block-href" onmouseover="this.style.backgroundColor=\'#3A3F45\'"\n' +--%>
+    <%--            '                        onmouseout="this.style.backgroundColor=\'#2e3238\';"\n' +--%>
+    <%--            '                        onclick="createChat()">\n' +--%>
+    <%--            '                    <div class="user-list-block">\n' +--%>
+    <%--            '                        <div class="user-box">\n' +--%>
+    <%--            '                            <div class="user-info">\n' +--%>
+    <%--            '                                <h3 class="my-name">创建群聊</h3>\n' +--%>
+    <%--            '                                <p class="my-message">创建一个群聊，邀请好友加入</p>\n' +--%>
+    <%--            '                            </div>\n' +--%>
+    <%--            '                        </div>\n' +--%>
+    <%--            '                    </div>\n' +--%>
+    <%--            '                </button>\n' +--%>
+    <%--            '                <button class="user-list-block-href" onmouseover="this.style.backgroundColor=\'#3A3F45\'"\n' +--%>
+    <%--            '                        onmouseout="this.style.backgroundColor=\'#2e3238\';"\n' +--%>
+    <%--            '                        onclick="joinChat()">\n' +--%>
+    <%--            '                    <div class="user-list-block">\n' +--%>
+    <%--            '                        <div class="user-box">\n' +--%>
+    <%--            '                            <div class="user-info">\n' +--%>
+    <%--            '                                <h3 class="my-name">加入群聊</h3>\n' +--%>
+    <%--            '                                <p class="my-message">通过群号加入一个群聊</p>\n' +--%>
+    <%--            '                            </div>\n' +--%>
+    <%--            '                        </div>\n' +--%>
+    <%--            '                    </div>\n' +--%>
+    <%--            '                </button>';--%>
+    <%--        var friends = result.data;--%>
+    <%--        for (var i = 0; i < friends.length; i++) {--%>
+    <%--            loadFriendOnMenu(friends[i]);--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--}--%>
 
-    //加载未读消息
-    function loadUnReadMessage(page) {
-        var url = "http://${host}/wechat/message";
-        var request = {
-            method: "unread.do",
-            user_id: "${sessionScope.login.id}",
-            page: page
-        };
-        postRequest(url, request, function (result) {
-            var messages = result.data;
-            console.log("查询到未读消息 ： " + messages.length)
+    <%--//加载未读消息--%>
+    <%--function loadUnReadMessage(page) {--%>
+    <%--    var url = "http://${host}/wechat/message";--%>
+    <%--    var request = {--%>
+    <%--        method: "unread.do",--%>
+    <%--        user_id: "${sessionScope.login.id}",--%>
+    <%--        page: page--%>
+    <%--    };--%>
+    <%--    postRequest(url, request, function (result) {--%>
+    <%--        var messages = result.data;--%>
+    <%--        console.log("查询到未读消息 ： " + messages.length)--%>
 
-            for (var i = messages.length - 1; i >= 0; i--) {
-                showMessage(messages[i]);
-            }
-        });
-    }
-
-
-    //加载一个聊天的未读消息
-    function loadUnReadMessageInAChat(chat_id, page) {
-        var url = "http://${host}/wechat/message";
-        var request = {
-            method: "unread.do",
-            user_id: "${sessionScope.login.id}",
-            chat_id: chat_id,
-            page: page
-        };
-        postRequest(url, request, function (result) {
-            var messages = result.data;
-            console.log("查询到未读消息 ： " + messages.length)
-            for (var i = messages.length - 1; i >= 0; i--) {
-                showMessage(messages[i]);
-            }
-        });
-    }
-
-    //加载一个聊天中的所有消息
-    function loadAllMessage(page, chat_id) {
-        var url = "http://${host}/wechat/message";
-        var request = {
-            method: "list.do",
-            user_id: "${sessionScope.login.id}",
-            chat_id: chat_id,
-            page: page,
-        };
-        postRequest(url, request, function (result) {
-            document.getElementById(chat_id + "accept-message").innerHTML = '';
-            var messages = result.data;
-            for (var i = messages.length - 1; i >= 0; i--) {
-                showMessage(messages[i]);
-            }
-        });
-    }
-
-    //加载朋友圈动态
-    function loadNews(page) {
-        var url = "http://${host}/wechat/moment";
-        var request = {
-            method: "news.do",
-            user_id: "${sessionScope.login.id}",
-            page: page
-        };
-        alert("正在加载朋友圈动态，请稍后...");
-        postRequest(url, request, function (result) {
-            var news = result.data;
-            //加载之前先将之前的清空
-            document.getElementById('news-box-content').innerHTML = '';
-            for (var i = 0; i <= news.length - 1; i++) {
-                addNewsBlockHtml(news[i]);
-            }
-        });
-        showWindowOnRight('news-box');
-    }
-
-    //加载我的朋友圈
-    function loadMyMoment(page) {
-        var url = "http://${host}/wechat/moment";
-        var request = {
-            method: "moment.do",
-            user_id: "${sessionScope.login.id}",
-            page: page
-        };
-        alert("正在加载您的朋友圈，请稍后...");
-        postRequest(url, request, function (result) {
-            var moments = result.data;
-            //加载之前先将之前的清空
-            document.getElementById('moment-box-content').innerHTML = '';
-            for (var i = 0; i < moments.length - 1; i++) {
-                addMomentBlockHtml(moments[i]);
-            }
-        });
-        showWindowOnRight('moment-box');
-    }
-
-    //查询朋友圈图片
-    function loadPhoto(page) {
-        var url = 'http://${host}/wechat/moment';
-        var request = {
-            method: "photo.do",
-            user_id: ${sessionScope.login.id},
-            page: page
-        };
-        alert("正在加载朋友圈相册，请稍后...");
-        postRequest(url, request, function (result) {
-            var photos = result.data;
-            //加载之前先将之前的清空
-            document.getElementById('photo-box-content').innerHTML = '';
-            for (var i = 0; i < photos.length; i++) {
-                addPhotoHtml(photos[i]);
-            }
-        });
-        showWindowOnRight('photo-box');
-    }
-
-    //下一页
-    function nextNewsPage() {
-        var page = document.getElementById("news-box").dataset.page;
-        loadNews(page);
-        document.getElementById("news-box").dataset.page = page + 1;
-    }
-
-    //删除朋友圈
-    function deleteMoment(moment_id) {
-        if (confirm("是否确定要删除这条朋友圈？")) {
-            var url = 'http://${host}/wechat/moment';
-            var request = {
-                method: "delete.do",
-                moment_id: moment_id
-            };
-            postRequest(url, request, function (result) {
-            });
-        } else {
-            return;
-        }
-    }
-
-    //删除朋友圈评论
-    function deleteRemark(remark_id, moment_id) {
-        if (confirm("是否确定要删除这条评论？")) {
-            var url = 'http://${host}/wechat/remark';
-            var request = {
-                method: "delete.do",
-                remark_id: remark_id
-            };
-            postRequest(url, request, function (result) {
-                addMomentDetailHtml(moment_id);
-            });
-        } else {
-            return;
-        }
-    }
-
-    //删除好友
-    function deleteFriend(friend_id) {
-        if (confirm("是否确定要删除这个好友？")) {
-            var url = 'http://${host}/wechat/friend';
-            var request = {
-                method: "delete.do",
-                user_id: ${sessionScope.login.id},
-                friend_id: friend_id
-            };
-            alert("正在删除好友，请稍后...");
-            postRequest(url, request, function (result) {
-                loadFriendList();
-            });
-        } else {
-            return;
-        }
-    }
+    <%--        for (var i = messages.length - 1; i >= 0; i--) {--%>
+    <%--            showMessage(messages[i]);--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--}--%>
 
 
-    //加好友
-    function addFriend(friend_id) {
+    <%--//加载一个聊天的未读消息--%>
+    <%--function loadUnReadMessageInAChat(chat_id, page) {--%>
+    <%--    var url = "http://${host}/wechat/message";--%>
+    <%--    var request = {--%>
+    <%--        method: "unread.do",--%>
+    <%--        user_id: "${sessionScope.login.id}",--%>
+    <%--        chat_id: chat_id,--%>
+    <%--        page: page--%>
+    <%--    };--%>
+    <%--    postRequest(url, request, function (result) {--%>
+    <%--        var messages = result.data;--%>
+    <%--        console.log("查询到未读消息 ： " + messages.length)--%>
+    <%--        for (var i = messages.length - 1; i >= 0; i--) {--%>
+    <%--            showMessage(messages[i]);--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--}--%>
 
-        var url = "http://${host}/wechat/friend?method=add.do";
-        var description = prompt("请输入好友申请", "我是${sessionScope.login.name},快加我为好友吧！");
-        var alias = prompt("请输入好友备注", "");
-        if (description == null) {
-            return;
-        }
-        var request = JSON.stringify({
-            user_id: "${sessionScope.login.id}",
-            friend_id: friend_id,
-            description: description,
-            alias: alias
-        });
-        if (alias == null) {
-            return;
-        }
-        if (confirm("是否确定要发送好友申请？")) {
-            alert("正在发送好友申请，请稍后...");
-            ajaxJsonRequest(url, request, function (result) {
-            })
-        } else {
-            return;
-        }
-    }
+    <%--//加载一个聊天中的所有消息--%>
+    <%--function loadAllMessage(page, chat_id) {--%>
+    <%--    var url = "http://${host}/wechat/message";--%>
+    <%--    var request = {--%>
+    <%--        method: "list.do",--%>
+    <%--        user_id: "${sessionScope.login.id}",--%>
+    <%--        chat_id: chat_id,--%>
+    <%--        page: page,--%>
+    <%--    };--%>
+    <%--    postRequest(url, request, function (result) {--%>
+    <%--        document.getElementById(chat_id + "accept-message").innerHTML = '';--%>
+    <%--        var messages = result.data;--%>
+    <%--        for (var i = messages.length - 1; i >= 0; i--) {--%>
+    <%--            showMessage(messages[i]);--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--}--%>
 
-    //同意加好友
-    function agreeAddFriend(friend_id) {
-        if (confirm("是否确定同意好友申请？")) {
-            console.log("同意加好友：friend_id " + friend_id);
-            var url = "http://${host}/wechat/friend?method=add.do";
-            var alias = prompt("请输入好友备注", "");
-            if (alias == null) {
-                return;
-            }
-            var request = JSON.stringify({
-                user_id: "${sessionScope.login.id}",
-                friend_id: friend_id,
-                alias: alias
-            });
-            alert("正在同意好友申请，请稍后...");
-            ajaxJsonRequest(url, request, function (result) {
-            })
-        } else {
-            return;
-        }
-    }
+    <%--//加载朋友圈动态--%>
+    <%--function loadNews(page) {--%>
+    <%--    var url = "http://${host}/wechat/moment";--%>
+    <%--    var request = {--%>
+    <%--        method: "news.do",--%>
+    <%--        user_id: "${sessionScope.login.id}",--%>
+    <%--        page: page--%>
+    <%--    };--%>
+    <%--    alert("正在加载朋友圈动态，请稍后...");--%>
+    <%--    postRequest(url, request, function (result) {--%>
+    <%--        var news = result.data;--%>
+    <%--        //加载之前先将之前的清空--%>
+    <%--        document.getElementById('news-box-content').innerHTML = '';--%>
+    <%--        for (var i = 0; i <= news.length - 1; i++) {--%>
+    <%--            addNewsBlockHtml(news[i]);--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--    showWindowOnRight('news-box');--%>
+    <%--}--%>
+
+    <%--//加载我的朋友圈--%>
+    <%--function loadMyMoment(page) {--%>
+    <%--    var url = "http://${host}/wechat/moment";--%>
+    <%--    var request = {--%>
+    <%--        method: "moment.do",--%>
+    <%--        user_id: "${sessionScope.login.id}",--%>
+    <%--        page: page--%>
+    <%--    };--%>
+    <%--    alert("正在加载您的朋友圈，请稍后...");--%>
+    <%--    postRequest(url, request, function (result) {--%>
+    <%--        var moments = result.data;--%>
+    <%--        //加载之前先将之前的清空--%>
+    <%--        document.getElementById('moment-box-content').innerHTML = '';--%>
+    <%--        for (var i = 0; i < moments.length - 1; i++) {--%>
+    <%--            addMomentBlockHtml(moments[i]);--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--    showWindowOnRight('moment-box');--%>
+    <%--}--%>
+
+    <%--//查询朋友圈图片--%>
+    <%--function loadPhoto(page) {--%>
+    <%--    var url = 'http://${host}/wechat/moment';--%>
+    <%--    var request = {--%>
+    <%--        method: "photo.do",--%>
+    <%--        user_id: ${sessionScope.login.id},--%>
+    <%--        page: page--%>
+    <%--    };--%>
+    <%--    alert("正在加载朋友圈相册，请稍后...");--%>
+    <%--    postRequest(url, request, function (result) {--%>
+    <%--        var photos = result.data;--%>
+    <%--        //加载之前先将之前的清空--%>
+    <%--        document.getElementById('photo-box-content').innerHTML = '';--%>
+    <%--        for (var i = 0; i < photos.length; i++) {--%>
+    <%--            addPhotoHtml(photos[i]);--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--    showWindowOnRight('photo-box');--%>
+    <%--}--%>
+
+    <%--//下一页--%>
+    <%--function nextNewsPage() {--%>
+    <%--    var page = document.getElementById("news-box").dataset.page;--%>
+    <%--    loadNews(page);--%>
+    <%--    document.getElementById("news-box").dataset.page = page + 1;--%>
+    <%--}--%>
+
+    <%--//删除朋友圈--%>
+    <%--function deleteMoment(moment_id) {--%>
+    <%--    if (confirm("是否确定要删除这条朋友圈？")) {--%>
+    <%--        var url = 'http://${host}/wechat/moment';--%>
+    <%--        var request = {--%>
+    <%--            method: "delete.do",--%>
+    <%--            moment_id: moment_id--%>
+    <%--        };--%>
+    <%--        postRequest(url, request, function (result) {--%>
+    <%--        });--%>
+    <%--    } else {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--}--%>
+
+    <%--//删除朋友圈评论--%>
+    <%--function deleteRemark(remark_id, moment_id) {--%>
+    <%--    if (confirm("是否确定要删除这条评论？")) {--%>
+    <%--        var url = 'http://${host}/wechat/remark';--%>
+    <%--        var request = {--%>
+    <%--            method: "delete.do",--%>
+    <%--            remark_id: remark_id--%>
+    <%--        };--%>
+    <%--        postRequest(url, request, function (result) {--%>
+    <%--            addMomentDetailHtml(moment_id);--%>
+    <%--        });--%>
+    <%--    } else {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--}--%>
+
+    <%--//删除好友--%>
+    <%--function deleteFriend(friend_id) {--%>
+    <%--    if (confirm("是否确定要删除这个好友？")) {--%>
+    <%--        var url = 'http://${host}/wechat/friend';--%>
+    <%--        var request = {--%>
+    <%--            method: "delete.do",--%>
+    <%--            user_id: ${sessionScope.login.id},--%>
+    <%--            friend_id: friend_id--%>
+    <%--        };--%>
+    <%--        alert("正在删除好友，请稍后...");--%>
+    <%--        postRequest(url, request, function (result) {--%>
+    <%--            loadFriendList();--%>
+    <%--        });--%>
+    <%--    } else {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--}--%>
 
 
-    //退出群聊
-    function quitChat(chat_id) {
-        if (confirm("是否确定要退出该群聊？")) {
-            var url = "http://${host}/wechat/chat?method=quit.do";
-            var request = JSON.stringify({
-                user_id: "${sessionScope.login.id}",
-                chat_id: chat_id,
-            });
-            alert("正在退出群聊，请稍后...");
-            ajaxJsonRequest(url, request, function (result) {
-            })
-        } else {
-            return;
-        }
-    }
+    <%--//加好友--%>
+    <%--function addFriend(friend_id) {--%>
+
+    <%--    var url = "http://${host}/wechat/friend?method=add.do";--%>
+    <%--    var description = prompt("请输入好友申请", "我是${sessionScope.login.name},快加我为好友吧！");--%>
+    <%--    var alias = prompt("请输入好友备注", "");--%>
+    <%--    if (description == null) {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    var request = JSON.stringify({--%>
+    <%--        user_id: "${sessionScope.login.id}",--%>
+    <%--        friend_id: friend_id,--%>
+    <%--        description: description,--%>
+    <%--        alias: alias--%>
+    <%--    });--%>
+    <%--    if (alias == null) {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    if (confirm("是否确定要发送好友申请？")) {--%>
+    <%--        alert("正在发送好友申请，请稍后...");--%>
+    <%--        ajaxJsonRequest(url, request, function (result) {--%>
+    <%--        })--%>
+    <%--    } else {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--}--%>
+
+    <%--//同意加好友--%>
+    <%--function agreeAddFriend(friend_id) {--%>
+    <%--    if (confirm("是否确定同意好友申请？")) {--%>
+    <%--        console.log("同意加好友：friend_id " + friend_id);--%>
+    <%--        var url = "http://${host}/wechat/friend?method=add.do";--%>
+    <%--        var alias = prompt("请输入好友备注", "");--%>
+    <%--        if (alias == null) {--%>
+    <%--            return;--%>
+    <%--        }--%>
+    <%--        var request = JSON.stringify({--%>
+    <%--            user_id: "${sessionScope.login.id}",--%>
+    <%--            friend_id: friend_id,--%>
+    <%--            alias: alias--%>
+    <%--        });--%>
+    <%--        alert("正在同意好友申请，请稍后...");--%>
+    <%--        ajaxJsonRequest(url, request, function (result) {--%>
+    <%--        })--%>
+    <%--    } else {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--}--%>
+
+
+    <%--//退出群聊--%>
+    <%--function quitChat(chat_id) {--%>
+    <%--    if (confirm("是否确定要退出该群聊？")) {--%>
+    <%--        var url = "http://${host}/wechat/chat?method=quit.do";--%>
+    <%--        var request = JSON.stringify({--%>
+    <%--            user_id: "${sessionScope.login.id}",--%>
+    <%--            chat_id: chat_id,--%>
+    <%--        });--%>
+    <%--        alert("正在退出群聊，请稍后...");--%>
+    <%--        ajaxJsonRequest(url, request, function (result) {--%>
+    <%--        })--%>
+    <%--    } else {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--}--%>
 
     //更新个人信息
     function updateUserInfo() {
         if (confirm("是否确定更新个人信息？")) {
             var jsonStr = JSON.stringify({
-                id: "${sessionScope.login.id}",
+                <%--id: "${sessionScope.login.id}",--%>
                 name: document.getElementById("name").innerText,
                 signature: document.getElementById("signature").innerText,
                 wechat_id: document.getElementById("wechat_id").innerText,
@@ -1054,238 +1057,239 @@
     }
 
 
-    //更新聊天背景
-    function updateBackground() {
-        imgPreview(document.getElementById('background-upload'), 'background');
-        var url = "http://${host}/wechat/upload?method=background.do&id=${sessionScope.login.id}";
-        alert("正在更新聊天背景，请稍后...");
-        uploadPhoto(url, 'background-upload');
-    }
+    <%--//更新聊天背景--%>
+    <%--function updateBackground() {--%>
+    <%--    imgPreview(document.getElementById('background-upload'), 'background');--%>
+    <%--    var url = "http://${host}/wechat/upload?method=background.do&id=${sessionScope.login.id}";--%>
+    <%--    alert("正在更新聊天背景，请稍后...");--%>
+    <%--    uploadPhoto(url, 'background-upload');--%>
+    <%--}--%>
 
-    //发布朋友圈
-    function postMoment() {
-        var content = document.getElementById("moment-content").value;
-        var jsonStr = JSON.stringify({
-            owner_id: "${sessionScope.login.id}",
-            content: content
-        });
-        var url = "http://${host}/wechat/moment?method=add.do";
-        if (!('' === content)) {
-            alert("正在发布朋友圈，请稍后...");
-            ajaxJsonRequest(url, jsonStr, function (result) {
-                if ("SUCCESS" === result.status) {
-                    //成功之后上传图片
-                    url = "http://${host}/wechat/upload?method=uploadphoto.do&id=" + result.data.id + "&table=moment";
-                    uploadPhoto(url, 'moment-photo');
-                } else {
-                }
-            });
-            document.getElementById("moment-content").value = '';
-        } else {
-            alert("发送内容不能为空");
-            return;
-        }
-    }
+    <%--//发布朋友圈--%>
+    <%--function postMoment() {--%>
+    <%--    var content = document.getElementById("moment-content").value;--%>
+    <%--    var jsonStr = JSON.stringify({--%>
+    <%--        owner_id: "${sessionScope.login.id}",--%>
+    <%--        content: content--%>
+    <%--    });--%>
+    <%--    var url = "http://${host}/wechat/moment?method=add.do";--%>
+    <%--    if (!('' === content)) {--%>
+    <%--        alert("正在发布朋友圈，请稍后...");--%>
+    <%--        ajaxJsonRequest(url, jsonStr, function (result) {--%>
+    <%--            if ("SUCCESS" === result.status) {--%>
+    <%--                //成功之后上传图片--%>
+    <%--                url = "http://${host}/wechat/upload?method=uploadphoto.do&id=" + result.data.id + "&table=moment";--%>
+    <%--                uploadPhoto(url, 'moment-photo');--%>
+    <%--            } else {--%>
+    <%--            }--%>
+    <%--        });--%>
+    <%--        document.getElementById("moment-content").value = '';--%>
+    <%--    } else {--%>
+    <%--        alert("发送内容不能为空");--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--}--%>
 
-    //点赞朋友圈
-    function loveMoment(moment_id, moment_love) {
-        var url = 'http://${host}/wechat/moment';
-        var request = {
-            method: "love.do",
-            moment_id: moment_id,
-            user_id:${sessionScope.login.id},
-        };
-        postRequest(url, request, function (result) {
-            var islove = result.data;
-            var love = parseInt(document.getElementById(moment_id + "love").dataset.love);
-            console.log("当前点赞数" + love);
-            if (islove) {
-                document.getElementById(moment_id + "love").innerText = '点赞(' + (love + 1) + ')';
-                document.getElementById(moment_id + "love").dataset.love = love + 1;
-            } else {
-                document.getElementById(moment_id + "love").innerText = '点赞(' + (love - 1) + ')';
-                document.getElementById(moment_id + "love").dataset.love = love - 1;
-            }
-        });
-    }
-
-
-    //评论朋友圈//TODO
-    function remarkMoment(moment_id) {
-        var content = prompt("请输入评论", '');
-        if (content == null) {
-            return;
-        }
-        var time = new Date().getTime();
-        var url = "http://${host}/wechat/remark?method=add.do";
-        var request = JSON.stringify({
-            user_id: "${sessionScope.login.id}",
-            moment_id: moment_id,
-            time: time,
-            content: content
-        });
-        if (!('' === content || content == null)) {
-            if (confirm("是否确定要发布该评论？")) {
-                alert("正在发布评论，请稍后...");
-                ajaxJsonRequest(url, request, function (result) {
-                    var remark = parseInt(document.getElementById(moment_id + "remark").dataset.remark);
-                    console.log("当前评论数" + remark);
-                    document.getElementById(moment_id + "remark").dataset.remark = remark + 1;
-                    document.getElementById(moment_id + "remark").innerText = '评论(' + (remark + 1) + ')';
-                    addMomentDetailHtml(moment_id);
-                })
-            } else {
-                return;
-            }
-        } else {
-            alert("评论内容不能为空");
-            return;
-        }
-    }
-
-    //回复一条评论
-    function replyRemark(moment_id, user_name) {
-        var content = prompt("请输入回复", "");
-        if (content == null) {
-            return;
-        }
-        content = "@" + user_name + " " + content;
-        var time = new Date().getTime();
-        var url = "http://${host}/wechat/remark?method=add.do";
-        var request = JSON.stringify({
-            user_id: "${sessionScope.login.id}",
-            moment_id: moment_id,
-            time: time,
-            content: content
-        });
-        if (!('' === content)) {
-            if (confirm("是否确定要发布该回复？")) {
-                alert("正在发布回复，请稍后...");
-                ajaxJsonRequest(url, request, function (result) {
-                    var remark = parseInt(document.getElementById(moment_id + "remark").dataset.remark);
-                    document.getElementById(moment_id + "remark").dataset.remark = remark + 1;
-                    document.getElementById(moment_id + "remark").innerText = '评论(' + (remark + 1) + ')';
-                    addMomentDetailHtml(moment_id);
-
-                })
-            } else {
-                return;
-            }
-        } else {
-            alert("回复内容不能为空");
-            return;
-        }
-    }
+    <%--//点赞朋友圈--%>
+    <%--function loveMoment(moment_id, moment_love) {--%>
+    <%--    var url = 'http://${host}/wechat/moment';--%>
+    <%--    var request = {--%>
+    <%--        method: "love.do",--%>
+    <%--        moment_id: moment_id,--%>
+    <%--        user_id:${sessionScope.login.id},--%>
+    <%--    };--%>
+    <%--    postRequest(url, request, function (result) {--%>
+    <%--        var islove = result.data;--%>
+    <%--        var love = parseInt(document.getElementById(moment_id + "love").dataset.love);--%>
+    <%--        console.log("当前点赞数" + love);--%>
+    <%--        if (islove) {--%>
+    <%--            document.getElementById(moment_id + "love").innerText = '点赞(' + (love + 1) + ')';--%>
+    <%--            document.getElementById(moment_id + "love").dataset.love = love + 1;--%>
+    <%--        } else {--%>
+    <%--            document.getElementById(moment_id + "love").innerText = '点赞(' + (love - 1) + ')';--%>
+    <%--            document.getElementById(moment_id + "love").dataset.love = love - 1;--%>
+    <%--        }--%>
+    <%--    });--%>
+    <%--}--%>
 
 
-    //上传图片
-    function uploadPhoto(url, photo_id) {
-        var formData = new FormData();
-        formData.append('photo', $(document.getElementById(photo_id))[0].files[0]);  //添加图片信息的参数
-        $.ajax({
-            url: url,
-            type: 'POST',
-            cache: false, //上传文件不需要缓存
-            data: formData,
-            processData: false, // 告诉jQuery不要去处理发送的数据
-            contentType: false, // 告诉jQuery不要去设置Content-Type请求头
-            success: function (data) {
-                if (data.message != null && data.message !== '') {
-                    alert("系统提示：" + data.message);
-                }
-            },
-            Error: function (xhr, error, exception) {
-                alert(exception.toString());
-            }
-        })
-    }
+    <%--//评论朋友圈//TODO--%>
+    <%--function remarkMoment(moment_id) {--%>
+    <%--    var content = prompt("请输入评论", '');--%>
+    <%--    if (content == null) {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    var time = new Date().getTime();--%>
+    <%--    var url = "http://${host}/wechat/remark?method=add.do";--%>
+    <%--    var request = JSON.stringify({--%>
+    <%--        user_id: "${sessionScope.login.id}",--%>
+    <%--        moment_id: moment_id,--%>
+    <%--        time: time,--%>
+    <%--        content: content--%>
+    <%--    });--%>
+    <%--    if (!('' === content || content == null)) {--%>
+    <%--        if (confirm("是否确定要发布该评论？")) {--%>
+    <%--            alert("正在发布评论，请稍后...");--%>
+    <%--            ajaxJsonRequest(url, request, function (result) {--%>
+    <%--                var remark = parseInt(document.getElementById(moment_id + "remark").dataset.remark);--%>
+    <%--                console.log("当前评论数" + remark);--%>
+    <%--                document.getElementById(moment_id + "remark").dataset.remark = remark + 1;--%>
+    <%--                document.getElementById(moment_id + "remark").innerText = '评论(' + (remark + 1) + ')';--%>
+    <%--                addMomentDetailHtml(moment_id);--%>
+    <%--            })--%>
+    <%--        } else {--%>
+    <%--            return;--%>
+    <%--        }--%>
+    <%--    } else {--%>
+    <%--        alert("评论内容不能为空");--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--}--%>
 
-    //加载聊天列表
-    function loadChatListOnMenu(chat) {
-        var chat_html = '<button class="user-list-block-href"  onmouseover="this.style.backgroundColor=\'#3A3F45\';" ' +
-            'onmouseout="this.style.backgroundColor=\'#2e3238\';"' +
-            'onclick="showChatBox(\'' + chat.id + '\')"><div class="user-list-block">\n' +
-            '                <div class="user-box" >\n' +
-            '                    <div class="user-photo">\n' +
-            '                        <img src="${pageContext.request.contextPath}/upload/photo/' + chat.photo + '" alt="用户头像" class="my-photo">\n' +
-            '                    </div>\n' +
-            '                    <div class="user-info">\n' +
-            '                        <h3 class="my-name">' + chat.name + '</h3>\n' +
-            '                        <p class="my-message" id="' + chat.id + 'new-message">没有新消息</p>\n' +
-            '                    </div>\n' +
-            '                </div>\n' +
-            '            </div></button>';
-        document.getElementById("chat-list").innerHTML += chat_html;
-    }
+    <%--//回复一条评论--%>
+    <%--function replyRemark(moment_id, user_name) {--%>
+    <%--    var content = prompt("请输入回复", "");--%>
+    <%--    if (content == null) {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    content = "@" + user_name + " " + content;--%>
+    <%--    var time = new Date().getTime();--%>
+    <%--    var url = "http://${host}/wechat/remark?method=add.do";--%>
+    <%--    var request = JSON.stringify({--%>
+    <%--        user_id: "${sessionScope.login.id}",--%>
+    <%--        moment_id: moment_id,--%>
+    <%--        time: time,--%>
+    <%--        content: content--%>
+    <%--    });--%>
+    <%--    if (!('' === content)) {--%>
+    <%--        if (confirm("是否确定要发布该回复？")) {--%>
+    <%--            alert("正在发布回复，请稍后...");--%>
+    <%--            ajaxJsonRequest(url, request, function (result) {--%>
+    <%--                var remark = parseInt(document.getElementById(moment_id + "remark").dataset.remark);--%>
+    <%--                document.getElementById(moment_id + "remark").dataset.remark = remark + 1;--%>
+    <%--                document.getElementById(moment_id + "remark").innerText = '评论(' + (remark + 1) + ')';--%>
+    <%--                addMomentDetailHtml(moment_id);--%>
 
-    //加载通知列表
-    function loadNotify(notify) {
-        var html = '        <button class="user-list-block-href" onmouseover="this.style.backgroundColor=#3A3F45;"\n' +
-            '                        onmouseout="this.style.backgroundColor=#2e3238;"\n' +
-            '                        onclick="">\n' +
-            '                    <div class="user-list-block">\n' +
-            '                        <div class="user-box">\n' +
-            '                            <div class="user-photo">\n' +
-            '                                <img src="${pageContext.request.contextPath}/upload/photo/' + friend.photo + '  " alt="用户头像" class="my-photo">\n' +
-            '                            </div>\n' +
-            '                            <div class="user-info">\n' +
-            '                                <h3 class="my-name"></h3>\n' +
-            '                                <p class="my-message">' + friend.description + ' </p>\n' +
-            '                            </div>\n' +
-            '                        </div>\n' +
-            '                    </div>\n' +
-            '                    <button id="" onclick="postMoment()" style="float: right;\n' +
-            '                    background-color:#1AAD19;border: solid 1px;width: 100px;margin-right: 50px"\n' +
-            '                            contenteditable="false">发布\n' +
-            '                    </button>\n' +
-            '                </button>';
-        document.getElementById("notify-list").innerHTML += chat_html;
-    }
+    <%--            })--%>
+    <%--        } else {--%>
+    <%--            return;--%>
+    <%--        }--%>
+    <%--    } else {--%>
+    <%--        alert("回复内容不能为空");--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--}--%>
 
-    //加载好友列表
-    function loadFriendOnMenu(friend) {
-        var chat_html = '<button class="user-list-block-href"  onmouseover="this.style.backgroundColor=\'#3A3F45\';" ' +
-            'onmouseout="this.style.backgroundColor=\'#2e3238\';"' +
-            '><div class="user-list-block">\n' +
-            '                <div class="user-box" onclick="updateFriend(\'' + friend.id + '\')">\n' +
-            '                    <div class="user-photo">\n' +
-            '                        <img src="${pageContext.request.contextPath}/upload/photo/' + friend.photo + '" alt="用户头像" class="my-photo">\n' +
-            '                    </div>\n' +
-            '                    <div class="user-info">\n' +
-            '                        <h3 class="my-name">' + friend.alias + '</h3>\n' +
-            '                        <p class="my-message">' + friend.description + '</p>\n' +
-            '                    </div>\n' +
-            '                </div>\n' +
-            '            </div>  ' +
-            '<div class="menu-option-item">\n' +
-            '                <div id="chat" onclick="showChatBox(\'' + friend.chat_id + '\')" class="menu-option-button">发消息</div>\n' +
-            '            </div>          ' +
-            '<div class="menu-option-item">\n' +
-            '                <div id="chat"  onclick="deleteFriend(\'' + friend.friend_id + '\')" class="menu-option-button" style="float: right">删除好友</div>\n' +
-            '            </div></button>';
-        document.getElementById("friend-list").innerHTML += chat_html;
-    }
 
-    //加载好友通知
-    function loadAddFriendOnMenu(message) {
-        var chat_html = '<button class="user-list-block-href"  onmouseover="this.style.backgroundColor=\'#3A3F45\';" ' +
-            'onmouseout="this.style.backgroundColor=\'#2e3238\';"' +
-            '><div class="user-list-block">\n' +
-            '                <div class="user-box" >\n' +
-            '                    <div class="user-photo">\n' +
-            '                        <img src="${pageContext.request.contextPath}/upload/photo/' + message.sender_photo + '" alt="用户头像" class="my-photo">\n' +
-            '                    </div>\n' +
-            '                    <div class="user-info">\n' +
-            '                        <h3 class="my-name">' + message.sender_name + '</h3>\n' +
-            '                        <p class="my-message">' + message.content + '</p>\n' +
-            '                    </div>\n' +
-            '                </div>\n' +
-            '            </div>  ' +
-            '<div class="menu-option-item">\n' +
-            '                <div id="chat" onclick="agreeAddFriend(\'' + message.sender_id + '\')" class="menu-option-button">同意</div>\n' +
-            '            </div>          ';
-        document.getElementById("friend-list").innerHTML += chat_html;
-    }
+    <%--//上传图片--%>
+    <%--function uploadPhoto(url, photo_id) {--%>
+    <%--    var formData = new FormData();--%>
+    <%--    formData.append('photo', $(document.getElementById(photo_id))[0].files[0]);  //添加图片信息的参数--%>
+    <%--    $.ajax({--%>
+    <%--        url: url,--%>
+    <%--        type: 'POST',--%>
+    <%--        cache: false, //上传文件不需要缓存--%>
+    <%--        data: formData,--%>
+    <%--        processData: false, // 告诉jQuery不要去处理发送的数据--%>
+    <%--        contentType: false, // 告诉jQuery不要去设置Content-Type请求头--%>
+    <%--        success: function (data) {--%>
+    <%--            if (data.message != null && data.message !== '') {--%>
+    <%--                alert("系统提示：" + data.message);--%>
+    <%--            }--%>
+    <%--        },--%>
+    <%--        Error: function (xhr, error, exception) {--%>
+    <%--            alert(exception.toString());--%>
+    <%--        }--%>
+    <%--    })--%>
+    <%--}--%>
+
+    <%--//加载聊天列表--%>
+    <%--function loadChatListOnMenu(chat) {--%>
+    <%--    var chat_html = '<button class="user-list-block-href"  onmouseover="this.style.backgroundColor=\'#3A3F45\';" ' +--%>
+    <%--        'onmouseout="this.style.backgroundColor=\'#2e3238\';"' +--%>
+    <%--        'onclick="showChatBox(\'' + chat.id + '\')"><div class="user-list-block">\n' +--%>
+    <%--        '                <div class="user-box" >\n' +--%>
+    <%--        '                    <div class="user-photo">\n' +--%>
+    <%--        '                        <img src="${pageContext.request.contextPath}/upload/photo/' + chat.photo + '" alt="用户头像" class="my-photo">\n' +--%>
+    <%--        '                    </div>\n' +--%>
+    <%--        '                    <div class="user-info">\n' +--%>
+    <%--        '                        <h3 class="my-name">' + chat.name + '</h3>\n' +--%>
+    <%--        '                        <p class="my-message" id="' + chat.id + 'new-message">没有新消息</p>\n' +--%>
+    <%--        '                    </div>\n' +--%>
+    <%--        '                </div>\n' +--%>
+    <%--        '            </div></button>';--%>
+    <%--    document.getElementById("chat-list").innerHTML += chat_html;--%>
+    <%--}--%>
+
+    <%--//加载通知列表--%>
+    <%--function loadNotify(notify) {--%>
+    <%--    var html = '        <button class="user-list-block-href" onmouseover="this.style.backgroundColor=#3A3F45;"\n' +--%>
+    <%--        '                        onmouseout="this.style.backgroundColor=#2e3238;"\n' +--%>
+    <%--        '                        onclick="">\n' +--%>
+    <%--        '                    <div class="user-list-block">\n' +--%>
+    <%--        '                        <div class="user-box">\n' +--%>
+    <%--        '                            <div class="user-photo">\n' +--%>
+    <%--        '                                <img src="${pageContext.request.contextPath}/upload/photo/' + friend.photo + '  " alt="用户头像" class="my-photo">\n' +--%>
+    <%--        '                            </div>\n' +--%>
+    <%--        '                            <div class="user-info">\n' +--%>
+    <%--        '                                <h3 class="my-name"></h3>\n' +--%>
+    <%--        '                                <p class="my-message">' + friend.description + ' </p>\n' +--%>
+    <%--        '                            </div>\n' +--%>
+    <%--        '                        </div>\n' +--%>
+    <%--        '                    </div>\n' +--%>
+    <%--        '                    <button id="" onclick="postMoment()" style="float: right;\n' +--%>
+    <%--        '                    background-color:#1AAD19;border: solid 1px;width: 100px;margin-right: 50px"\n' +--%>
+    <%--        '                            contenteditable="false">发布\n' +--%>
+    <%--        '                    </button>\n' +--%>
+    <%--        '                </button>';--%>
+    <%--    document.getElementById("notify-list").innerHTML += chat_html;--%>
+    <%--}--%>
+
+    <%--//加载好友列表--%>
+    <%--function loadFriendOnMenu(friend) {--%>
+    <%--    debugger--%>
+    <%--    var chat_html = '<button class="user-list-block-href"  onmouseover="this.style.backgroundColor=\'#3A3F45\';" ' +--%>
+    <%--        'onmouseout="this.style.backgroundColor=\'#2e3238\';"' +--%>
+    <%--        '><div class="user-list-block">\n' +--%>
+    <%--        '                <div class="user-box" onclick="updateFriend(\'' + friend.id + '\')">\n' +--%>
+    <%--        '                    <div class="user-photo">\n' +--%>
+    <%--        '                        <img src="${pageContext.request.contextPath}/upload/photo/' + friend.photo + '" alt="用户头像" class="my-photo">\n' +--%>
+    <%--        '                    </div>\n' +--%>
+    <%--        '                    <div class="user-info">\n' +--%>
+    <%--        '                        <h3 class="my-name">' + friend.alias + '</h3>\n' +--%>
+    <%--        '                        <p class="my-message">' + friend.description + '</p>\n' +--%>
+    <%--        '                    </div>\n' +--%>
+    <%--        '                </div>\n' +--%>
+    <%--        '            </div>  ' +--%>
+    <%--        '<div class="menu-option-item">\n' +--%>
+    <%--        '                <div id="chat" onclick="showChatBox(\'' + friend.chat_id + '\')" class="menu-option-button">发消息</div>\n' +--%>
+    <%--        '            </div>          ' +--%>
+    <%--        '<div class="menu-option-item">\n' +--%>
+    <%--        '                <div id="chat"  onclick="deleteFriend(\'' + friend.friend_id + '\')" class="menu-option-button" style="float: right">删除好友</div>\n' +--%>
+    <%--        '            </div></button>';--%>
+    <%--    document.getElementById("friend-list").innerHTML += chat_html;--%>
+    <%--}--%>
+
+    <%--//加载好友通知--%>
+    <%--function loadAddFriendOnMenu(message) {--%>
+    <%--    var chat_html = '<button class="user-list-block-href"  onmouseover="this.style.backgroundColor=\'#3A3F45\';" ' +--%>
+    <%--        'onmouseout="this.style.backgroundColor=\'#2e3238\';"' +--%>
+    <%--        '><div class="user-list-block">\n' +--%>
+    <%--        '                <div class="user-box" >\n' +--%>
+    <%--        '                    <div class="user-photo">\n' +--%>
+    <%--        '                        <img src="${pageContext.request.contextPath}/upload/photo/' + message.sender_photo + '" alt="用户头像" class="my-photo">\n' +--%>
+    <%--        '                    </div>\n' +--%>
+    <%--        '                    <div class="user-info">\n' +--%>
+    <%--        '                        <h3 class="my-name">' + message.sender_name + '</h3>\n' +--%>
+    <%--        '                        <p class="my-message">' + message.content + '</p>\n' +--%>
+    <%--        '                    </div>\n' +--%>
+    <%--        '                </div>\n' +--%>
+    <%--        '            </div>  ' +--%>
+    <%--        '<div class="menu-option-item">\n' +--%>
+    <%--        '                <div id="chat" onclick="agreeAddFriend(\'' + message.sender_id + '\')" class="menu-option-button">同意</div>\n' +--%>
+    <%--        '            </div>          ';--%>
+    <%--    document.getElementById("friend-list").innerHTML += chat_html;--%>
+    <%--}--%>
 
     //加载搜索结果页面，并显示
     function loadSearchResult() {
@@ -1331,6 +1335,7 @@
 
     //让该id对应的窗口显示出来，并把之前的隐藏起来
     function showWindowOnLeft(window_id) {
+        debugger
         var current_window = document.getElementById("menu-body").dataset.window;
         console.log("隐藏窗口id : " + current_window);
         document.getElementById(current_window).style.display = "none";
@@ -1340,301 +1345,301 @@
     }
 
 
-    //加载发朋友圈窗口
-    function loadPostMomentBox() {
-        var html = '<div class="info-box" id="info-box">\n' +
-            '            <div class="info-box-head">   \n' +
-            '                <div class="info-box-title">       \n' +
-            '                    <div class="info-box-title-box"><a class="info-box-title-text">写朋友圈</a></div>\n' +
-            '                    <button id="post-moment" onclick="postMoment()"\n' +
-            '                            style="float: right" contenteditable="false">发布\n' +
-            '                    </button>\n' +
-            '                </div>\n' +
-            '            </div>\n' +
-            '            <div id="${sessionScope.login.id}info" class="info-detail-box">\n' +
-            '                <div class="info-outline">\n' +
-            '                    <div class="info-head-photo">\n' +
-            '                        <img id="preview" src="${pageContext.request.contextPath}/upload/photo/upload.jpg" class="info-head-img"\n' +
-            '                             onclick="document.getElementById(\'input_file\').click()">\n' +
-            '                        <input type="file" name="file" id="input_file"\n' +
-            '                               accept="image/gif,image/jpeg,image/jpg,image/png,image/svg"\n' +
-            '                               oninput="imgPreview(document.getElementById(\'input_file\'))" style="display: none">\n' +
-            '                    </div>\n' +
-            '                    <div class="info-head-info">\n' +
-            '                        <h3 class="info-head-nickname" style="    font-size: 30px;">单击左侧上传图片</h3>\n' +
-            '                    </div>\n' +
-            '                </div>\n' +
-            '                <div class="info-detail">\n' +
-            '                    <div class="info-detail-block" style="margin-left: 20px">\n' +
-            '                        <label for="moment-content"></label>\n' +
-            '                        <textarea class="input-text-content" style="    width: 70%;" id="moment-content" autofocus="autofocus" cols="100"\n' +
-            '                                  contenteditable="true" onchange="enterClick(\'post-moment\')" placeholder="分享自己的动态..."\n' +
-            '                                  required="required" maxlength="300" oninput="enterClick(\'post-moment\')"></textarea>\n' +
-            '                    </div>\n' +
-            '                </div>\n' +
-            '            </div>\n' +
-            '        </div>\n';
-        document.getElementById("info-box").innerHTML = html;
-    }
+    <%--//加载发朋友圈窗口--%>
+    <%--function loadPostMomentBox() {--%>
+    <%--    var html = '<div class="info-box" id="info-box">\n' +--%>
+    <%--        '            <div class="info-box-head">   \n' +--%>
+    <%--        '                <div class="info-box-title">       \n' +--%>
+    <%--        '                    <div class="info-box-title-box"><a class="info-box-title-text">写朋友圈</a></div>\n' +--%>
+    <%--        '                    <button id="post-moment" onclick="postMoment()"\n' +--%>
+    <%--        '                            style="float: right" contenteditable="false">发布\n' +--%>
+    <%--        '                    </button>\n' +--%>
+    <%--        '                </div>\n' +--%>
+    <%--        '            </div>\n' +--%>
+    <%--        '            <div id="${sessionScope.login.id}info" class="info-detail-box">\n' +--%>
+    <%--        '                <div class="info-outline">\n' +--%>
+    <%--        '                    <div class="info-head-photo">\n' +--%>
+    <%--        '                        <img id="preview" src="${pageContext.request.contextPath}/upload/photo/upload.jpg" class="info-head-img"\n' +--%>
+    <%--        '                             onclick="document.getElementById(\'input_file\').click()">\n' +--%>
+    <%--        '                        <input type="file" name="file" id="input_file"\n' +--%>
+    <%--        '                               accept="image/gif,image/jpeg,image/jpg,image/png,image/svg"\n' +--%>
+    <%--        '                               oninput="imgPreview(document.getElementById(\'input_file\'))" style="display: none">\n' +--%>
+    <%--        '                    </div>\n' +--%>
+    <%--        '                    <div class="info-head-info">\n' +--%>
+    <%--        '                        <h3 class="info-head-nickname" style="    font-size: 30px;">单击左侧上传图片</h3>\n' +--%>
+    <%--        '                    </div>\n' +--%>
+    <%--        '                </div>\n' +--%>
+    <%--        '                <div class="info-detail">\n' +--%>
+    <%--        '                    <div class="info-detail-block" style="margin-left: 20px">\n' +--%>
+    <%--        '                        <label for="moment-content"></label>\n' +--%>
+    <%--        '                        <textarea class="input-text-content" style="    width: 70%;" id="moment-content" autofocus="autofocus" cols="100"\n' +--%>
+    <%--        '                                  contenteditable="true" onchange="enterClick(\'post-moment\')" placeholder="分享自己的动态..."\n' +--%>
+    <%--        '                                  required="required" maxlength="300" oninput="enterClick(\'post-moment\')"></textarea>\n' +--%>
+    <%--        '                    </div>\n' +--%>
+    <%--        '                </div>\n' +--%>
+    <%--        '            </div>\n' +--%>
+    <%--        '        </div>\n';--%>
+    <%--    document.getElementById("info-box").innerHTML = html;--%>
+    <%--}--%>
 
-    //加载图片
-    function imgPreview(fileDom, preview) {
-        //判断是否支持FileReader
-        if (window.FileReader) {
-            var reader = new FileReader();
-        } else {
-            alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！");
-        }
-        //获取文件
-        var file = fileDom.files[0];
-        var imageType = /^image\//;
-        //是否是图片
-        if (!imageType.test(file.type)) {
-            alert("该文件不是图片或者已经损坏，请重新选择！");
-            return;
-        }
-        //图片大小
-        var size = (file.size / 1024) / 1024;
-        console.log("size" + size);
-        if (size > 5) {
-            alert("图片大小不能大于5m！");
-            file.value = "";
-            return;
-        } else if (size <= 0) {
-            alert("文件大小不能为0M！");
-            file.value = "";
-            return;
-        }
+    <%--//加载图片--%>
+    <%--function imgPreview(fileDom, preview) {--%>
+    <%--    //判断是否支持FileReader--%>
+    <%--    if (window.FileReader) {--%>
+    <%--        var reader = new FileReader();--%>
+    <%--    } else {--%>
+    <%--        alert("您的设备不支持图片预览功能，如需该功能请升级您的设备！");--%>
+    <%--    }--%>
+    <%--    //获取文件--%>
+    <%--    var file = fileDom.files[0];--%>
+    <%--    var imageType = /^image\//;--%>
+    <%--    //是否是图片--%>
+    <%--    if (!imageType.test(file.type)) {--%>
+    <%--        alert("该文件不是图片或者已经损坏，请重新选择！");--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    //图片大小--%>
+    <%--    var size = (file.size / 1024) / 1024;--%>
+    <%--    console.log("size" + size);--%>
+    <%--    if (size > 5) {--%>
+    <%--        alert("图片大小不能大于5m！");--%>
+    <%--        file.value = "";--%>
+    <%--        return;--%>
+    <%--    } else if (size <= 0) {--%>
+    <%--        alert("文件大小不能为0M！");--%>
+    <%--        file.value = "";--%>
+    <%--        return;--%>
+    <%--    }--%>
 
-        //读取完成
-        reader.onload = function (e) {
-            //获取图片dom
-            var img = document.getElementById(preview);
-            //图片路径设置为读取的图片
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
+    <%--    //读取完成--%>
+    <%--    reader.onload = function (e) {--%>
+    <%--        //获取图片dom--%>
+    <%--        var img = document.getElementById(preview);--%>
+    <%--        //图片路径设置为读取的图片--%>
+    <%--        img.src = e.target.result;--%>
+    <%--    };--%>
+    <%--    reader.readAsDataURL(file);--%>
 
-    }
-
-
-    //动态加载聊天窗口，不显示loadAllMessage(page, chat_id)
-    function loadChatBox(chat) {
-        var html =
-            '<div id="' + chat.id + '" class="chat-box" style="display: none;background: transparent;">\n' +
-            '            <div class="chat-box-title">\n' +
-            '                    <button onclick="quitChat(\'' + chat.id + '\')"\n' +
-            '                            class="button" contenteditable="false">退出聊天\n' +
-            '                    </button>\n' +
-            '         <button \n' +
-            '                            onclick="deleteChatMessage(\'' + chat.id + '\')"\n' +
-            '                            class="button" contenteditable="false">清除聊天记录\n' +
-            '                    </button>' +
-            '         <button \n' +
-            '                            onclick="showChatMember(\'' + chat.id + '\')"\n' +
-            '                            class="button" contenteditable="false">聊天信息\n' +
-            '                    </button>' +
-            '         <button \n' +
-            '                            onclick="loadAllMessage(\'1\',\'' + chat.id + '\')"\n' +
-            '                            class="button" contenteditable="false">加载已读消息\n' +
-            '                    </button>' +
-            '                    <p class="chat-box-title-text">\n' +
-            '                        ' + chat.name + '\n' +
-            '                    </p>\n' +
-
-            '            </div>\n' +
-            '<div class="chat-box-head">\n' +
-            '        </div>\n' +
-            '        <div id="' + chat.id + 'accept-message" class="chat-output-box" style="background: transparent;">\n' +
-            '        </div>\n' +
-            '        <div class="chat-input-box" style="background-color:#eee;" >\n' +
-            '            <button id="' + chat.id + 'send-button" onclick="sendMessage(\'' + chat.id + '\',\'user\')"  style="float: left" class="button">发送</button>\n' +
+    <%--}--%>
 
 
-            '      <input type="file" name="file" id="' + chat.id + 'send-file"\n' +
-            '                               oninput="send_file(document.getElementById(\'' + chat.id + 'send-file\'),\'' + chat.id + 'send-file\',\'' + chat.id + 'send-message\',\'' + chat.id + '\')"\n' +
-            '                               style="display: none">' +
-            '            <button onclick="document.getElementById(\'' + chat.id + 'send-file\').click()" style="float: left" class="' +
-            'button">文件</button>\n' +
+    <%--//动态加载聊天窗口，不显示loadAllMessage(page, chat_id)--%>
+    <%--function loadChatBox(chat) {--%>
+    <%--    var html =--%>
+    <%--        '<div id="' + chat.id + '" class="chat-box" style="display: none;background: transparent;">\n' +--%>
+    <%--        '            <div class="chat-box-title">\n' +--%>
+    <%--        '                    <button onclick="quitChat(\'' + chat.id + '\')"\n' +--%>
+    <%--        '                            class="button" contenteditable="false">退出聊天\n' +--%>
+    <%--        '                    </button>\n' +--%>
+    <%--        '         <button \n' +--%>
+    <%--        '                            onclick="deleteChatMessage(\'' + chat.id + '\')"\n' +--%>
+    <%--        '                            class="button" contenteditable="false">清除聊天记录\n' +--%>
+    <%--        '                    </button>' +--%>
+    <%--        '         <button \n' +--%>
+    <%--        '                            onclick="showChatMember(\'' + chat.id + '\')"\n' +--%>
+    <%--        '                            class="button" contenteditable="false">聊天信息\n' +--%>
+    <%--        '                    </button>' +--%>
+    <%--        '         <button \n' +--%>
+    <%--        '                            onclick="loadAllMessage(\'1\',\'' + chat.id + '\')"\n' +--%>
+    <%--        '                            class="button" contenteditable="false">加载已读消息\n' +--%>
+    <%--        '                    </button>' +--%>
+    <%--        '                    <p class="chat-box-title-text">\n' +--%>
+    <%--        '                        ' + chat.name + '\n' +--%>
+    <%--        '                    </p>\n' +--%>
 
-            '      <input type="file" name="file" id="' + chat.id + 'send-img"\n' +
-            '                               oninput="send_img(document.getElementById(\'' + chat.id + 'send-img\'),\'' + chat.id + 'send-img\',\'' + chat.id + 'send-message\',\'' + chat.id + '\')"\n' +
-            '                               style="display: none">' +
-            '            <button  onclick="document.getElementById(\'' + chat.id + 'send-img\').click()" style="float: left" class="button">图片</button>\n' +
-
-            '            <textarea id="' + chat.id + 'send-message" class="text-area" autofocus="autofocus" cols="100"\n' +
-            '                      required="required" maxlength="300"  oninput="enterClick(\'' + chat.id + 'send-button\')"></textarea>\n' +
-            '        </div></div>';
-        document.getElementById("right-page").innerHTML += html;
-    }
-
-    //发送消息
-    function sendMessage(chat_id, type) {
-        if (websocket === null) {
-            alert("正在初始化websocket连接，第一次连接需要加载数据，请稍后...");
-            return;
-        }
-        if (websocket === '') {
-            alert("您已断开与服务器的连接，可能您的账号已在别处登陆，请刷新浏览器重新连接服务器");
-            return;
-        }
-        var content = document.getElementById(chat_id + 'send-message').value;
-        if (!('' === content)) {
-            var user_id = "${sessionScope.login.id}";
-            var time = new Date().getTime();
-            websocket.send(JSON.stringify({
-                sender_id: user_id,
-                chat_id: chat_id,
-                content: content,
-                type: type,
-                time: time
-            }));
-            //发送完之后将消息清空
-            document.getElementById(chat_id + 'send-message').value = '';
-        } else {
-            alert("发送内容不能为空");
-            return;
-        }
-    }
-
-    //发送文件
-    function send_file(fileDom, file_id, preview, chat_id) {
-        //判断是否支持FileReader
-        if (window.FileReader) {
-            var reader = new FileReader();
-        } else {
-            alert("您的设备不支持文件预览功能，如需该功能请升级您的设备！");
-        }
-        //获取文件
-        var file = fileDom.files[0];
-        //文件大小
-        var size = (file.size / 1024) / 1024;
-        console.log("size" + size);
-        if (size > 20) {
-            alert("文件大小不能大于20m！");
-            file.value = "";
-            return;
-        } else if (size <= 0) {
-            alert("文件大小不能为0M！");
-            file.value = "";
-            return;
-        }
-        if (confirm("是否确定要立即发送文件：" + file.name)) {
-            //upload-file
-            var formData = new FormData();
-            var url = "http://${host}/wechat/upload?method=uploadfile.do";
-            formData.append('file', $(document.getElementById(file_id))[0].files[0]);
-            $.ajax({
-                url: url,
-                type: 'POST',
-                cache: false,
-                data: formData,
-                dataType: 'json',
-                processData: false,
-                contentType: false,
-                success: function (result) {
-                    if (result.message != null && result.message !== '') {
-                        alert("系统提示：" + result.message);
-                    }
-                    if ("SUCCESS" === result.status) {
-                        var html = '<a href="http://${host}/upload/file/' + result.data + '" download="' + file.name + '">下载</a>';
-                        document.getElementById(preview).value += '[文件：' + file.name + ']' + html;
-                        sendMessage(chat_id, "file");
-                    }
-                },
-                Error: function (xhr, error, exception) {
-                    alert(exception.toString());
-                }
-            })
-        } else {
-            return;
-        }
-    }
-
-    //发送图片
-    function send_img(fileDom, file_id, preview, chat_id) {
-        //判断是否支持FileReader
-        if (window.FileReader) {
-            var reader = new FileReader();
-        } else {
-            alert("您的设备不支持文件预览功能，如需该功能请升级您的设备！");
-        }
-        //获取文件
-        var file = fileDom.files[0];
-        //文件大小
-        var size = (file.size / 1024) / 1024;
-        console.log("size" + size);
-        var imageType = /^image\//;
-        //是否是图片
-        if (!imageType.test(file.type)) {
-            alert("该文件不是图片或者已经损坏，请重新选择！");
-            return;
-        }
-        if (size > 5) {
-            alert("图片大小不能大于5m！");
-            file.value = "";
-            return;
-        } else if (size <= 0) {
-            alert("文件大小不能为0M！");
-            file.value = "";
-            return;
-        }
-        //读取完成
-        reader.onload = function () {
-        };
-        reader.readAsDataURL(file);
-        if (confirm("是否确定要立即发送图片：" + file.name)) {
-            //upload-file
-            var formData = new FormData();
-            var url = "http://${host}/wechat/upload?method=uploadfile.do";
-            formData.append('file', $(document.getElementById(file_id))[0].files[0]);
-            $.ajax({
-                url: url,
-                type: 'POST',
-                cache: false,
-                data: formData,
-                dataType: 'json',
-                processData: false,
-                contentType: false,
-                success: function (result) {
-                    if (result.message != null && result.message !== '') {
-                        alert("系统提示：" + result.message);
-                    }
-                    if ("SUCCESS" === result.status) {
-                        var html = '<img src="${pageContext.request.contextPath}/upload/file/' + result.data + '"\n' +
-                            '         style="height: 100%;width: 100%;max-height:200px;max-width:200px;">\n';
-                        document.getElementById(preview).value += html;
-                        sendMessage(chat_id, "img");
-                    }
-                },
-                Error: function (xhr, error, exception) {
-                    alert(exception.toString());
-                }
-            })
-        } else {
-            return;
-        }
-    }
+    <%--        '            </div>\n' +--%>
+    <%--        '<div class="chat-box-head">\n' +--%>
+    <%--        '        </div>\n' +--%>
+    <%--        '        <div id="' + chat.id + 'accept-message" class="chat-output-box" style="background: transparent;">\n' +--%>
+    <%--        '        </div>\n' +--%>
+    <%--        '        <div class="chat-input-box" style="background-color:#eee;" >\n' +--%>
+    <%--        '            <button id="' + chat.id + 'send-button" onclick="sendMessage(\'' + chat.id + '\',\'user\')"  style="float: left" class="button">发送</button>\n' +--%>
 
 
-    //移除一个成员
-    function removeMember(member_id, chat_id) {
-        if (confirm("是否确定要移除该成员？")) {
-            var url = 'http://${host}/wechat/chat';
-            var request = {
-                method: "remove.do",
-                member_id: member_id,
-            };
-            alert("正在移除该成员，请稍后...");
-            postRequest(url, request, function (result) {
-                if ('SUCCESS' === result.status) {
-                    showChatMember(chat_id);
-                }
-            });
-        } else {
-            return;
-        }
-    }
+    <%--        '      <input type="file" name="file" id="' + chat.id + 'send-file"\n' +--%>
+    <%--        '                               oninput="send_file(document.getElementById(\'' + chat.id + 'send-file\'),\'' + chat.id + 'send-file\',\'' + chat.id + 'send-message\',\'' + chat.id + '\')"\n' +--%>
+    <%--        '                               style="display: none">' +--%>
+    <%--        '            <button onclick="document.getElementById(\'' + chat.id + 'send-file\').click()" style="float: left" class="' +--%>
+    <%--        'button">文件</button>\n' +--%>
+
+    <%--        '      <input type="file" name="file" id="' + chat.id + 'send-img"\n' +--%>
+    <%--        '                               oninput="send_img(document.getElementById(\'' + chat.id + 'send-img\'),\'' + chat.id + 'send-img\',\'' + chat.id + 'send-message\',\'' + chat.id + '\')"\n' +--%>
+    <%--        '                               style="display: none">' +--%>
+    <%--        '            <button  onclick="document.getElementById(\'' + chat.id + 'send-img\').click()" style="float: left" class="button">图片</button>\n' +--%>
+
+    <%--        '            <textarea id="' + chat.id + 'send-message" class="text-area" autofocus="autofocus" cols="100"\n' +--%>
+    <%--        '                      required="required" maxlength="300"  oninput="enterClick(\'' + chat.id + 'send-button\')"></textarea>\n' +--%>
+    <%--        '        </div></div>';--%>
+    <%--    document.getElementById("right-page").innerHTML += html;--%>
+    <%--}--%>
+
+    <%--//发送消息--%>
+    <%--function sendMessage(chat_id, type) {--%>
+    <%--    if (websocket === null) {--%>
+    <%--        alert("正在初始化websocket连接，第一次连接需要加载数据，请稍后...");--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    if (websocket === '') {--%>
+    <%--        alert("您已断开与服务器的连接，可能您的账号已在别处登陆，请刷新浏览器重新连接服务器");--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    var content = document.getElementById(chat_id + 'send-message').value;--%>
+    <%--    if (!('' === content)) {--%>
+    <%--        var user_id = "${sessionScope.login.id}";--%>
+    <%--        var time = new Date().getTime();--%>
+    <%--        websocket.send(JSON.stringify({--%>
+    <%--            sender_id: user_id,--%>
+    <%--            chat_id: chat_id,--%>
+    <%--            content: content,--%>
+    <%--            type: type,--%>
+    <%--            time: time--%>
+    <%--        }));--%>
+    <%--        //发送完之后将消息清空--%>
+    <%--        document.getElementById(chat_id + 'send-message').value = '';--%>
+    <%--    } else {--%>
+    <%--        alert("发送内容不能为空");--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--}--%>
+
+    <%--//发送文件--%>
+    <%--function send_file(fileDom, file_id, preview, chat_id) {--%>
+    <%--    //判断是否支持FileReader--%>
+    <%--    if (window.FileReader) {--%>
+    <%--        var reader = new FileReader();--%>
+    <%--    } else {--%>
+    <%--        alert("您的设备不支持文件预览功能，如需该功能请升级您的设备！");--%>
+    <%--    }--%>
+    <%--    //获取文件--%>
+    <%--    var file = fileDom.files[0];--%>
+    <%--    //文件大小--%>
+    <%--    var size = (file.size / 1024) / 1024;--%>
+    <%--    console.log("size" + size);--%>
+    <%--    if (size > 20) {--%>
+    <%--        alert("文件大小不能大于20m！");--%>
+    <%--        file.value = "";--%>
+    <%--        return;--%>
+    <%--    } else if (size <= 0) {--%>
+    <%--        alert("文件大小不能为0M！");--%>
+    <%--        file.value = "";--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    if (confirm("是否确定要立即发送文件：" + file.name)) {--%>
+    <%--        //upload-file--%>
+    <%--        var formData = new FormData();--%>
+    <%--        var url = "http://${host}/wechat/upload?method=uploadfile.do";--%>
+    <%--        formData.append('file', $(document.getElementById(file_id))[0].files[0]);--%>
+    <%--        $.ajax({--%>
+    <%--            url: url,--%>
+    <%--            type: 'POST',--%>
+    <%--            cache: false,--%>
+    <%--            data: formData,--%>
+    <%--            dataType: 'json',--%>
+    <%--            processData: false,--%>
+    <%--            contentType: false,--%>
+    <%--            success: function (result) {--%>
+    <%--                if (result.message != null && result.message !== '') {--%>
+    <%--                    alert("系统提示：" + result.message);--%>
+    <%--                }--%>
+    <%--                if ("SUCCESS" === result.status) {--%>
+    <%--                    var html = '<a href="http://${host}/upload/file/' + result.data + '" download="' + file.name + '">下载</a>';--%>
+    <%--                    document.getElementById(preview).value += '[文件：' + file.name + ']' + html;--%>
+    <%--                    sendMessage(chat_id, "file");--%>
+    <%--                }--%>
+    <%--            },--%>
+    <%--            Error: function (xhr, error, exception) {--%>
+    <%--                alert(exception.toString());--%>
+    <%--            }--%>
+    <%--        })--%>
+    <%--    } else {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--}--%>
+
+    <%--//发送图片--%>
+    <%--function send_img(fileDom, file_id, preview, chat_id) {--%>
+    <%--    //判断是否支持FileReader--%>
+    <%--    if (window.FileReader) {--%>
+    <%--        var reader = new FileReader();--%>
+    <%--    } else {--%>
+    <%--        alert("您的设备不支持文件预览功能，如需该功能请升级您的设备！");--%>
+    <%--    }--%>
+    <%--    //获取文件--%>
+    <%--    var file = fileDom.files[0];--%>
+    <%--    //文件大小--%>
+    <%--    var size = (file.size / 1024) / 1024;--%>
+    <%--    console.log("size" + size);--%>
+    <%--    var imageType = /^image\//;--%>
+    <%--    //是否是图片--%>
+    <%--    if (!imageType.test(file.type)) {--%>
+    <%--        alert("该文件不是图片或者已经损坏，请重新选择！");--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    if (size > 5) {--%>
+    <%--        alert("图片大小不能大于5m！");--%>
+    <%--        file.value = "";--%>
+    <%--        return;--%>
+    <%--    } else if (size <= 0) {--%>
+    <%--        alert("文件大小不能为0M！");--%>
+    <%--        file.value = "";--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--    //读取完成--%>
+    <%--    reader.onload = function () {--%>
+    <%--    };--%>
+    <%--    reader.readAsDataURL(file);--%>
+    <%--    if (confirm("是否确定要立即发送图片：" + file.name)) {--%>
+    <%--        //upload-file--%>
+    <%--        var formData = new FormData();--%>
+    <%--        var url = "http://${host}/wechat/upload?method=uploadfile.do";--%>
+    <%--        formData.append('file', $(document.getElementById(file_id))[0].files[0]);--%>
+    <%--        $.ajax({--%>
+    <%--            url: url,--%>
+    <%--            type: 'POST',--%>
+    <%--            cache: false,--%>
+    <%--            data: formData,--%>
+    <%--            dataType: 'json',--%>
+    <%--            processData: false,--%>
+    <%--            contentType: false,--%>
+    <%--            success: function (result) {--%>
+    <%--                if (result.message != null && result.message !== '') {--%>
+    <%--                    alert("系统提示：" + result.message);--%>
+    <%--                }--%>
+    <%--                if ("SUCCESS" === result.status) {--%>
+    <%--                    var html = '<img src="${pageContext.request.contextPath}/upload/file/' + result.data + '"\n' +--%>
+    <%--                        '         style="height: 100%;width: 100%;max-height:200px;max-width:200px;">\n';--%>
+    <%--                    document.getElementById(preview).value += html;--%>
+    <%--                    sendMessage(chat_id, "img");--%>
+    <%--                }--%>
+    <%--            },--%>
+    <%--            Error: function (xhr, error, exception) {--%>
+    <%--                alert(exception.toString());--%>
+    <%--            }--%>
+    <%--        })--%>
+    <%--    } else {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--}--%>
+
+
+    <%--//移除一个成员--%>
+    <%--function removeMember(member_id, chat_id) {--%>
+    <%--    if (confirm("是否确定要移除该成员？")) {--%>
+    <%--        var url = 'http://${host}/wechat/chat';--%>
+    <%--        var request = {--%>
+    <%--            method: "remove.do",--%>
+    <%--            member_id: member_id,--%>
+    <%--        };--%>
+    <%--        alert("正在移除该成员，请稍后...");--%>
+    <%--        postRequest(url, request, function (result) {--%>
+    <%--            if ('SUCCESS' === result.status) {--%>
+    <%--                showChatMember(chat_id);--%>
+    <%--            }--%>
+    <%--        });--%>
+    <%--    } else {--%>
+    <%--        return;--%>
+    <%--    }--%>
+    <%--}--%>
 
     //插入一个搜索用户的结果
     function addSearchUserResultHtml(user) {
@@ -1719,194 +1724,194 @@
         });
     }
 
-    //插入一条用户的朋友圈评论
-    function addRemarkBlockHtml(remark) {
-        var time = new Date(remark.time).toLocaleString();
-        var html = '           <div id="' + remark.id + '" class="info-detail-block" style="margin-left: 20px;margin-bottom: -26px">\n' +
-            '                        <label for="moment-content">\n' +
-            '                            <div class="info-detail-block" style="margin-bottom: -5px;">               \n' +
-            '                                <div class="user-box" style="width: 95%;border-bottom: 1px solid #ccc;    margin-left: 70px;">\n' +
-            '                                    <div class="user-photo">\n' +
-            '                                        <img src="${pageContext.request.contextPath}/upload/photo/' + remark.user_photo + '" alt="用户头像" class="my-photo">\n' +
-            '                                    </div>\n' +
-            '                                    <div onclick="addMomentDetailHtml(\'' + remark.id + '\')" class="user-info" style="height: fit-content;margin-bottom: 11px;">\n' +
-            '                                        <h3 class="my-name" style="color: #333">' + remark.user_name + ' 发布于 ' + time + '</h3>\n' +
-            '                                        <div style="word-break: break-all;white-space: normal;max-width: 600px;">' + remark.content + '</div>\n' +
-            '                                    </div>\n' +
-            '                                    <button id="' + remark.id + 'love" data-love="' + remark.love + '" onclick="dev()" style="float: left"\n' +
-            '                                            contenteditable="false" class="button">点赞\(' + remark.love + '\)\n' +
-            '                                    </button>\n' +
-            '                                    <button id="' + remark.id + 'remark" data-reply="' + remark.reply + '" onclick="replyRemark(\'' + remark.moment_id + '\',\'' + remark.user_name + '\')" style="float: left"\n' +
-            '                                            contenteditable="false" class="button">回复' +
-            '                                    </button>\n';
-        var visitorArea =
-            '                                </div>\n' +
-            '                            </div>\n' +
-            '                        </label>\n' +
-            '                    </div>';
-        var ownerArea =
-            '                                    <button onclick="deleteRemark(\'' + remark.id + '\',\'' + remark.moment_id + '\')" style="float: right" \n' +
-            '                                            contenteditable="false" class="button">删除\n' +
-            '                                    </button>\n' +
-            '                                </div>\n' +
-            '                            </div>\n' +
-            '                        </label>\n' +
-            '                    </div>';
-        if (remark.user_id ===${sessionScope.login.id}) {
-            document.getElementById("news-detail-box-content").innerHTML += html + ownerArea;
-        } else {
-            document.getElementById("news-detail-box-content").innerHTML += html + visitorArea;
-        }
-    }
+    <%--//插入一条用户的朋友圈评论--%>
+    <%--function addRemarkBlockHtml(remark) {--%>
+    <%--    var time = new Date(remark.time).toLocaleString();--%>
+    <%--    var html = '           <div id="' + remark.id + '" class="info-detail-block" style="margin-left: 20px;margin-bottom: -26px">\n' +--%>
+    <%--        '                        <label for="moment-content">\n' +--%>
+    <%--        '                            <div class="info-detail-block" style="margin-bottom: -5px;">               \n' +--%>
+    <%--        '                                <div class="user-box" style="width: 95%;border-bottom: 1px solid #ccc;    margin-left: 70px;">\n' +--%>
+    <%--        '                                    <div class="user-photo">\n' +--%>
+    <%--        '                                        <img src="${pageContext.request.contextPath}/upload/photo/' + remark.user_photo + '" alt="用户头像" class="my-photo">\n' +--%>
+    <%--        '                                    </div>\n' +--%>
+    <%--        '                                    <div onclick="addMomentDetailHtml(\'' + remark.id + '\')" class="user-info" style="height: fit-content;margin-bottom: 11px;">\n' +--%>
+    <%--        '                                        <h3 class="my-name" style="color: #333">' + remark.user_name + ' 发布于 ' + time + '</h3>\n' +--%>
+    <%--        '                                        <div style="word-break: break-all;white-space: normal;max-width: 600px;">' + remark.content + '</div>\n' +--%>
+    <%--        '                                    </div>\n' +--%>
+    <%--        '                                    <button id="' + remark.id + 'love" data-love="' + remark.love + '" onclick="dev()" style="float: left"\n' +--%>
+    <%--        '                                            contenteditable="false" class="button">点赞\(' + remark.love + '\)\n' +--%>
+    <%--        '                                    </button>\n' +--%>
+    <%--        '                                    <button id="' + remark.id + 'remark" data-reply="' + remark.reply + '" onclick="replyRemark(\'' + remark.moment_id + '\',\'' + remark.user_name + '\')" style="float: left"\n' +--%>
+    <%--        '                                            contenteditable="false" class="button">回复' +--%>
+    <%--        '                                    </button>\n';--%>
+    <%--    var visitorArea =--%>
+    <%--        '                                </div>\n' +--%>
+    <%--        '                            </div>\n' +--%>
+    <%--        '                        </label>\n' +--%>
+    <%--        '                    </div>';--%>
+    <%--    var ownerArea =--%>
+    <%--        '                                    <button onclick="deleteRemark(\'' + remark.id + '\',\'' + remark.moment_id + '\')" style="float: right" \n' +--%>
+    <%--        '                                            contenteditable="false" class="button">删除\n' +--%>
+    <%--        '                                    </button>\n' +--%>
+    <%--        '                                </div>\n' +--%>
+    <%--        '                            </div>\n' +--%>
+    <%--        '                        </label>\n' +--%>
+    <%--        '                    </div>';--%>
+    <%--    if (remark.user_id ===${sessionScope.login.id}) {--%>
+    <%--        document.getElementById("news-detail-box-content").innerHTML += html + ownerArea;--%>
+    <%--    } else {--%>
+    <%--        document.getElementById("news-detail-box-content").innerHTML += html + visitorArea;--%>
+    <%--    }--%>
+    <%--}--%>
 
-    //插入一条朋友圈动态
-    function addNewsBlockHtml(moment) {
-        var time = new Date(moment.time).toLocaleString();
-        var html = '           <div id="' + moment.id + '" class="info-detail-block" style="margin-left: 20px;margin-bottom:0px;">\n' +
-            '                        <label for="moment-content" style="    margin-bottom: -47px;">\n' +
-            '                            <div class="info-detail-block" >               \n' +
-            '                                <div class="user-box" style="border-bottom: 1px solid #ccc;width:100%;">\n' +
-            '                                    <div class="user-photo">\n' +
-            '                                        <img src="${pageContext.request.contextPath}/upload/photo/' + moment.user_photo + '" alt=w"用户头像" class="my-photo">\n' +
-            '                                    </div>\n' +
-            '                                    <div onclick="addMomentDetailHtml(\'' + moment.id + '\')" class="user-info" style="height: fit-content;margin-bottom: 11px;">\n' +
-            '                                        <h3 class="my-name" style="color: #333">' + moment.user_name + ' 发布于 ' + time + '</h3>\n' +
-            '                                        <div style="word-break: break-all;white-space: normal;    max-width: 70%">' + moment.content + '</div>\n' +
-            '                                        <img src="${pageContext.request.contextPath}/upload/photo/' + moment.photo + '" style="position:relative;height: 100%;' +
-            '                                       max-width:500px;max-height:300px;width: 100%">\n' +
-            '                                    </div>\n' +
-            '                                    <button id="' + moment.id + 'love" data-love="' + moment.love + '" ' +
-            '                                       onclick="loveMoment(\'' + moment.id + '\',' + moment.love + ')" style="float: left;height: 30px;"  class="button" \n' +
-            '                                            contenteditable="false">点赞\(' + moment.love + '\)\n' +
-            '                                    </button>\n' +
-            '                                    <button id="' + moment.id + 'remark" data-remark="' + moment.remark + '" ' +
-            '                                       onclick="remarkMoment(\'' + moment.id + '\',' + moment.remark + ')" style="float: left;height: 30px;"  class="button" \n' +
-            '                                            contenteditable="false">评论\(' + moment.remark + '\)\n' +
-            '                                    </button>\n' +
-            '                                    <button onclick="dev()" style="float: left;height: 30px;"  class="button" \n' +
-            '                                            contenteditable="false">收藏\(' + moment.collect + '\)\n' +
-            '                                    </button>\n' +
-            '                                    <button onclick="dev()" style="float: left;height: 30px;"  class="button" \n' +
-            '                                            contenteditable="false">转发\(' + moment.share + '\)\n' +
-            '                                    </button>\n' +
-            '                                    <button onclick="" style="float: left;height: 30px;"  class="button" \n' +
-            '                                            contenteditable="false">浏览量\(' + moment.view + '\)\n' +
-            '                                    </button>\n';
+    <%--//插入一条朋友圈动态--%>
+    <%--function addNewsBlockHtml(moment) {--%>
+    <%--    var time = new Date(moment.time).toLocaleString();--%>
+    <%--    var html = '           <div id="' + moment.id + '" class="info-detail-block" style="margin-left: 20px;margin-bottom:0px;">\n' +--%>
+    <%--        '                        <label for="moment-content" style="    margin-bottom: -47px;">\n' +--%>
+    <%--        '                            <div class="info-detail-block" >               \n' +--%>
+    <%--        '                                <div class="user-box" style="border-bottom: 1px solid #ccc;width:100%;">\n' +--%>
+    <%--        '                                    <div class="user-photo">\n' +--%>
+    <%--        '                                        <img src="${pageContext.request.contextPath}/upload/photo/' + moment.user_photo + '" alt=w"用户头像" class="my-photo">\n' +--%>
+    <%--        '                                    </div>\n' +--%>
+    <%--        '                                    <div onclick="addMomentDetailHtml(\'' + moment.id + '\')" class="user-info" style="height: fit-content;margin-bottom: 11px;">\n' +--%>
+    <%--        '                                        <h3 class="my-name" style="color: #333">' + moment.user_name + ' 发布于 ' + time + '</h3>\n' +--%>
+    <%--        '                                        <div style="word-break: break-all;white-space: normal;    max-width: 70%">' + moment.content + '</div>\n' +--%>
+    <%--        '                                        <img src="${pageContext.request.contextPath}/upload/photo/' + moment.photo + '" style="position:relative;height: 100%;' +--%>
+    <%--        '                                       max-width:500px;max-height:300px;width: 100%">\n' +--%>
+    <%--        '                                    </div>\n' +--%>
+    <%--        '                                    <button id="' + moment.id + 'love" data-love="' + moment.love + '" ' +--%>
+    <%--        '                                       onclick="loveMoment(\'' + moment.id + '\',' + moment.love + ')" style="float: left;height: 30px;"  class="button" \n' +--%>
+    <%--        '                                            contenteditable="false">点赞\(' + moment.love + '\)\n' +--%>
+    <%--        '                                    </button>\n' +--%>
+    <%--        '                                    <button id="' + moment.id + 'remark" data-remark="' + moment.remark + '" ' +--%>
+    <%--        '                                       onclick="remarkMoment(\'' + moment.id + '\',' + moment.remark + ')" style="float: left;height: 30px;"  class="button" \n' +--%>
+    <%--        '                                            contenteditable="false">评论\(' + moment.remark + '\)\n' +--%>
+    <%--        '                                    </button>\n' +--%>
+    <%--        '                                    <button onclick="dev()" style="float: left;height: 30px;"  class="button" \n' +--%>
+    <%--        '                                            contenteditable="false">收藏\(' + moment.collect + '\)\n' +--%>
+    <%--        '                                    </button>\n' +--%>
+    <%--        '                                    <button onclick="dev()" style="float: left;height: 30px;"  class="button" \n' +--%>
+    <%--        '                                            contenteditable="false">转发\(' + moment.share + '\)\n' +--%>
+    <%--        '                                    </button>\n' +--%>
+    <%--        '                                    <button onclick="" style="float: left;height: 30px;"  class="button" \n' +--%>
+    <%--        '                                            contenteditable="false">浏览量\(' + moment.view + '\)\n' +--%>
+    <%--        '                                    </button>\n';--%>
 
-        var visitorArea =
-            '                                </div>\n' +
-            '                            </div>\n' +
-            '                        </label>\n' +
-            '                    </div>';
-        var ownerArea =
-            '                                    <button onclick="deleteMoment(\'' + moment.id + '\')" style="float: left;margin-left: 210px;height: 30px;"  \n' +
-            '                                            class="button" contenteditable="false">删除\n' +
-            '                                    </button>\n' +
-            '                                </div>\n' +
-            '                            </div>\n' +
-            '                        </label>\n' +
-            '                    </div>';
-        if (moment.owner_id ===${sessionScope.login.id}) {
-            document.getElementById("news-box-content").innerHTML += html + ownerArea;
-        } else {
-            document.getElementById("news-box-content").innerHTML += html + visitorArea;
-        }
-    }
+    <%--    var visitorArea =--%>
+    <%--        '                                </div>\n' +--%>
+    <%--        '                            </div>\n' +--%>
+    <%--        '                        </label>\n' +--%>
+    <%--        '                    </div>';--%>
+    <%--    var ownerArea =--%>
+    <%--        '                                    <button onclick="deleteMoment(\'' + moment.id + '\')" style="float: left;margin-left: 210px;height: 30px;"  \n' +--%>
+    <%--        '                                            class="button" contenteditable="false">删除\n' +--%>
+    <%--        '                                    </button>\n' +--%>
+    <%--        '                                </div>\n' +--%>
+    <%--        '                            </div>\n' +--%>
+    <%--        '                        </label>\n' +--%>
+    <%--        '                    </div>';--%>
+    <%--    if (moment.owner_id ===${sessionScope.login.id}) {--%>
+    <%--        document.getElementById("news-box-content").innerHTML += html + ownerArea;--%>
+    <%--    } else {--%>
+    <%--        document.getElementById("news-box-content").innerHTML += html + visitorArea;--%>
+    <%--    }--%>
+    <%--}--%>
 
-    //插入一条用户的朋友圈
-    function addMomentBlockHtml(moment) {
-        var time = new Date(moment.time).toLocaleString();
-        var html = '           <div id="' + moment.id + '" class="info-detail-block" style="margin-left: 20px;margin-bottom:0px;">\n' +
-            '                        <label for="moment-content" style="    margin-bottom: -47px;">\n' +
-            '                            <div class="info-detail-block" >               \n' +
-            '                                <div class="user-box" style="border-bottom: 1px solid #ccc;width:100%;">\n' +
-            '                                    <div class="user-photo">\n' +
-            '                                        <img src="${pageContext.request.contextPath}/upload/photo/' + moment.user_photo + '" alt=w"用户头像" class="my-photo">\n' +
-            '                                    </div>\n' +
-            '                                    <div onclick="addMomentDetailHtml(\'' + moment.id + '\')" class="user-info" style="height: fit-content;margin-bottom: 11px;">\n' +
-            '                                        <h3 class="my-name" style="color: #333">' + moment.user_name + ' 发布于 ' + time + '</h3>\n' +
-            '                                        <div style="word-break: break-all;white-space: normal;    max-width: 70%">' + moment.content + '</div>\n' +
-            '                                        <img src="${pageContext.request.contextPath}/upload/photo/' + moment.photo + '" style="position:relative;height: 100%;' +
-            '                                       max-width:500px;max-height:300px;width: 100%">\n' +
-            '                                    </div>\n' +
-            '                                    <button id="' + moment.id + 'love" data-love="' + moment.love + '" ' +
-            '                                       onclick="loveMoment(\'' + moment.id + '\',' + moment.love + ')" style="float: left;height: 30px;"  class="button"\n' +
-            '                                            contenteditable="false">点赞\(' + moment.love + '\)\n' +
-            '                                    </button>\n' +
-            '                                    <button id="' + moment.id + 'remark" data-remark="' + moment.remark + '" ' +
-            '                                       onclick="remarkMoment(\'' + moment.id + '\',' + moment.remark + ')" style="float: left;height: 30px;"  class="button"\n' +
-            '                                            contenteditable="false">评论\(' + moment.remark + '\)\n' +
-            '                                    </button>\n' +
-            '                                    <button onclick="dev()" style="float: left;height: 30px;"  class="button"\n' +
-            '                                            contenteditable="false">收藏\(' + moment.collect + '\)\n' +
-            '                                    </button>\n' +
-            '                                    <button onclick="dev()" style="float: left;height: 30px;"  class="button"\n' +
-            '                                            contenteditable="false">转发\(' + moment.share + '\)\n' +
-            '                                    </button>\n' +
-            '                                    <button onclick="" style="float: left;height: 30px;"  class="button"\n' +
-            '                                            contenteditable="false">浏览量\(' + moment.view + '\)\n' +
-            '                                    </button>\n';
+    <%--//插入一条用户的朋友圈--%>
+    <%--function addMomentBlockHtml(moment) {--%>
+    <%--    var time = new Date(moment.time).toLocaleString();--%>
+    <%--    var html = '           <div id="' + moment.id + '" class="info-detail-block" style="margin-left: 20px;margin-bottom:0px;">\n' +--%>
+    <%--        '                        <label for="moment-content" style="    margin-bottom: -47px;">\n' +--%>
+    <%--        '                            <div class="info-detail-block" >               \n' +--%>
+    <%--        '                                <div class="user-box" style="border-bottom: 1px solid #ccc;width:100%;">\n' +--%>
+    <%--        '                                    <div class="user-photo">\n' +--%>
+    <%--        '                                        <img src="${pageContext.request.contextPath}/upload/photo/' + moment.user_photo + '" alt=w"用户头像" class="my-photo">\n' +--%>
+    <%--        '                                    </div>\n' +--%>
+    <%--        '                                    <div onclick="addMomentDetailHtml(\'' + moment.id + '\')" class="user-info" style="height: fit-content;margin-bottom: 11px;">\n' +--%>
+    <%--        '                                        <h3 class="my-name" style="color: #333">' + moment.user_name + ' 发布于 ' + time + '</h3>\n' +--%>
+    <%--        '                                        <div style="word-break: break-all;white-space: normal;    max-width: 70%">' + moment.content + '</div>\n' +--%>
+    <%--        '                                        <img src="${pageContext.request.contextPath}/upload/photo/' + moment.photo + '" style="position:relative;height: 100%;' +--%>
+    <%--        '                                       max-width:500px;max-height:300px;width: 100%">\n' +--%>
+    <%--        '                                    </div>\n' +--%>
+    <%--        '                                    <button id="' + moment.id + 'love" data-love="' + moment.love + '" ' +--%>
+    <%--        '                                       onclick="loveMoment(\'' + moment.id + '\',' + moment.love + ')" style="float: left;height: 30px;"  class="button"\n' +--%>
+    <%--        '                                            contenteditable="false">点赞\(' + moment.love + '\)\n' +--%>
+    <%--        '                                    </button>\n' +--%>
+    <%--        '                                    <button id="' + moment.id + 'remark" data-remark="' + moment.remark + '" ' +--%>
+    <%--        '                                       onclick="remarkMoment(\'' + moment.id + '\',' + moment.remark + ')" style="float: left;height: 30px;"  class="button"\n' +--%>
+    <%--        '                                            contenteditable="false">评论\(' + moment.remark + '\)\n' +--%>
+    <%--        '                                    </button>\n' +--%>
+    <%--        '                                    <button onclick="dev()" style="float: left;height: 30px;"  class="button"\n' +--%>
+    <%--        '                                            contenteditable="false">收藏\(' + moment.collect + '\)\n' +--%>
+    <%--        '                                    </button>\n' +--%>
+    <%--        '                                    <button onclick="dev()" style="float: left;height: 30px;"  class="button"\n' +--%>
+    <%--        '                                            contenteditable="false">转发\(' + moment.share + '\)\n' +--%>
+    <%--        '                                    </button>\n' +--%>
+    <%--        '                                    <button onclick="" style="float: left;height: 30px;"  class="button"\n' +--%>
+    <%--        '                                            contenteditable="false">浏览量\(' + moment.view + '\)\n' +--%>
+    <%--        '                                    </button>\n';--%>
 
-        var visitorArea =
-            '                                </div>\n' +
-            '                            </div>\n' +
-            '                        </label>\n' +
-            '                    </div>';
-        var ownerArea =
-            '                                    <button onclick="deleteMoment(\'' + moment.id + '\')" style="float: left;margin-left: 210px;height: 30px;"\n' +
-            '                                            class="button" contenteditable="false">删除\n' +
-            '                                    </button>\n' +
-            '                                </div>\n' +
-            '                            </div>\n' +
-            '                        </label>\n' +
-            '                    </div>';
-        document.getElementById("moment-box-content").innerHTML += html + ownerArea;
-    }
+    <%--    var visitorArea =--%>
+    <%--        '                                </div>\n' +--%>
+    <%--        '                            </div>\n' +--%>
+    <%--        '                        </label>\n' +--%>
+    <%--        '                    </div>';--%>
+    <%--    var ownerArea =--%>
+    <%--        '                                    <button onclick="deleteMoment(\'' + moment.id + '\')" style="float: left;margin-left: 210px;height: 30px;"\n' +--%>
+    <%--        '                                            class="button" contenteditable="false">删除\n' +--%>
+    <%--        '                                    </button>\n' +--%>
+    <%--        '                                </div>\n' +--%>
+    <%--        '                            </div>\n' +--%>
+    <%--        '                        </label>\n' +--%>
+    <%--        '                    </div>';--%>
+    <%--    document.getElementById("moment-box-content").innerHTML += html + ownerArea;--%>
+    <%--}--%>
 
-    //插入朋友圈照片
-    function addPhotoHtml(photo) {
-        var html = '           <div class="info-detail-block" style="margin-left: 20px">\n' +
-            '                            <div class="info-detail-block">               \n' +
-            '                                <div class="user-box" style="">\n' +
-            '                                    <div class="user-info" style="    border-bottom: 1px solid #ccc;height: fit-content;margin-bottom: 11px;">\n' +
-            '                                        <img src="${pageContext.request.contextPath}/upload/photo/' + photo + '" style="position:relative;height: 100%;' +
-            'max-width:500px;max-height:300px;width: 100%">\n' +
-            '                                    </div>\n' +
-            '                                </div>\n' +
-            '                            </div>\n' +
-            '                    </div>';
+    <%--//插入朋友圈照片--%>
+    <%--function addPhotoHtml(photo) {--%>
+    <%--    var html = '           <div class="info-detail-block" style="margin-left: 20px">\n' +--%>
+    <%--        '                            <div class="info-detail-block">               \n' +--%>
+    <%--        '                                <div class="user-box" style="">\n' +--%>
+    <%--        '                                    <div class="user-info" style="    border-bottom: 1px solid #ccc;height: fit-content;margin-bottom: 11px;">\n' +--%>
+    <%--        '                                        <img src="${pageContext.request.contextPath}/upload/photo/' + photo + '" style="position:relative;height: 100%;' +--%>
+    <%--        'max-width:500px;max-height:300px;width: 100%">\n' +--%>
+    <%--        '                                    </div>\n' +--%>
+    <%--        '                                </div>\n' +--%>
+    <%--        '                            </div>\n' +--%>
+    <%--        '                    </div>';--%>
 
-        document.getElementById("photo-box-content").innerHTML += html;
-    }
+    <%--    document.getElementById("photo-box-content").innerHTML += html;--%>
+    <%--}--%>
 
-    //将消息显示在消息对应的聊天窗口上,并在聊天列表对应位置显示
-    function addMessageToChat(message) {
-        var right_bubble_html = '<div class="chat-output-content-right">\n' +
-            '    <img src="${pageContext.request.contextPath}/upload/photo/' + message.sender_photo + '" alt="头像" class="chat-output-head-photo-right">\n' +
-            '    <div class="chat-output-bubble-right">\n' +
-            '        <div class="chat-output-bubble-inner">\n' +
-            '            <pre class="chat-output-bubble-pre-right">' + message.content + '</pre></div></div></div>';
-        var left_bubble_html = '<div class="chat-output-content-left">\n' +
-            '    <img src="${pageContext.request.contextPath}/upload/photo/' + message.sender_photo + '" alt="头像" class="chat-output-head-photo-left">\n' +
-            '    <h4 class="chat-output-meta-left">' + message.sender_name + '</h4>\n' +
-            '    <div class="chat-output-bubble-left">\n' +
-            '        <div class="chat-output-bubble-inner">\n' +
-            '            <pre class="chat-output-bubble-pre-left">' + message.content + '</pre></div></div></div>';
-        if (message.sender_id ===${sessionScope.login.id}) {
-            document.getElementById(message.chat_id + "accept-message").innerHTML += '<br/>' + right_bubble_html;
-        } else {
-            document.getElementById(message.chat_id + "accept-message").innerHTML += '<br/>' + left_bubble_html;
-        }
-        document.getElementById(message.chat_id + "accept-message").scrollTop = document.getElementById(message.chat_id + "accept-message").scrollHeight;
-        //显示在列表上
-        if ("file" === message.type) {
-            document.getElementById(message.chat_id + "new-message").innerText = "你收到一个文件";
-        } else if ("img" === message.type) {
-            document.getElementById(message.chat_id + "new-message").innerText = "你收到一个图片";
-        } else {
-            document.getElementById(message.chat_id + "new-message").innerText = message.content;
-        }
-    }
+    <%--//将消息显示在消息对应的聊天窗口上,并在聊天列表对应位置显示--%>
+    <%--function addMessageToChat(message) {--%>
+    <%--    var right_bubble_html = '<div class="chat-output-content-right">\n' +--%>
+    <%--        '    <img src="${pageContext.request.contextPath}/upload/photo/' + message.sender_photo + '" alt="头像" class="chat-output-head-photo-right">\n' +--%>
+    <%--        '    <div class="chat-output-bubble-right">\n' +--%>
+    <%--        '        <div class="chat-output-bubble-inner">\n' +--%>
+    <%--        '            <pre class="chat-output-bubble-pre-right">' + message.content + '</pre></div></div></div>';--%>
+    <%--    var left_bubble_html = '<div class="chat-output-content-left">\n' +--%>
+    <%--        '    <img src="${pageContext.request.contextPath}/upload/photo/' + message.sender_photo + '" alt="头像" class="chat-output-head-photo-left">\n' +--%>
+    <%--        '    <h4 class="chat-output-meta-left">' + message.sender_name + '</h4>\n' +--%>
+    <%--        '    <div class="chat-output-bubble-left">\n' +--%>
+    <%--        '        <div class="chat-output-bubble-inner">\n' +--%>
+    <%--        '            <pre class="chat-output-bubble-pre-left">' + message.content + '</pre></div></div></div>';--%>
+    <%--    if (message.sender_id ===${sessionScope.login.id}) {--%>
+    <%--        document.getElementById(message.chat_id + "accept-message").innerHTML += '<br/>' + right_bubble_html;--%>
+    <%--    } else {--%>
+    <%--        document.getElementById(message.chat_id + "accept-message").innerHTML += '<br/>' + left_bubble_html;--%>
+    <%--    }--%>
+    <%--    document.getElementById(message.chat_id + "accept-message").scrollTop = document.getElementById(message.chat_id + "accept-message").scrollHeight;--%>
+    <%--    //显示在列表上--%>
+    <%--    if ("file" === message.type) {--%>
+    <%--        document.getElementById(message.chat_id + "new-message").innerText = "你收到一个文件";--%>
+    <%--    } else if ("img" === message.type) {--%>
+    <%--        document.getElementById(message.chat_id + "new-message").innerText = "你收到一个图片";--%>
+    <%--    } else {--%>
+    <%--        document.getElementById(message.chat_id + "new-message").innerText = message.content;--%>
+    <%--    }--%>
+    <%--}--%>
 
     //显示消息
     function showMessage(message) {
@@ -1936,7 +1941,7 @@
 <!--BEGIN——websocket脚本-->
 <script type="text/javascript">
     var websocket = null;
-    var url = "ws://${host}/server/chat/${sessionScope.login.id}";
+    <%--var url = "ws://${host}/server/chat/${sessionScope.login.id}";--%>
 
     function connectWebsocket() {
 
@@ -1989,9 +1994,9 @@
 <!--BEGIN——预加载脚本-->
 <script>
     //请求聊天列表
-    loadChatListAndBox();
-    loadFriendList();
-    connectWebsocket();
+    // loadChatListAndBox();
+    // loadFriendList();
+    // connectWebsocket();
 </script>
 <!--END——预加载脚本-->
 </body>
