@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `tb_like`;
 CREATE TABLE `tb_like`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
   `user_id` bigint NULL DEFAULT NULL COMMENT '用户id',
-  `is_like` int NULL DEFAULT NULL COMMENT '是否点赞{0是，1否}',
+  `is_like` int NULL DEFAULT NULL COMMENT '是否点赞{0不点赞，1点赞}',
   `created_by` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
   `created_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '修改人',

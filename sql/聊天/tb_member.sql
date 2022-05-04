@@ -23,9 +23,9 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `tb_member`;
 CREATE TABLE `tb_member`  (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `is_member_group` int NULL DEFAULT NULL COMMENT '是否群主{0是，1不是}',
+  `is_member_group` int NULL DEFAULT NULL COMMENT '是否群主{0不是，1是}',
   `member_user_id` bigint NULL DEFAULT NULL COMMENT '用户表主键id',
-  `is_member_manager` int NULL DEFAULT NULL COMMENT '是否群管理员{0是，1不是}',
+  `is_member_manager` int NULL DEFAULT NULL COMMENT '是否群管理员{0不是，1是}',
   `member_nice_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户在本群的昵称',
   `created_by` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '创建人',
   `created_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',

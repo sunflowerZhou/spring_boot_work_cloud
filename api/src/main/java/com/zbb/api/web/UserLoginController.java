@@ -2,22 +2,18 @@ package com.zbb.api.web;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.zbb.bean.Result;
 import com.zbb.entity.UserInfo;
-import com.zbb.exception.GlobalException;
-import com.zbb.service.UserLoginService;
-import com.zbb.service.ding.UserInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.zbb.service.UserInfoService;
+import org.apache.commons.codec.language.bm.Lang;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 /**
@@ -32,10 +28,8 @@ public class UserLoginController {
     private static final Log log = LogFactory.get();
 
     @Resource
-    private UserLoginService userLoginService;
-    @Autowired
-    private HttpServletRequest request;
-    @Autowired
+    private UserInfoService userInfoService;
+    @Resource
     private HttpServletResponse response;
 
     /**
@@ -45,17 +39,13 @@ public class UserLoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String userLogin(@RequestParam("mail") String mail, @RequestParam("userpwd") String pwd) {
         try {
-
-            UserInfo userInfo = userLoginService.loginUser(mail, pwd);
+            UserInfo userInfo = userInfoService.loginUser(mail, pwd);
             if (userInfo != null) {
                 String s = JSONObject.toJSONString(userInfo);
                 Cookie cookie = new Cookie("userLogin", s);
                 response.addCookie(cookie);
-
-                //登录成功 跳转到首页
                 return Result.succResult("登录成功");
             }
-
         } catch (Exception e) {
             log.error("异常信息{}", e.getMessage());
             return Result.exceptionResult(e);
@@ -70,15 +60,13 @@ public class UserLoginController {
     @ResponseBody
     public String userInsert(@RequestParam("mail") String mail, @RequestParam("userpwd") String pwd) {
         try {
-            Integer integer = userLoginService.insertUser(mail, pwd);
+            Integer integer = userInfoService.insertUser(mail, pwd);
             if (integer > 0) {
-                //注册成功 跳转到登录页面
                 return Result.succResult("注册成功");
             }
-
         } catch (Exception e) {
             log.error("异常信息{}", e.getMessage());
-            return Result.exceptionResult(e);
+            return Result.failResult("注册失败");
         }
         return Result.failResult("注册失败");
     }
@@ -86,17 +74,54 @@ public class UserLoginController {
     /**
      * 用户修改
      */
+    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+    @ResponseBody
     public String userUpdate(UserInfo userInfo) {
 
         String s = "";
         try {
 
-            s = userLoginService.updateUser(userInfo);
+            s = userInfoService.updateUser(userInfo);
 
             return Result.failResult(s);
         } catch (Exception e) {
-            e.printStackTrace();
-            return Result.failResult(s + e.getMessage());
+            log.error("异常信息{}", e.getMessage());
+            return Result.failResult(s);
         }
+    }
+
+    /**
+     * 用户删除
+     */
+    @RequestMapping(value = "/deletedUser", method = RequestMethod.POST)
+    @ResponseBody
+    public String deletedUser(Lang id) {
+        String s = "";
+        try {
+            s = userInfoService.deletedUser(id);
+            return Result.succResult(s);
+        } catch (Exception e) {
+            log.error("异常信息{}", e.getMessage());
+            return Result.failResult(s);
+        }
+    }
+
+    /**
+     * 查询用户
+     */
+    @RequestMapping(value = "/queryUser", method = RequestMethod.GET)
+    @ResponseBody
+    public String queryUser(String username) {
+
+        List<UserInfo> userInfos = userInfoService.queryUser(username);
+        try {
+            if (userInfos.size() != 0 && userInfos != null) {
+                return Result.succResult(userInfos);
+            }
+        } catch (Exception e) {
+            log.error("异常信息{}", e.getMessage());
+            return Result.exceptionResult(e);
+        }
+        return Result.failResult("没有匹配的用户");
     }
 }

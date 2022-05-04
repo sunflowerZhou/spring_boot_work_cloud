@@ -5,11 +5,13 @@ import com.zbb.dao.mapper.UserInfoMapper;
 import com.zbb.entity.UserInfo;
 import com.zbb.exception.BusinessException;
 import com.zbb.exception.GlobalException;
+import org.apache.commons.codec.language.bm.Lang;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author hmq
@@ -18,7 +20,7 @@ import java.util.Date;
  * @desc：
  **/
 @Service
-public class UserLoginService {
+public class UserInfoService {
 
     @Resource
     private UserInfoMapper userInfoMapper;
@@ -53,6 +55,7 @@ public class UserLoginService {
         Example userInfoPo = new Example(UserInfo.class);
         userInfoPo.createCriteria().andEqualTo("mail",mail);
         userInfoPo.createCriteria().andEqualTo("login_pwd",Md5Util.md5(pwd));
+        userInfoPo.createCriteria().andEqualTo("is_deleted",1);
         return userInfoMapper.selectOneByExample(userInfoPo);
 
     }
@@ -60,8 +63,13 @@ public class UserLoginService {
     /**
      * 查询用户
      * */
-    public UserInfo queryUser(UserInfo userInfo){
-        return userInfoMapper.selectOne(userInfo);
+    public List<UserInfo> queryUser(String name){
+        Example example = new Example(UserInfo.class);
+        example.createCriteria().andEqualTo("is_deleted",1);
+        //根据用户昵称查询(可能多个)
+        example.createCriteria().andEqualTo("login_name",name);
+        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
+        return userInfos;
     }
 
     /**
@@ -71,6 +79,7 @@ public class UserLoginService {
     public String updateUser(UserInfo userInfo){
         Example userInfoPo = new Example(UserInfo.class);
         userInfoPo.createCriteria().andEqualTo("id",userInfo.getId());
+        userInfoPo.createCriteria().andEqualTo("is_deleted",1);
         userInfo.setUpdateTime(new Date());
         synchronized (UserInfo.class){
             int i = userInfoMapper.updateByExample(userInfo, userInfoPo);
@@ -79,6 +88,23 @@ public class UserLoginService {
             }
         }
         return "修改失败";
+    }
+
+    /**
+     * 删除用户
+     * */
+    public String deletedUser(Lang id){
+        synchronized (UserInfo.class){
+            Example example = new Example(UserInfo.class);
+            example.createCriteria().andEqualTo("id",id);
+            UserInfo userInfo = new UserInfo();
+            userInfo.setIsDeleted(0);
+            int i = userInfoMapper.updateByExample(userInfo, example);
+            if (i>0){
+                return "删除成功";
+            }
+        }
+        return "删除失败";
     }
 
 }

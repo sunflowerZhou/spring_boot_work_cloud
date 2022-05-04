@@ -32,7 +32,7 @@ CREATE TABLE `user_info`  (
   `hobby` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户兴趣爱好 爱好1，爱好2，爱好3',
   `login_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户登录名',
   `login_pwd` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户登录密码',
-  `is_deleted` int NULL DEFAULT NULL COMMENT '是否删除{0不删除，1删除}',
+  `is_deleted` int NULL DEFAULT NULL COMMENT '是否删除{0删除，1不删除}',
   `admin_record` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '管理员操作记录',
   `permission` int NULL DEFAULT NULL COMMENT '用户权限{0超级管理员，1管理员，-1普通用户}',
   `signature` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户个性签名',

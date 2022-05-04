@@ -29,11 +29,11 @@ CREATE TABLE `user_friend`  (
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '好友备注',
   `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '好友别名',
   `source` int NULL DEFAULT NULL COMMENT '好友来源{0/微信 1/扫码 2/群聊}',
-  `star` int NULL DEFAULT NULL COMMENT '好友星标{1/星标好友  0/普通好友}',
+  `star` int NULL DEFAULT NULL COMMENT '好友星标{0/星标好友  1/普通好友}',
   `contact_number` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '好友联系电话',
   `creat_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT NULL COMMENT '修改时间',
-  `is_deleted` int NULL DEFAULT NULL COMMENT '是否删除{0/是1/否}',
+  `is_deleted` int NULL DEFAULT NULL COMMENT '是否删除{0/删除 1/不删除}',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_id_index`(`user_id` ASC) USING BTREE COMMENT '用户id',
   INDEX `friend_id_index`(`friend_id` ASC) USING BTREE COMMENT '好友id'
