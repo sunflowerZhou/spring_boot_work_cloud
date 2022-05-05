@@ -109,7 +109,7 @@ public class UserLoginController {
     /**
      * 查询用户
      */
-    @RequestMapping(value = "/queryUser/{username}", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
     @ResponseBody
     public String queryUser(@PathVariable("username") String username) {
 
