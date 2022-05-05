@@ -20,7 +20,7 @@ import java.util.List;
  * @desc：
  **/
 @Service
-public class UserInfoService {
+public class UserInfosService {
 
     @Resource
     private UserInfoMapper userInfoMapper;
@@ -28,7 +28,7 @@ public class UserInfoService {
     /**
      * 添加用户
      * */
-    public Integer insertUser(String pwd,String mail) {
+    public Integer insertUser(String mail,String pwd) {
         String password = Md5Util.md5(pwd);
         UserInfo userInfo = new UserInfo();
         userInfo.setLoginPwd(password);
@@ -53,9 +53,9 @@ public class UserInfoService {
      * */
     public UserInfo loginUser(String mail,String pwd){
         Example userInfoPo = new Example(UserInfo.class);
-        userInfoPo.createCriteria().andEqualTo("mail",mail);
-        userInfoPo.createCriteria().andEqualTo("login_pwd",Md5Util.md5(pwd));
-        userInfoPo.createCriteria().andEqualTo("is_deleted",1);
+        userInfoPo.createCriteria().andEqualTo("mail",mail)
+                .andEqualTo("loginPwd",Md5Util.md5(pwd))
+                .andEqualTo("isDeleted",1);
         return userInfoMapper.selectOneByExample(userInfoPo);
 
     }
@@ -65,9 +65,9 @@ public class UserInfoService {
      * */
     public List<UserInfo> queryUser(String name){
         Example example = new Example(UserInfo.class);
-        example.createCriteria().andEqualTo("is_deleted",1);
+        example.createCriteria().andEqualTo("isDeleted",1)
         //根据用户昵称查询(可能多个)
-        example.createCriteria().andEqualTo("login_name",name);
+        .andEqualTo("loginName",name);
         List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
         return userInfos;
     }
@@ -78,8 +78,8 @@ public class UserInfoService {
 
     public String updateUser(UserInfo userInfo){
         Example userInfoPo = new Example(UserInfo.class);
-        userInfoPo.createCriteria().andEqualTo("id",userInfo.getId());
-        userInfoPo.createCriteria().andEqualTo("is_deleted",1);
+        userInfoPo.createCriteria().andEqualTo("id",userInfo.getId())
+                .andEqualTo("isDeleted",1);
         userInfo.setUpdateTime(new Date());
         synchronized (UserInfo.class){
             int i = userInfoMapper.updateByExample(userInfo, userInfoPo);
@@ -99,6 +99,7 @@ public class UserInfoService {
             example.createCriteria().andEqualTo("id",id);
             UserInfo userInfo = new UserInfo();
             userInfo.setIsDeleted(0);
+            userInfo.setUpdateTime(new Date());
             int i = userInfoMapper.updateByExample(userInfo, example);
             if (i>0){
                 return "删除成功";

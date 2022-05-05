@@ -5,8 +5,9 @@ import cn.hutool.log.LogFactory;
 import com.alibaba.fastjson.JSONObject;
 import com.zbb.bean.Result;
 import com.zbb.entity.UserInfo;
-import com.zbb.service.UserInfoService;
+import com.zbb.service.UserInfosService;
 import org.apache.commons.codec.language.bm.Lang;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class UserLoginController {
     private static final Log log = LogFactory.get();
 
     @Resource
-    private UserInfoService userInfoService;
+    private UserInfosService userInfosService;
     @Resource
     private HttpServletResponse response;
 
@@ -39,11 +40,13 @@ public class UserLoginController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String userLogin(@RequestParam("mail") String mail, @RequestParam("userpwd") String pwd) {
         try {
-            UserInfo userInfo = userInfoService.loginUser(mail, pwd);
+            UserInfo userInfo = userInfosService.loginUser(mail, pwd);
             if (userInfo != null) {
                 String s = JSONObject.toJSONString(userInfo);
-                Cookie cookie = new Cookie("userLogin", s);
+                Cookie cookie = new Cookie("userId", userInfo.getId().toString());
+                Cookie cookie1 = new Cookie("userMail", userInfo.getMail());
                 response.addCookie(cookie);
+                response.addCookie(cookie1);
                 return Result.succResult("登录成功");
             }
         } catch (Exception e) {
@@ -60,7 +63,7 @@ public class UserLoginController {
     @ResponseBody
     public String userInsert(@RequestParam("mail") String mail, @RequestParam("userpwd") String pwd) {
         try {
-            Integer integer = userInfoService.insertUser(mail, pwd);
+            Integer integer = userInfosService.insertUser(mail, pwd);
             if (integer > 0) {
                 return Result.succResult("注册成功");
             }
@@ -81,7 +84,7 @@ public class UserLoginController {
         String s = "";
         try {
 
-            s = userInfoService.updateUser(userInfo);
+            s = userInfosService.updateUser(userInfo);
 
             return Result.failResult(s);
         } catch (Exception e) {
@@ -98,7 +101,7 @@ public class UserLoginController {
     public String deletedUser(@PathVariable("id") Lang id) {
         String s = "";
         try {
-            s = userInfoService.deletedUser(id);
+            s = userInfosService.deletedUser(id);
             return Result.succResult(s);
         } catch (Exception e) {
             log.error("异常信息{}", e.getMessage());
@@ -113,7 +116,7 @@ public class UserLoginController {
     @ResponseBody
     public String queryUser(@PathVariable("username") String username) {
 
-        List<UserInfo> userInfos = userInfoService.queryUser(username);
+        List<UserInfo> userInfos = userInfosService.queryUser(username);
         try {
             if (userInfos.size() != 0 && userInfos != null) {
                 return Result.succResult(userInfos);
