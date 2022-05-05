@@ -23,7 +23,7 @@ import java.util.List;
  * @desc：
  **/
 @Controller
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/userInfo")
 public class UserLoginController {
     private static final Log log = LogFactory.get();
 
@@ -74,9 +74,9 @@ public class UserLoginController {
     /**
      * 用户修改
      */
-    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
     @ResponseBody
-    public String userUpdate(UserInfo userInfo) {
+    public String userUpdate(@RequestBody UserInfo userInfo) {
 
         String s = "";
         try {
@@ -93,9 +93,9 @@ public class UserLoginController {
     /**
      * 用户删除
      */
-    @RequestMapping(value = "/deletedUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public String deletedUser(Lang id) {
+    public String deletedUser(@PathVariable("id") Lang id) {
         String s = "";
         try {
             s = userInfoService.deletedUser(id);
@@ -109,9 +109,9 @@ public class UserLoginController {
     /**
      * 查询用户
      */
-    @RequestMapping(value = "/queryUser", method = RequestMethod.GET)
+    @RequestMapping(value = "/queryUser/{username}", method = RequestMethod.GET)
     @ResponseBody
-    public String queryUser(String username) {
+    public String queryUser(@PathVariable("username") String username) {
 
         List<UserInfo> userInfos = userInfoService.queryUser(username);
         try {
