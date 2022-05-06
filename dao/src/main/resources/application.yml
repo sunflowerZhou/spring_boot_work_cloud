@@ -44,6 +44,11 @@ spring:
     url: jdbc:mysql://82.156.188.45:3306/spring_boot_work_cloud?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=utf-8&useAffectedRows=true
     username: root
     password: ROOT
+  #开启支持put delete请求的过滤器
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 #  #redis集群
 #  redis:
 #    host: 192.168.0.12

@@ -9,6 +9,7 @@ import com.zbb.service.UserInfosService;
 import org.apache.commons.codec.language.bm.Lang;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -98,12 +99,13 @@ public class UserLoginController {
      */
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public String deletedUser(@PathVariable("id") Lang id) {
+    public String deletedUser(@PathVariable("id") Long id) {
         String s = "";
         try {
             s = userInfosService.deletedUser(id);
             return Result.succResult(s);
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("异常信息{}", e.getMessage());
             return Result.failResult(s);
         }

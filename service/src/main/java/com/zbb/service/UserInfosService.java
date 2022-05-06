@@ -81,7 +81,7 @@ public class UserInfosService {
         userInfoPo.createCriteria().andEqualTo("id",userInfo.getId())
                 .andEqualTo("isDeleted",1);
         userInfo.setUpdateTime(new Date());
-        synchronized (UserInfo.class){
+        synchronized (this){
             int i = userInfoMapper.updateByExample(userInfo, userInfoPo);
             if (i>0){
                 return "修改成功";
@@ -93,8 +93,8 @@ public class UserInfosService {
     /**
      * 删除用户
      * */
-    public String deletedUser(Lang id){
-        synchronized (UserInfo.class){
+    public String deletedUser(Long id){
+        synchronized (this){
             Example example = new Example(UserInfo.class);
             example.createCriteria().andEqualTo("id",id);
             UserInfo userInfo = new UserInfo();
