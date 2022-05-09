@@ -1,57 +1,137 @@
 package com.zbb.api.web;
 
-import com.taobao.api.ApiException;
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.zbb.bean.Result;
-import com.zbb.service.ding.BhInvitationUserService;
-import com.zbb.service.ding.DingTalkServiceUtils;
-import com.zbb.vo.AccessTokenVo;
-import com.zbb.vo.EnterpriseAuthVo;
-import com.zbb.vo.InviteTableVo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.zbb.entity.UserInfo;
+import com.zbb.service.UserInfosService;
+import com.zbb.vo.UserInfoVo;
+import org.apache.commons.codec.language.bm.Lang;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
 
 /**
- * @author sunflower
- */
-@Api("用户")
+ * @auther： hmq
+ * @version： 1.0
+ * @date 2022/5/2
+ * @desc：
+ **/
 @Controller
-@RequestMapping(name = "/ding/user")
-public class UserInfoController{
+@RequestMapping(value = "/userInfo")
+public class UserInfoController {
+    private static final Log log = LogFactory.get();
 
     @Resource
-    private DingTalkServiceUtils dingTalkServiceUtils;
-
+    private UserInfosService userInfosService;
     @Resource
-    private BhInvitationUserService bhInvitationUserService;
+    private HttpServletResponse response;
 
-    @RequestMapping(value = "/passwordFreeLogin",method = RequestMethod.POST)
+    /**
+     * 用户登录
+     */
     @ResponseBody
-    @ApiOperation(value = "免密登录(获取用户信息)", httpMethod = "POST")
-    public String passwordFreeLogin(String requestAuthCode) {
-        AccessTokenVo userInfo = dingTalkServiceUtils.getUserInfo(requestAuthCode);
-        return Result.succResult(userInfo);
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String userLogin(@RequestParam("mail") String mail, @RequestParam("userpwd") String pwd) {
+        try {
+            UserInfo userInfo = userInfosService.loginUser(mail, pwd);
+            if (userInfo != null) {
+                String s = JSONObject.toJSONString(userInfo);
+                Cookie cookie = new Cookie("userId", userInfo.getId().toString());
+                Cookie cookie1 = new Cookie("userMail", userInfo.getMail());
+                response.addCookie(cookie);
+                response.addCookie(cookie1);
+                return Result.succResult("登录成功");
+            }
+        } catch (Exception e) {
+            log.error("异常信息{}", e.getMessage());
+            return Result.exceptionResult(e);
+        }
+        return Result.failResult("登录失败");
     }
 
-    @RequestMapping(value = "/inviteList",method = RequestMethod.POST)
+    /**
+     * 用户注册
+     */
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
-    @ApiOperation(value = "用户邀请人数", httpMethod = "POST")
-    public String inviteInfo(String circleId){
-        InviteTableVo inviteTableVo = bhInvitationUserService.inviteList(circleId);
-        return Result.succResult(inviteTableVo);
+    public String userInsert(@RequestParam("mail") String mail, @RequestParam("userpwd") String pwd) {
+        try {
+            Integer integer = userInfosService.insertUser(mail, pwd);
+            if (integer > 0) {
+                return Result.succResult("注册成功");
+            }
+        } catch (Exception e) {
+            log.error("异常信息{}", e.getMessage());
+            return Result.failResult("注册失败");
+        }
+        return Result.failResult("注册失败");
     }
 
-    @RequestMapping(value = "/getToken",method = RequestMethod.POST)
+    /**
+     * 用户修改
+     */
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
     @ResponseBody
-    @ApiOperation(value = "获取token", httpMethod = "POST")
-    public String getToken() throws ApiException {
-        EnterpriseAuthVo corpToken = dingTalkServiceUtils.getCorpToken();
-        return Result.succResult(corpToken.getAccessToken());
+    public String userUpdate(@RequestBody JSONObject jsonObject) {
+        log.info("strJSON{}",jsonObject);
+        UserInfoVo userInfoVo = JSONObject.toJavaObject(jsonObject, UserInfoVo.class);
+
+        log.info("jsonUSER{}",userInfoVo.toString());
+        String s = "";
+        try {
+
+            s = userInfosService.updateUser(userInfoVo);
+
+            return Result.failResult(s);
+        } catch (Exception e) {
+            log.error("异常信息{}", e.getMessage());
+            return Result.failResult(s);
+        }
     }
 
+    /**
+     * 用户删除
+     */
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public String deletedUser(@PathVariable("id") Long id) {
+        String s = "";
+        try {
+            s = userInfosService.deletedUser(id);
+            return Result.succResult(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("异常信息{}", e.getMessage());
+            return Result.failResult(s);
+        }
+    }
+
+    /**
+     * 查询用户
+     */
+    @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
+    @ResponseBody
+    public String queryUser(@PathVariable("username") String username) {
+
+        List<UserInfo> userInfos = userInfosService.queryUser(username);
+        try {
+            if (userInfos.size() != 0 && userInfos != null) {
+                return Result.succResult(userInfos);
+            }
+        } catch (Exception e) {
+            log.error("异常信息{}", e.getMessage());
+            return Result.exceptionResult(e);
+        }
+        return Result.failResult("没有匹配的用户");
+    }
 }
