@@ -40,17 +40,17 @@ public class UserInfoController {
      * 用户登录
      */
     @ResponseBody
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String userLogin(@RequestParam("mail") String mail, @RequestParam("userpwd") String pwd) {
+    @RequestMapping(value = "/user/{mail}/{userpwd}", method = RequestMethod.GET)
+    public String userLogin(@PathVariable("mail") String mail, @PathVariable("userpwd") String pwd) {
         try {
             UserInfo userInfo = userInfosService.loginUser(mail, pwd);
+
             if (userInfo != null) {
-                String s = JSONObject.toJSONString(userInfo);
                 Cookie cookie = new Cookie("userId", userInfo.getId().toString());
                 Cookie cookie1 = new Cookie("userMail", userInfo.getMail());
                 response.addCookie(cookie);
                 response.addCookie(cookie1);
-                return Result.succResult("登录成功");
+                return Result.succResult(userInfo);
             }
         } catch (Exception e) {
             log.error("异常信息{}", e.getMessage());
@@ -62,7 +62,7 @@ public class UserInfoController {
     /**
      * 用户注册
      */
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     @ResponseBody
     public String userInsert(@RequestParam("mail") String mail, @RequestParam("userpwd") String pwd) {
         try {
