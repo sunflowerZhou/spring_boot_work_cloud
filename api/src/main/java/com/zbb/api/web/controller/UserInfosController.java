@@ -1,4 +1,4 @@
-package com.zbb.api.web;
+package com.zbb.api.web.controller;
 
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
@@ -28,7 +28,7 @@ import java.util.List;
  **/
 @Controller
 @RequestMapping(value = "/userInfo")
-public class UserInfoController {
+public class UserInfosController {
     private static final Log log = LogFactory.get();
 
     @Resource
