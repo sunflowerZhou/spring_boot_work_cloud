@@ -83,20 +83,17 @@ public class UserInfosController {
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
     @ResponseBody
     public String userUpdate(@RequestBody JSONObject jsonObject) {
-        log.info("strJSON{}",jsonObject);
-        UserInfoVo userInfoVo = JSONObject.toJavaObject(jsonObject, UserInfoVo.class);
-
-        log.info("jsonUSER{}",userInfoVo.toString());
         String s = "";
         try {
-
+            UserInfoVo userInfoVo = JSONObject.toJavaObject(jsonObject, UserInfoVo.class);
             s = userInfosService.updateUser(userInfoVo);
-
-            return Result.failResult(s);
+            if ("T".equals(s))
+            return Result.succResult("修改成功");
         } catch (Exception e) {
             log.error("异常信息{}", e.getMessage());
             return Result.failResult(s);
         }
+        return Result.failResult("修改失败，用户不存在或已删除");
     }
 
     /**

@@ -18,6 +18,8 @@ import java.util.Date;
 @ToString
 public class UserInfoVo implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private Long id;
 
     private String name;
@@ -28,20 +30,15 @@ public class UserInfoVo implements Serializable {
 
     private Integer sex;
 
-    private String mail;
-
     private String telephone;
 
     private String hobby;
 
     private String loginName;
 
-    private String loginPwd;
-
     private String signature;
 
 
 
 
-    private static final long serialVersionUID = 1L;
 }

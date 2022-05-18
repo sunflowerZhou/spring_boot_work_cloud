@@ -37,9 +37,10 @@ public class UserInfosService {
         userInfo.setPermission(-1);
         userInfo.setAvatar("src/main/webapp/static/img/logo.png");
         synchronized (UserInfo.class) {
-            Example userInfoPo = new Example(UserInfo.class);
+            /*Example userInfoPo = new Example(UserInfo.class);
             userInfoPo.createCriteria().andEqualTo("mail", mail);
-            int i = userInfoMapper.selectCountByExample(userInfoPo);
+            int i = userInfoMapper.selectCountByExample(userInfoPo);*/
+            int i = userInfoMapper.selectCount(new UserInfo().setMail(mail));
             if (i > 0) {
                 throw new BusinessException("当前账号已经注册过！");
             }
@@ -52,11 +53,11 @@ public class UserInfosService {
      * 用户登录
      */
     public UserInfo loginUser(String mail, String pwd) {
-        Example userInfoPo = new Example(UserInfo.class);
+        /*Example userInfoPo = new Example(UserInfo.class);
         userInfoPo.createCriteria().andEqualTo("mail", mail)
                 .andEqualTo("loginPwd", Md5Util.md5(pwd))
-                .andEqualTo("isDeleted", 1);
-        return userInfoMapper.selectOneByExample(userInfoPo);
+                .andEqualTo("isDeleted", 1);*/
+        return userInfoMapper.selectOne(new UserInfo().setMail(mail).setLoginPwd(pwd).setIsDeleted(1));
 
     }
 
@@ -64,12 +65,13 @@ public class UserInfosService {
      * 查询用户
      */
     public List<UserInfo> queryUser(String name) {
-        Example example = new Example(UserInfo.class);
+        /*Example example = new Example(UserInfo.class);
         example.createCriteria().andEqualTo("isDeleted", 1)
                 //根据用户昵称查询(可能多个)
                 .andEqualTo("loginName", name);
-        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);
-        return userInfos;
+        List<UserInfo> userInfos = userInfoMapper.selectByExample(example);*/
+        List<UserInfo> userInfoList = userInfoMapper.select(new UserInfo().setLoginName(name).setIsDeleted(1));
+        return userInfoList;
     }
 
     /**
@@ -77,32 +79,37 @@ public class UserInfosService {
      */
 
     public String updateUser(UserInfoVo userInfoVo) {
-        Example userInfoPo = new Example(UserInfo.class);
+        /*Example userInfoPo = new Example(UserInfo.class);
         userInfoPo.createCriteria().andEqualTo("id", userInfoVo.getId())
-                .andEqualTo("isDeleted", 1);
-        UserInfo userInfo1 = userInfoMapper.selectOneByExample(userInfoPo);
-        userInfo1.setName(userInfoVo.getName());
-        userInfo1.setAge(userInfoVo.getAge());
-        userInfo1.setBirthday(userInfoVo.getBirthday());
-        userInfo1.setSex(userInfoVo.getSex());
-        userInfo1.setMail(userInfoVo.getMail());
-        userInfo1.setTelephone(userInfoVo.getTelephone());
-        userInfo1.setHobby(userInfoVo.getHobby());
-        userInfo1.setLoginName(userInfoVo.getLoginName());
-        userInfo1.setLoginPwd(Md5Util.md5(userInfoVo.getLoginPwd()));
-        userInfo1.setSignature(userInfoVo.getSignature());
-        userInfo1.setUpdateTime(new Date());
-        if (userInfo1==null){
-            return "修改失败,没有这个用户";
+                .andEqualTo("isDeleted", 1);*/
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(userInfoVo.getId());
+        if (userInfo==null||0 == userInfo.getIsDeleted()){
+            return "F";
         }
+        if (userInfoVo.getName() != null)
+        userInfo.setName(userInfoVo.getName());
+        if (userInfoVo.getAge() != null)
+        userInfo.setAge(userInfoVo.getAge());
+        if (userInfoVo.getBirthday() != null)
+        userInfo.setBirthday(userInfoVo.getBirthday());
+        if (userInfoVo.getSex() != null)
+        userInfo.setSex(userInfoVo.getSex());
+        if (userInfoVo.getTelephone() != null)
+        userInfo.setTelephone(userInfoVo.getTelephone());
+        if (userInfoVo.getHobby() != null)
+        userInfo.setHobby(userInfoVo.getHobby());
+        if (userInfoVo.getLoginName() != null)
+        userInfo.setLoginName(userInfoVo.getLoginName());
+        if (userInfoVo.getSignature() != null)
+        userInfo.setSignature(userInfoVo.getSignature());
+        userInfo.setUpdateTime(new Date());
         synchronized (this) {
-
-            int i = userInfoMapper.updateByExample(userInfo1, userInfoPo);
+            int i = userInfoMapper.updateByPrimaryKeySelective(userInfo);
             if (i > 0) {
-                return "修改成功";
+                return "T";
             }
         }
-        return "修改失败,没有这个用户";
+        return "F";
     }
 
     /**
