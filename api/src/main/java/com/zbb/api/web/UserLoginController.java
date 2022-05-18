@@ -1,3 +1,4 @@
+/*
 package com.zbb.api.web;
 
 import cn.hutool.log.Log;
@@ -18,12 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
+*/
 /**
  * @auther： hmq
  * @version： 1.0
  * @date 2022/5/2
  * @desc：
- **/
+ **//*
+
 @Controller
 @RequestMapping(value = "/userInfo")
 public class UserLoginController {
@@ -34,9 +37,11 @@ public class UserLoginController {
     @Resource
     private HttpServletResponse response;
 
-    /**
+    */
+/**
      * 用户登录
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public String userLogin(@RequestParam("mail") String mail, @RequestParam("userpwd") String pwd) {
@@ -57,9 +62,11 @@ public class UserLoginController {
         return Result.failResult("登录失败");
     }
 
-    /**
+    */
+/**
      * 用户注册
-     */
+     *//*
+
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public String userInsert(@RequestParam("mail") String mail, @RequestParam("userpwd") String pwd) {
@@ -75,9 +82,11 @@ public class UserLoginController {
         return Result.failResult("注册失败");
     }
 
-    /**
+    */
+/**
      * 用户修改
-     */
+     *//*
+
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
     @ResponseBody
     public String userUpdate(@RequestBody UserInfo userInfo) {
@@ -94,9 +103,11 @@ public class UserLoginController {
         }
     }
 
-    /**
+    */
+/**
      * 用户删除
-     */
+     *//*
+
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public String deletedUser(@PathVariable("id") Long id) {
@@ -111,9 +122,11 @@ public class UserLoginController {
         }
     }
 
-    /**
+    */
+/**
      * 查询用户
-     */
+     *//*
+
     @RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
     @ResponseBody
     public String queryUser(@PathVariable("username") String username) {
@@ -130,3 +143,4 @@ public class UserLoginController {
         return Result.failResult("没有匹配的用户");
     }
 }
+*/

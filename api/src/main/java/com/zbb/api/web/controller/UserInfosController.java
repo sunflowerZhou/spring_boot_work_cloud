@@ -105,12 +105,14 @@ public class UserInfosController {
         String s = "";
         try {
             s = userInfosService.deletedUser(id);
-            return Result.succResult(s);
+            if ("T".equals(s))
+            return Result.succResult("删除成功");
         } catch (Exception e) {
             e.printStackTrace();
             log.error("异常信息{}", e.getMessage());
             return Result.failResult(s);
         }
+        return Result.failResult("删除失败，用户不存在或已删除");
     }
 
     /**

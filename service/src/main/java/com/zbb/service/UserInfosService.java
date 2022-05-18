@@ -116,23 +116,21 @@ public class UserInfosService {
      * 删除用户
      */
     public String deletedUser(Long id) {
-        Example example = new Example(UserInfo.class);
+        /*Example example = new Example(UserInfo.class);
         example.createCriteria().andEqualTo("id", id)
-                .andEqualTo("isDeleted",1);
-        UserInfo userInfo = userInfoMapper.selectOneByExample(example);
+                .andEqualTo("isDeleted",1);*/
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(id);
         synchronized (this) {
 
-            if (userInfo == null) {
-                return "删除失败,没有这个用户";
+            if (userInfo == null || userInfo.getIsDeleted() == 0) {
+                return "F";
             }
-            userInfo.setIsDeleted(0);
-            userInfo.setUpdateTime(new Date());
-            int i = userInfoMapper.updateByExample(userInfo, example);
+            int i = userInfoMapper.updateByPrimaryKeySelective(new UserInfo().setId(id).setIsDeleted(0).setUpdateTime(new Date()));
             if (i > 0) {
-                return "删除成功";
+                return "T";
             }
         }
-        return "删除失败,没有这个用户";
+        return "F";
     }
 
 }
